@@ -35,10 +35,13 @@ $("#runMap").on('click', function(){
           east = Math.max(east, lon);
           west = Math.min(west, lon);
         }
-        console.log(center[0]/validPoints, center[1]/validPoints, center[0], validPoints);
-        console.log(south, west, north, east);
+        if(validPoints > 0){
         map.panTo([center[0]/validPoints, center[1]/validPoints]);
-        
+        }else{
+          $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
+          $("#error-dialog").modal('show');
+          $("#map").remove();
+        }        
       });
     }
   });

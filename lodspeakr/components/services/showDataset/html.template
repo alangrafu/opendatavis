@@ -52,6 +52,7 @@
 <div>
   <svg id="test1"></svg>
 </div>
+
 <div class="modal hide fade" id="chart-dialog">
   <div class="modal-header">
     <h3>Chart</h3>
@@ -65,6 +66,23 @@
       <a href="#" id="runChart" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
     </div>
   </div>
+</div>
+
+<div class="modal hide fade" id="error-dialog">
+  <div class="modal-header">
+    <h3>Error</h3>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-error" id="error-message"></div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+</div>
+
+
+
+
 
   <script src="{{lodspk.home}}js/nvd3/lib/d3.v2.js"></script>
   <script src="{{lodspk.home}}js/nvd3/nv.d3.js"></script>
