@@ -1,14 +1,16 @@
+
+//Map chart
 $("#runMap").on('click', function(){
-$("#map").remove();
-$('<div id="map"></div>').prependTo("#mapContainer"); 
-$("#map").css("width", $("#map-width").val()+"px").css("height", $("#map-height").val()+"px");
-var map = L.map('map').setView([0, 0], 13);
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  $("#map").remove();
+  $('<div id="map"></div>').prependTo("#mapContainer"); 
+  $("#map").css("width", $("#map-width").val()+"px").css("height", $("#map-height").val()+"px");
+  var map = L.map('map').setView([0, 0], 13);
+  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     maxZoom: 18,
     trackResize: true
-}).addTo(map);
-$.ajax({
+  }).addTo(map);
+  $.ajax({
     url:"/~alvarograves/gov/showDataset/"+dataset,
     contentType: "application/json",
     dataType: "json",
@@ -37,12 +39,14 @@ $.ajax({
         console.log(south, west, north, east);
         map.panTo([center[0]/validPoints, center[1]/validPoints]);
         
-             });
+      });
     }
-});
+  });
 });
 
 
+
+//Bar chart
 $("#runChart").on('click', function(){
   $.ajax({
     url:"/~alvarograves/gov/showDataset/{{lodspk.args.all}}",
