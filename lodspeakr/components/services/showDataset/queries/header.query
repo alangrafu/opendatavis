@@ -1,0 +1,9 @@
+PREFIX ex: <{{lodspk.basedomain}}>
+
+SELECT ?col ?val WHERE{
+graph <{{lodspk.args.all|deurifier}}> {
+?x ex:header ?cell.
+?cell ex:value ?val;
+ ex:colNumber ?col .
+}
+}ORDER BY ASC(?col)

@@ -1,0 +1,7 @@
+PREFIX ex: <{{lodspk.basedomain}}>
+SELECT DISTINCT ?g WHERE {
+  GRAPH <{{lodspk.metadata}}>{
+        ?g a ex:Dataset .
+  }
+}
+order by ?g

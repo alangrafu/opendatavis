@@ -1,0 +1,7 @@
+PREFIX ex: <http://example.org/>
+SELECT DISTINCT ?dataset WHERE {
+    GRAPH <http://opendatav.is/metadata> {
+    	?dataset a ex:Dataset .
+    }
+}order by ?dataset
+LIMIT 1000

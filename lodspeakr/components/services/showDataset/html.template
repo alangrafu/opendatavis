@@ -1,0 +1,94 @@
+{%include "../../includes/header.inc"%}
+<div class="container-fluid">
+	<table border='1px'>
+    <tr>
+      {% for row in models.header %}
+      <td><strong>{{row.val.value}}</strong></td>
+      {%endfor%}
+    </tr>
+    <tr>
+      {% for row in models.main %}
+      {%ifchanged row.row.value%}
+    </tr><tr>
+    {%endifchanged%}
+    <td>{{row.val.value}}</td>
+    {% endfor %}
+  </tr>
+</table>
+<div>
+  <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
+  <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
+</div>
+<div id="mapContainer">
+  <div id="map" class="map"></div>
+</div>
+<div class="modal hide fade" id="map-dialog">
+  <div class="modal-header">
+    <h3>Latitude and Longitude</h3>
+  </div>
+  <div class="modal-body">
+    <legend for="lat">Latitude</legend><select id="lat" name="lat"></select>
+    <legend for="lon">lonitude</legend><select id="lon" name="lon"></select>
+    <br/>
+    <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-map">More options</a>
+    <div class="collapse-group">
+      <div class="collapse" id="option-map">
+        <div style='float:left;padding:5px'>
+          <h4 for="map-width">Map width</h4><input type="text" id="map-width" name="map-width" value="600"/>
+        </div>
+        <div style='float:left;padding:5px'>
+          <h4 for="map-height">Map height</h4><input type="text" id="map-height" name="map-height" value="600"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+      <a href="#" class="btn btn-primary" id="runMap" data-dismiss="modal" aria-hidden="true">Create map</a>
+    </div>
+  </div>
+</div>
+
+
+<div>
+  <svg id="test1"></svg>
+</div>
+<div class="modal hide fade" id="chart-dialog">
+  <div class="modal-header">
+    <h3>Chart</h3>
+  </div>
+  <div class="modal-body">
+
+    <legend for="var1">var1</legend><select id="var1" name="var1"></select>
+    <legend for="var2">var2</legend><select id="var2" name="var2"></select>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+      <a href="#" id="runChart" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
+    </div>
+  </div>
+
+  <script src="{{lodspk.home}}js/nvd3/lib/d3.v2.js"></script>
+  <script src="{{lodspk.home}}js/nvd3/nv.d3.js"></script>
+  <!-- including all the components so I don't have to minify every time I test in development -->
+  <script src="{{lodspk.home}}js/nvd3/src/tooltip.js"></script>
+  <script src="{{lodspk.home}}js/nvd3/src/utils.js"></script>
+  <script src="{{lodspk.home}}js/nvd3/src/models/axis.js"></script>
+  <script src="{{lodspk.home}}js/nvd3/src/models/discreteBar.js"></script>
+  <script src="{{lodspk.home}}js/nvd3/src/models/discreteBarChart.js"></script>
+  <script src="{{lodspk.home}}js/editor.js"></script>
+
+</div>
+
+<script>
+var dataset = "{{lodspk.args.all}}";
+var headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ];
+$.each(headerColumns, function(i, item){
+  var option = "<option value='"+i+"'>"+item+"</option>";
+  $("#lat").append(option);
+  $("#lon").append(option);
+  $("#var1").append(option);
+  $("#var2").append(option);
+});
+$(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
+</script>
+</body>
+</html>

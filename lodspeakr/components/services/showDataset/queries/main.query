@@ -1,0 +1,10 @@
+PREFIX ex: <{{lodspk.basedomain}}>
+SELECT ?row ?col ?val WHERE{
+graph <{{lodspk.args.all|deurifier}}>{
+?x ex:hasCell ?cell.
+?cell ex:value ?val;
+ ex:rowNumber ?row;
+ ex:colNumber ?col . 
+FILTER(?row < 7)
+}
+}ORDER BY ASC(?row) ASC(?col)

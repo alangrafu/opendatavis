@@ -1,0 +1,8 @@
+{
+ "header": [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ],
+ "rows"  : [ 
+             [{%for i in models.main%}{%ifchanged i.row%}{%if forloop.counter0!=0%}],
+             [{%endif%}{%else%}, {%endifchanged%}"{{i.val.value}}" {%endfor%}
+            ]
+       ]
+}
