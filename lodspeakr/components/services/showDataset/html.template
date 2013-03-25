@@ -19,9 +19,12 @@
   <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
   <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
 </div>
-<div id="mapContainer">
-  <div id="map" class="map"></div>
-</div>
+
+
+<div id="mapContainer"></div>
+<div id="chartContainer"></div>
+
+
 <div class="modal hide fade" id="map-dialog">
   <div class="modal-header">
     <h3>Latitude and Longitude</h3>
@@ -48,10 +51,6 @@
   </div>
 </div>
 
-
-<div>
-  <svg id="test1"></svg>
-</div>
 
 <div class="modal hide fade" id="chart-dialog">
   <div class="modal-header">
@@ -98,6 +97,7 @@
 
 <script>
 var dataset = "{{lodspk.args.all}}";
+var home = "{{lodspk.home}}";
 var headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ];
 $.each(headerColumns, function(i, item){
   var option = "<option value='"+i+"'>"+item+"</option>";

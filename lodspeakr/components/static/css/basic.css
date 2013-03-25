@@ -40,3 +40,14 @@ td{
 table{
   width: 50%;
 }
+.map { 
+  min-height: 200px
+}
+.deleteButton{
+  min-width:100px;
+  min-height: 50px;
+  font-family: Monaco;
+  font-size: 48px;
+  float:right;
+  cursor:pointer;
+}

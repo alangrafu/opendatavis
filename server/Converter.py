@@ -67,15 +67,16 @@ class Converter(threading.Thread):
     reader = csv.reader(f)
     rowNumber=0
     ex_hasCell = u'ex:hasCell'
+    ex_hasRecord = u'ex:hasRecord'
     ex_colNumber = u'ex:colNumber'
     ex_rowNumber = u'ex:rowNumber'
     ex_value = u'ex:value'
 
     buff=[]
-    buff.append(u"@prefix ex: <%s/> ."%self.baseUrl)
+    buff.append(u"@prefix ex: <%s/> .\n@prefix dcat: <http://www.w3.org/ns/dcat#> .\n"%self.baseUrl)
     try:
       header = reader.next()
-      xbuff = u"<%s> a ex:Dataset. "%(datasetURI)
+      xbuff = u"<%s> a dcat:Dataset. "%(datasetURI)
       colNumber=0
       for value in header:
         xbuff += """<%s> ex:header <%s/dataset/%s/header/%d> .
@@ -85,11 +86,13 @@ class Converter(threading.Thread):
         buff.append(xbuff)                                                            
       for row in reader:
         colNumber=0
+        recordURI = u'%s/dataset/%s/%d'%(self.baseUrl, self.filename, rowNumber)
         for value in row:
-          currentURI = u'%sdataset/%s/%d/%d'%(self.baseUrl, self.filename, rowNumber, colNumber)
-          xbuff = u"<%s> %s <%s> .\n"%(datasetURI, ex_hasCell, currentURI) 
+          currentURI = u'%s/dataset/%s/%d/%d'%(self.baseUrl, self.filename, rowNumber, colNumber)
+          xbuff = u"<%s> %s <%s> .\n"%(datasetURI, ex_hasRecord, recordURI) 
+          xbuff += u"<%s> %s %d .\n"%(recordURI, ex_rowNumber, rowNumber) 
+          xbuff += u"<%s> %s <%s> .\n"%(recordURI, ex_hasCell, currentURI) 
           xbuff += u"<%s> %s %d;\n"%(currentURI, ex_colNumber, colNumber) 
-          xbuff += u"%s %d;\n"%(ex_rowNumber, rowNumber) 
           xbuff += u"%s \"%s\".\n"%(ex_value, Literal(value)) 
           buff.append(xbuff)
           colNumber = colNumber+1
@@ -106,12 +109,14 @@ class Converter(threading.Thread):
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 
-<%s> a ex:Dataset;
+<%s> a dcat:Dataset;
      dcterms:created "%s"^^xsd:dateTime;
-     prov:wasDerivedFrom <%s> .
+     prov:wasDerivedFrom <%s> ;
+     dcterms:identifier "%s".
 
-"""%(self.baseUrl, datasetURI, t, self.url)
+"""%(self.baseUrl, datasetURI, t, self.url, self.filename)
       r = requests.post("http://localhost:3030/asd/data?graph=%s/metadata"%self.baseUrl , data=turtle.encode('utf-8'), headers=headers)
       print "Code:",r.status_code
       self.status="idle"

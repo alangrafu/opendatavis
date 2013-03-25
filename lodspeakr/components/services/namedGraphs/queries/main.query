@@ -1,7 +1,8 @@
-PREFIX ex: <{{lodspk.basedomain}}>
+PREFIX dcat: <http://www.w3.org/ns/dcat#> 
+
 SELECT DISTINCT ?g WHERE {
-  GRAPH <{{lodspk.metadata}}>{
-        ?g a ex:Dataset .
+  GRAPH ?x{
+        ?g a dcat:Dataset .
   }
 }
 order by ?g

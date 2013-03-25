@@ -1,8 +1,9 @@
 
 //Map chart
 $("#runMap").on('click', function(){
-  $("#map").remove();
+  $("#mapContainer").empty();
   $('<div id="map"></div>').prependTo("#mapContainer"); 
+  $('<div id="mapDelete" class="deleteButton">X</div>').prependTo("#mapContainer"); 
   $("#map").css("width", $("#map-width").val()+"px").css("height", $("#map-height").val()+"px");
   var map = L.map('map').setView([0, 0], 13);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -11,7 +12,7 @@ $("#runMap").on('click', function(){
     trackResize: true
   }).addTo(map);
   $.ajax({
-    url:"/~alvarograves/gov/showDataset/"+dataset,
+    url:home+"showDataset/"+dataset,
     contentType: "application/json",
     dataType: "json",
     success: function(data){
@@ -45,14 +46,18 @@ $("#runMap").on('click', function(){
       });
     }
   });
+  runEvents();
 });
 
 
 
 //Bar chart
 $("#runChart").on('click', function(){
+  $("#chartContainer").empty();
+  $('<svg id="chart"></svg>').prependTo("#chartContainer"); 
+  $('<div id="chartDelete" class="deleteButton">X</div>').prependTo("#chartContainer"); 
   $.ajax({
-    url:"/~alvarograves/gov/showDataset/{{lodspk.args.all}}",
+    url:home+"showDataset/"+dataset,
     contentType: "application/json",
     dataType: "json",
     success: function(data){
@@ -68,7 +73,7 @@ $("#runChart").on('click', function(){
         .tooltips(false)
         .showValues(true)
 
-        d3.select('#test1').attr("height", 400).attr("width", 400)
+        d3.select('#chart').attr("height", 400).attr("width", 400)
         .datum(results)
         .transition().duration(500)
         .call(chart);
@@ -79,4 +84,10 @@ $("#runChart").on('click', function(){
       });
     }
   });
+  runEvents();
 });
+
+
+function runEvents(){
+  $(".deleteButton").on('click', function(){$(this).parent().empty()})
+}

@@ -54,7 +54,7 @@
         <ul class="nav">
           <li class="active"><a href="#">Home</a></li>
           <li><a href="classes">Classes</a></li>
-          <li><a href="namedGraphs">Named Graphs</a></li>
+          <li><a href="namedGraphs">Datasets</a></li>
         </ul>
         <form class="navbar-search pull-left" action="">
           <input type="text" data-provide="typeahead" class="typeahead search-query span2" placeholder="Search"/>
@@ -89,6 +89,42 @@
   </div>
 </div>
 <script>
+var msg = "", interval = null;
+
+function requestStatus(){
+  console.log("requesting data");
+  $.ajax({
+    url:"/data",
+    data: {
+      key: id
+    },
+    success: function(data){
+      console.log(data);
+      if(data.msg == "error"){
+        $("#load-message").html("Error loading the dataset");
+      }else{
+        $("#load-message").html(data.msg);   
+        newValue = "0";
+        if(data.msg == "idle"){
+          newValue = "100";
+          clearInterval(interval);
+        }
+        if(data.msg == "downloading"){
+          newValue = "20";
+        }
+        if(data.msg == "converting"){
+          newValue = "50";
+        }
+        if(data.msg == "loading"){
+          newValue = "70";
+        }
+        msg = data.msg
+        $("#progress-bar").css("width", newValue+'%');           
+      }
+    }
+  });
+}
+
 $("#load-button-run").on('click', function(e){
   $("#load-button-run").attr("disabled", true);
   $("#load-progress").collapse('toggle');
@@ -97,48 +133,13 @@ $.ajax({
     type: "POST",
     contentType: "application/x-www-form-urlencoded",
     data: {
-      url: "http://graves.cl/b.csv"
+      url: $("#dataset-url").val()
     },
     dataType: "json",
     success: function(data){
       id = data.id;
-      var msg = "";
       console.log(data);
-      return;
-      /*while(msg != "idle" && msg != "error"){
-        setTimeout(function(){
-          console.log("requesting data");
-          $.ajax({
-            url:"/data",
-            data: {
-              key: id
-            },
-            success: function(data){
-              console.log(data);
-              if(data.msg == "error"){
-                $("#load-message").html("Error loading the dataset");
-              }else{
-                $("#load-message").html(data.msg);   
-                newValue = "0";
-                if(data.msg == "idle"){
-                  newValue = "100";
-                }
-                if(data.msg == "downloading"){
-                  newValue = "20";
-                }
-                if(data.msg == "converting"){
-                  newValue = "50";
-                }
-                if(data.msg == "loading"){
-                  newValue = "70";
-                }
-                msg = data.msg
-                $("#progress-bar").css("width", newValue+'%');           
-              }
-            }
-          });
-        }, 1000);
-      }*/
+      interval = setInterval(function(){requestStatus()}, 5000);
     }
   });
 });

@@ -26,7 +26,6 @@
       padding-right:20px;
       background-position: right;
     }
-    .map { min-height: 200px}
     </style>
     <link href="{{lodspk.home}}css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.js"></script>
@@ -65,7 +64,7 @@
           <ul class="nav">
             <li><a href="{{lodspk.home}}">Home</a></li>
             <li><a href="{{lodspk.home}}classes">Classes</a></li>
-            <li><a href="{{lodspk.home}}namedGraphs">Named Graphs</a></li>
+            <li><a href="{{lodspk.home}}namedGraphs">Datasets</a></li>
           </ul>
           <form class="navbar-search pull-left" action="">
             <input type="text" data-provide="typeahead" class="typeahead search-query span2" placeholder="Search"/>
