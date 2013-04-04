@@ -1,9 +1,12 @@
+//Global varis
+var vizObj = {};
+
 
 //Map chart
-$("#runMap").on('click', function(){
+$("#mapRun").on('click', function(){
   $("#mapContainer").empty();
   $('<div id="map"></div>').prependTo("#mapContainer"); 
-  $('<div id="mapDelete" class="deleteButton">X</div>').prependTo("#mapContainer"); 
+  addMenu("map");
   $("#map").css("width", $("#map-width").val()+"px").css("height", $("#map-height").val()+"px");
   var map = L.map('map').setView([0, 0], 13);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -38,10 +41,15 @@ $("#runMap").on('click', function(){
         }
         if(validPoints > 0){
         map.panTo([center[0]/validPoints, center[1]/validPoints]);
+        vizObj['map'] = {};
+        vizObj['map'].type='MapVisualization';
+        vizObj['map'].dataset=dataset;
+        vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
+
         }else{
           $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
           $("#error-dialog").modal('show');
-          $("#map").remove();
+          $("#mapDelete").trigger('click');
         }        
       });
     }
@@ -52,42 +60,88 @@ $("#runMap").on('click', function(){
 
 
 //Bar chart
-$("#runChart").on('click', function(){
+$("#chartRun").on('click', function(){
   $("#chartContainer").empty();
-  $('<svg id="chart"></svg>').prependTo("#chartContainer"); 
-  $('<div id="chartDelete" class="deleteButton">X</div>').prependTo("#chartContainer"); 
+  $('<div id="chart" style="height:400px;width:500px"></div>').prependTo("#chartContainer");   
+  addMenu("chart");
   $.ajax({
     url:home+"showDataset/"+dataset,
     contentType: "application/json",
     dataType: "json",
-    success: function(data){
-      results = [{values: [], key: "test"}];
+    success: function(data){      
+      var dataObj = {}, d1 = [];
+      var $var2 = $("#var2").val(), $var1 = $("#var1").val();
       $.each(data.rows, function(i, item){
-        results[0]['values'].push({"label":item[$("#var1").val()], "value":parseFloat(item[$("#var2").val()])});
+          var x = item[$var1], y = parseFloat(item[$var2]);
+          d1.push([x, y]);
       });
-      nv.addGraph(function() {
-        var chart = nv.models.discreteBarChart()
-        .x(function(d) { return d.label })
-        .y(function(d) { return d.value })
-        .staggerLabels(true)
-        .tooltips(false)
-        .showValues(true)
+      $chart_type = $("#chart-type").val();
 
-        d3.select('#chart').attr("height", 400).attr("width", 400)
-        .datum(results)
-        .transition().duration(500)
-        .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-      });
+      if($chart_type == "ColumnChartVisualization"){
+        dataObj = {
+          data: d1,
+          bars: { show: true }
+        };
+      }
+      if($chart_type == "LineChartVisualization"){
+        dataObj = {
+          data: d1,
+          lines: { show: true, fill: false }
+        }
+      }
+      if($chart_type == "ScatterPlotVisualization"){
+        dataObj = {
+          data: d1,
+          points: { show: true }
+        }
+      }
+      
+      var d1 = [];
+      $.plot("#chart", [dataObj]);
+      //Metadata
+      vizObj['chart'] = {};
+      vizObj['chart'].type=$chart_type;
+      vizObj['chart'].dataset=dataset;
+      vizObj['chart'].params={x: $var1, y: $var2};
     }
   });
   runEvents();
 });
 
 
+//auxiliary functions
+function addMenu(id){
+    $('<div class="buttonContainer btn-group btn-group-vertical"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
+}
+
 function runEvents(){
-  $(".deleteButton").on('click', function(){$(this).parent().empty()})
+  $(".deleteButton").on('click', function(){$(this).parent().parent().empty()});
+  $(".editButton").on('click', function(){
+                                var modalId = "#"+$(this).attr("data-edit");
+                                $(modalId).trigger('click');
+  });
+  $(".shareButton").on('click', function(e){
+                                      var id = $(this).attr("data-chart");
+                                      if(vizObj[id].url == undefined){
+                                        $.ajax({
+                                            url:'/data/share',
+                                            type: 'POST',
+                                            contentType: "application/json",
+                                            dataType: 'json',
+                                            data: JSON.stringify(vizObj[id]),
+                                            success: function(data){
+                                              if(data.success == true){
+                                                vizObj[id].url = home+data.url;
+                                                $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+                                                $("#share-dialog").modal('show');
+                                              }else{
+                                                alert("NO funca :-()");
+                                              }
+                                            }
+                                        });
+                                      }else{
+                                        $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+                                        $("#share-dialog").modal('show');
+                                      }
+  });
 }

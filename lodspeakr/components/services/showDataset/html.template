@@ -15,15 +15,14 @@
     {% endfor %}
   </tr>
 </table>
-<div>
+<div class="btn-group">
   <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
   <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
 </div>
 
 
-<div id="mapContainer"></div>
-<div id="chartContainer"></div>
-
+<div id="mapContainer" class="vizContainer"></div>
+<div id="chartContainer" class="vizContainer"></div>
 
 <div class="modal hide fade" id="map-dialog">
   <div class="modal-header">
@@ -46,7 +45,7 @@
     </div>
     <div class="modal-footer">
       <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-      <a href="#" class="btn btn-primary" id="runMap" data-dismiss="modal" aria-hidden="true">Create map</a>
+      <a href="#" class="btn btn-primary" id="mapRun" data-dismiss="modal" aria-hidden="true">Create map</a>
     </div>
   </div>
 </div>
@@ -58,11 +57,16 @@
   </div>
   <div class="modal-body">
 
-    <legend for="var1">var1</legend><select id="var1" name="var1"></select>
-    <legend for="var2">var2</legend><select id="var2" name="var2"></select>
+    <legend for="var1">X Axis</legend><select id="var1" name="var1"></select>
+    <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
+    <legend for="chart-type">Chart type</legend><select id="chart-type" name="chart-type">
+                                                 <option value="ColumnChartVisualization">Column</option>
+                                                 <option value="LineChartVisualization">Line</option>
+                                                 <option value="ScatterPlotVisualization">Scatter</option>
+                                                </select>
     <div class="modal-footer">
       <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-      <a href="#" id="runChart" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
+      <a href="#" id="chartRun" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
     </div>
   </div>
 </div>
@@ -79,18 +83,22 @@
   </div>
 </div>
 
+<div class="modal hide fade" id="share-dialog">
+  <div class="modal-header">
+    <h3>Share this link</h3>
+  </div>
+  <div class="modal-body">
+    <a href="#" id="share-link"></a>
+    <div class="modal-footer">
+      <a href="#" target="_blank" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+</div>
 
 
 
 
-  <script src="{{lodspk.home}}js/nvd3/lib/d3.v2.js"></script>
-  <script src="{{lodspk.home}}js/nvd3/nv.d3.js"></script>
-  <!-- including all the components so I don't have to minify every time I test in development -->
-  <script src="{{lodspk.home}}js/nvd3/src/tooltip.js"></script>
-  <script src="{{lodspk.home}}js/nvd3/src/utils.js"></script>
-  <script src="{{lodspk.home}}js/nvd3/src/models/axis.js"></script>
-  <script src="{{lodspk.home}}js/nvd3/src/models/discreteBar.js"></script>
-  <script src="{{lodspk.home}}js/nvd3/src/models/discreteBarChart.js"></script>
+  <script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>
   <script src="{{lodspk.home}}js/editor.js"></script>
 
 </div>

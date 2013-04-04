@@ -2,30 +2,7 @@ body {
   background: #FFF;
 }
 
-h1{
-  font-size: 24px;
-}
 
-h1,h2,body {
-  font-weight: normal;
-  vertical-align: top;
-  font-family: Helvetica Neue,Georgia, serif;
-  padding: 0;
-  margin: 0;
-  display: inline;
-  letter-spacing: -0.02em;
-}
-
- a,
- a:hover,
- a:visited {
-  margin: 0;
-  padding: 0;
-  color: #000;
-}
-a:hover{
- text-decoration: none;
-}  
 
 
 table tr td {
@@ -40,14 +17,24 @@ td{
 table{
   width: 50%;
 }
-.map { 
-  min-height: 200px
+#map { 
+  min-height: 200px;
+  max-width: 550px;
 }
-.deleteButton{
-  min-width:100px;
-  min-height: 50px;
-  font-family: Monaco;
-  font-size: 48px;
+.buttonContainer{
   float:right;
+  position:relative;
   cursor:pointer;
+}
+
+.vizContainer{
+  width: 600px;
+}
+
+.optionsBtn{
+min-width:100px;
+}
+
+#share-link{
+  font-size: 150%
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 PYTHON=`which python`
 cd server
-$PYTHON app.py & 
+./server.py & 
 
 echo $! > ../.pid

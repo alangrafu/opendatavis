@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link href="{{lodspk.home}}css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+  <link href="{{lodspk.home}}css/basic.css" rel="stylesheet" type="text/css" media="screen" />
   <link rel="alternate" type="application/rdf+xml" title="RDF/XML Version" href="{{lodspk.local.value}}.rdf" />
   <link rel="alternate" type="text/turtle" title="Turtle Version" href="{{lodspk.local.value}}.ttl" />
   <link rel="alternate" type="text/plain" title="N-Triples Version" href="{{lodspk.local.value}}.nt" />
@@ -27,7 +29,6 @@
       background-position: right;
     }
     </style>
-    <link href="{{lodspk.home}}css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/bootstrap-typeahead.js"></script>
