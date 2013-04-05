@@ -1,0 +1,29 @@
+{%include "../../includes/header.inc"%}
+    <div class="container-fluid">
+    <h1>Map</h1>
+    <div id="mapContainer" class="vizContainer"></div>
+    
+    <div class="modal hide fade" id="error-dialog">
+  <div class="modal-header">
+    <h3>Error</h3>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-error" id="error-message"></div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+</div>
+
+    </div>        <input id="lat" value="{{first.params.paramY.value}}"/>
+    <input id="lon" value="{{first.params.paramX.value}}"/>
+<input id="map-width" value="600"/>
+<input id="map-height" value="600"/>
+    <script src="{{lodspk.home}}js/editor.js"></script>
+    <script>
+    var dataset = "{{first.main.dataset.mirroredUri|urifier}}";
+    var datasetUrl = "{{first.main.dataset.mirroredUri}}";
+    renderMap();
+    </script>
+  </body>
+</html>

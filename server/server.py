@@ -64,6 +64,7 @@ def saveViz():
         store = Graph()
         VIZ = Namespace("http://opendatav.is/vocab/")
         DCTERMS = Namespace("http://purl.org/dc/terms/")
+        PROV = Namespace("http://www.w3.org/ns/prov#")
         chartType = request.json.get("type");
         params = request.json.get("params")
         if not(params is None):
@@ -75,6 +76,8 @@ def saveViz():
             store.add((paramBNode, VIZ["parameterName"], Literal(key)))
 
         store.add((URIRef(myurl), RDF.type, VIZ[chartType]))
+        store.add((URIRef(myurl), RDF.type, VIZ["Visualization"]))
+        store.add((URIRef(myurl), PROV["wasDerivedFrom"], URIRef(request.json.get("dataset"))))        
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))
         store.add((URIRef(myurl), DCTERMS["created"], Literal(creationDate, datatype=XSD.dateTime)))
         rdfstring = store.serialize(format="turtle")

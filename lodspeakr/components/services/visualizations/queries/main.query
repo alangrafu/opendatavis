@@ -1,0 +1,10 @@
+PREFIX : <http://opendatav.is/vocab/>
+
+SELECT DISTINCT ?viz WHERE {
+  {
+    GRAPH ?g {
+    	?viz a :Visualization .
+    }
+  }
+}order by ?viz
+LIMIT {{lodspk.maxResults}}

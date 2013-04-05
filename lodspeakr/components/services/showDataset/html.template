@@ -88,7 +88,7 @@
     <h3>Share this link</h3>
   </div>
   <div class="modal-body">
-    <a href="#" id="share-link"></a>
+    <a href="#" target="_blank" id="share-link"></a>
     <div class="modal-footer">
       <a href="#" target="_blank" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
     </div>
@@ -104,8 +104,7 @@
 </div>
 
 <script>
-var dataset = "{{lodspk.args.all}}";
-var home = "{{lodspk.home}}";
+var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}";
 var headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ];
 $.each(headerColumns, function(i, item){
   var option = "<option value='"+i+"'>"+item+"</option>";

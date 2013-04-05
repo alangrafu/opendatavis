@@ -52,6 +52,9 @@
     </script>
   </head>
   <body>
+   <script>
+   var home = "{{lodspk.home}}";
+   </script>
    <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
@@ -66,6 +69,7 @@
             <li><a href="{{lodspk.home}}">Home</a></li>
             <li><a href="{{lodspk.home}}classes">Classes</a></li>
             <li><a href="{{lodspk.home}}namedGraphs">Datasets</a></li>
+            <li><a href="{{lodspk.home}}visualizations">Visualizations</a></li>
           </ul>
           <form class="navbar-search pull-left" action="">
             <input type="text" data-provide="typeahead" class="typeahead search-query span2" placeholder="Search"/>

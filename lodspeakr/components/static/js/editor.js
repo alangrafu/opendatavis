@@ -3,7 +3,8 @@ var vizObj = {};
 
 
 //Map chart
-$("#mapRun").on('click', function(){
+$("#mapRun").on('click', renderMap);
+function renderMap(){
   $("#mapContainer").empty();
   $('<div id="map"></div>').prependTo("#mapContainer"); 
   addMenu("map");
@@ -22,7 +23,7 @@ $("#mapRun").on('click', function(){
       console.log(data);
       var center = [0, 0];
       var validPoints = 0;
-      var indexLat = $("#lat").val(), indexLong = $("#lon").val();
+      var indexLat = $("#lat").val(), indexLong = $("#lon").val();console.log(data.rows);
       $.each(data.rows, function(i, item){
         lat = parseFloat(item[indexLat]);
         lon = parseFloat(item[indexLong]);
@@ -43,7 +44,7 @@ $("#mapRun").on('click', function(){
         map.panTo([center[0]/validPoints, center[1]/validPoints]);
         vizObj['map'] = {};
         vizObj['map'].type='MapVisualization';
-        vizObj['map'].dataset=dataset;
+        vizObj['map'].dataset=datasetUrl;
         vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
 
         }else{
@@ -55,7 +56,7 @@ $("#mapRun").on('click', function(){
     }
   });
   runEvents();
-});
+}
 
 
 
@@ -101,7 +102,7 @@ $("#chartRun").on('click', function(){
       //Metadata
       vizObj['chart'] = {};
       vizObj['chart'].type=$chart_type;
-      vizObj['chart'].dataset=dataset;
+      vizObj['chart'].dataset=datasetUrl;
       vizObj['chart'].params={x: $var1, y: $var2};
     }
   });
