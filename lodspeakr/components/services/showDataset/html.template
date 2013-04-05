@@ -63,7 +63,19 @@
                                                  <option value="ColumnChartVisualization">Column</option>
                                                  <option value="LineChartVisualization">Line</option>
                                                  <option value="ScatterPlotVisualization">Scatter</option>
-                                                </select>
+                                                </select>    <br/>
+
+    <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-chart">More options</a>
+    <div class="collapse-group">
+      <div class="collapse" id="option-chart">
+        <div style='float:left;padding:5px'>
+          <h4 for="chart-width">Chart width</h4><input type="text" id="chart-width" name="map-width" value="600"/>
+        </div>
+        <div style='float:left;padding:5px'>
+          <h4 for="chart-height">Chart height</h4><input type="text" id="chart-height" name="map-height" value="600"/>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
       <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
       <a href="#" id="chartRun" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
@@ -95,6 +107,20 @@
   </div>
 </div>
 
+<div class="modal hide fade" id="title-dialog">
+  <div class="modal-header">
+    <h3>Give it a title</h3>
+    <p>Put a title for this visualization</p>
+    <input type='text' value='' id="visualization-title"/>
+  </div>
+  <div class="modal-body">
+    <a href="#" target="_blank" id="share-link"></a>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+      <a href="#" id="confirmShare" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Share It!</a>
+    </div>
+  </div>
+</div>
 
 
 

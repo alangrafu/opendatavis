@@ -3,12 +3,26 @@ var vizObj = {};
 
 
 //Map chart
-$("#mapRun").on('click', renderMap);
-function renderMap(){
+$("#mapRun").on('click', function(){
+  var config = {
+      dataset: dataset,
+      params: {
+          lat: $("#lat").val(),
+          lon: $("#lon").val()
+      },
+      height: $("#map-height").val(),
+      width: $("#map-width").val(),
+      readOnly: false
+  }
+  renderMap(config);
+});
+function renderMap(config){
   $("#mapContainer").empty();
   $('<div id="map"></div>').prependTo("#mapContainer"); 
-  addMenu("map");
-  $("#map").css("width", $("#map-width").val()+"px").css("height", $("#map-height").val()+"px");
+  if(!config.readonly){
+    addMenu("map");
+  }
+  $("#map").css("width", config.width+"px").css("height", config.height+"px");
   var map = L.map('map').setView([0, 0], 13);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -16,43 +30,51 @@ function renderMap(){
     trackResize: true
   }).addTo(map);
   $.ajax({
-    url:home+"showDataset/"+dataset,
+    url:home+"showDataset/"+config.dataset,
     contentType: "application/json",
     dataType: "json",
     success: function(data){
-      console.log(data);
+      var north,south,east,west;
       var center = [0, 0];
       var validPoints = 0;
-      var indexLat = $("#lat").val(), indexLong = $("#lon").val();console.log(data.rows);
+      var indexLat = config.params.lat, indexLong = config.params.lon;
+      north = -100, south=100, east = -100, west = 100;
       $.each(data.rows, function(i, item){
         lat = parseFloat(item[indexLat]);
         lon = parseFloat(item[indexLong]);
-        north = -100, south=100, east = -100, west = 100;
         if(!isNaN(lat) && !isNaN(lon)){
           var m = L.marker([lat,lon]).addTo(map);       
           m.bindPopup(item[2]+"<br/>"+lat+", "+lon);
           validPoints++;
-          console.log(lat,lon, validPoints);
           center[0]+=lat;
           center[1]+=lon;
+          console.log(south, lat);
           south = Math.min(south, lat);
           north = Math.max(north, lat);
           east = Math.max(east, lon);
           west = Math.min(west, lon);
+          console.log([lat, lon], north, south, east, west);
         }
-        if(validPoints > 0){
-        map.panTo([center[0]/validPoints, center[1]/validPoints]);
-        vizObj['map'] = {};
-        vizObj['map'].type='MapVisualization';
-        vizObj['map'].dataset=datasetUrl;
-        vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
-
-        }else{
-          $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
-          $("#error-dialog").modal('show');
-          $("#mapDelete").trigger('click');
-        }        
       });
+      if(validPoints > 0){
+        //map.panTo([center[0]/validPoints, center[1]/validPoints]);
+        console.log([north, west], [south, east]);
+        map.fitBounds([[north, west], [south, east]]);
+        if(!config.readonly){
+          //Metadata
+          vizObj['map'] = {};
+          vizObj['map'].type='MapVisualization';
+          vizObj['map'].dataset=datasetUrl;
+          vizObj['map'].width=config.width;
+          vizObj['map'].height=config.height;
+          vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
+        }
+      }else{
+        $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
+        $("#error-dialog").modal('show');
+        $("#mapDelete").trigger('click');
+      }        
+
     }
   });
   runEvents();
@@ -62,11 +84,26 @@ function renderMap(){
 
 //Bar chart
 $("#chartRun").on('click', function(){
+                              config = {
+                                dataset: dataset,
+                                params: {
+                                  lat: $("#lat").val(),
+                                  lon: $("#lon").val()
+                                },
+                                height: $("#chart-height").val(),
+                                width: $("#chart-width").val(),
+                              readOnly: false                              };
+                              renderChart(config);
+});
+  
+function renderChart(config){
   $("#chartContainer").empty();
-  $('<div id="chart" style="height:400px;width:500px"></div>').prependTo("#chartContainer");   
-  addMenu("chart");
+  $('<div id="chart" style="height:'+config.height+'px;width:'+config.width+'px"></div>').prependTo("#chartContainer");
+  if(!config.readonly){
+    addMenu("chart");
+  }
   $.ajax({
-    url:home+"showDataset/"+dataset,
+    url:home+"showDataset/"+config.dataset,
     contentType: "application/json",
     dataType: "json",
     success: function(data){      
@@ -99,15 +136,17 @@ $("#chartRun").on('click', function(){
       
       var d1 = [];
       $.plot("#chart", [dataObj]);
-      //Metadata
-      vizObj['chart'] = {};
-      vizObj['chart'].type=$chart_type;
-      vizObj['chart'].dataset=datasetUrl;
-      vizObj['chart'].params={x: $var1, y: $var2};
+      if(!config.readonly){
+        //Metadata
+        vizObj['chart'] = {};
+        vizObj['chart'].type=$chart_type;
+        vizObj['chart'].dataset=datasetUrl;
+        vizObj['chart'].params={x: $var1, y: $var2};
+      }
     }
   });
   runEvents();
-});
+}
 
 
 //auxiliary functions
@@ -122,7 +161,13 @@ function runEvents(){
                                 $(modalId).trigger('click');
   });
   $(".shareButton").on('click', function(e){
-                                      var id = $(this).attr("data-chart");
+                                      $("#confirmShare").attr("data-chart", $(this).attr("data-chart"));
+                                      $("#title-dialog").modal('show');
+  });
+  
+  $("#confirmShare").on('click', function(){
+                                        var id = $(this).attr("data-chart");
+                                        vizObj[id].title = $("#visualization-title").val();
                                       if(vizObj[id].url == undefined){
                                         $.ajax({
                                             url:'/data/share',
@@ -138,6 +183,10 @@ function runEvents(){
                                               }else{
                                                 alert("NO funca :-()");
                                               }
+                                            },
+                                            error: function(){
+                                              $("#error-message").html("<h4>Share Error</h4><p>OpenDataVis couldn't connect with the server. Try later.</p>");
+                                              $("#error-dialog").modal('show');
                                             }
                                         });
                                       }else{

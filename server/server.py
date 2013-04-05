@@ -77,8 +77,11 @@ def saveViz():
 
         store.add((URIRef(myurl), RDF.type, VIZ[chartType]))
         store.add((URIRef(myurl), RDF.type, VIZ["Visualization"]))
+        store.add((URIRef(myurl), VIZ["hasWidth"], Literal(request.json.get("width"), datatype=XSD.nonNegativeInteger)))
+        store.add((URIRef(myurl), VIZ["hasHeight"], Literal(request.json.get("height"), datatype=XSD.nonNegativeInteger)))
         store.add((URIRef(myurl), PROV["wasDerivedFrom"], URIRef(request.json.get("dataset"))))        
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))
+        store.add((URIRef(myurl), DCTERMS["title"], Literal(request.json.get("title"))))
         store.add((URIRef(myurl), DCTERMS["created"], Literal(creationDate, datatype=XSD.dateTime)))
         rdfstring = store.serialize(format="turtle")
         print rdfstring
