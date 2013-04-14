@@ -2,6 +2,7 @@
 <div class="container-fluid" style="width:40%">
  <div class="row">
   <div class="span12">
+  <input type="text" id="txtSearch" />
    <div id="myGrid" style="width:100%;min-height:300px;max-height:500px;" class="span5"></div>
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
@@ -165,6 +166,36 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     var data = [];
     var dataView = new Slick.Data.DataView({ inlineFilters: true });
 
+    
+    
+    function myFilter(item, args) {
+      if(args.searchString != "" && item["disco"].indexOf(args.searchString) == -1) {
+        return false;
+      }    
+      return true;
+    }
+    
+    var searchString;
+    $("#txtSearch").keyup(function (e) {
+    //Slick.GlobalEditorLock.cancelCurrentEdit();
+    
+    // clear on Esc
+    if (e.which == 27) {
+    this.value = "";
+    }
+    
+    searchString = this.value;
+    updateFilter();
+    });
+    
+    
+    function updateFilter() {
+    dataView.setFilterArgs({
+    searchString: searchString
+    });
+    dataView.refresh();
+    }
+
     {%for i in models.local.rows%}
       {%ifchanged i.row.value%}{%if !forloop.first%}
          };
@@ -199,6 +230,7 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     
     dataView.beginUpdate();
     dataView.setItems(data);
+  dataView.setFilter(myFilter);
     dataView.setFilterArgs(0);
     dataView.endUpdate();
 
