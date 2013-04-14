@@ -19,16 +19,19 @@ table{
 }
 #map { 
   min-height: 200px;
-  max-width: 550px;
 }
 .buttonContainer{
-  float:right;
-  position:relative;
+  min-height:50px;
+  float:left;
+  padding-top:40px;
+  padding-bottom: 5px;
+  width:100%;
+  display:block;
   cursor:pointer;
 }
 
 .vizContainer{
-  width: 700px;
+  width: 100%;
 }
 
 .optionsBtn{
@@ -38,3 +41,8 @@ min-width:100px;
 #share-link{
   font-size: 150%
 }
+
+.flot-base{
+direction: ltr; position: absolute; left: 0px; top: 80px; width: 600px; height: 600px;
+}
+

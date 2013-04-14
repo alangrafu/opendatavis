@@ -98,7 +98,7 @@ $("#chartRun").on('click', function(){
   
 function renderChart(config){
   $("#chartContainer").empty();
-  $('<div id="chart" style="height:'+config.height+'px;width:'+config.width+'px"></div>').prependTo("#chartContainer");
+  $('<div style="width:100%;height:100px;"></div><div id="chart" style="height:'+config.height+'px;width:'+config.width+'px;position:absolute;"></div>').prependTo("#chartContainer");
   if(!config.readonly){
     addMenu("chart");
   }
@@ -151,7 +151,7 @@ function renderChart(config){
 
 //auxiliary functions
 function addMenu(id){
-    $('<div class="buttonContainer btn-group btn-group-vertical"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
+    $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
 }
 
 function runEvents(){

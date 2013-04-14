@@ -1,98 +1,95 @@
 {%include "../../includes/header.inc"%}
-<div class="container-fluid">
-	<table border='1px'>
-    <tr>
-      {% for row in models.header %}
-      <td><strong>{{row.val.value}}</strong></td>
-      {%endfor%}
-    </tr>
-    <tr>
-      {% for row in models.main %}
-      {%ifchanged row.row.value%}
-    </tr><tr>
-    {%endifchanged%}
-    <td>{{row.val.value}}</td>
-    {% endfor %}
-  </tr>
-</table>
-<div class="btn-group">
-  <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
-  <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
+<div class="container-fluid" style="width:40%">
+ <div class="row">
+  <div class="span12">
+   <div id="myGrid" style="width:100%;min-height:300px;max-height:500px;" class="span5"></div>
+   <div class="btn-group">
+    <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
+    <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
+   </div>
+  </div>
+ </div>
+ <div class="row">
+  <div class="span12">
+   <div id="mapContainer" class="vizContainer"></div>
+   <div id="chartContainer" class="vizContainer"></div>
+  </div>
+ </div>
 </div>
-
-
-<div id="mapContainer" class="vizContainer"></div>
-<div id="chartContainer" class="vizContainer"></div>
-
 <div class="modal hide fade" id="map-dialog">
-  <div class="modal-header">
-    <h3>Latitude and Longitude</h3>
-  </div>
-  <div class="modal-body">
-    <legend for="lat">Latitude</legend><select id="lat" name="lat"></select>
-    <legend for="lon">lonitude</legend><select id="lon" name="lon"></select>
-    <br/>
-    <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-map">More options</a>
-    <div class="collapse-group">
-      <div class="collapse" id="option-map">
-        <div style='float:left;padding:5px'>
-          <h4 for="map-width">Map width</h4><input type="text" id="map-width" name="map-width" value="600"/>
-        </div>
-        <div style='float:left;padding:5px'>
-          <h4 for="map-height">Map height</h4><input type="text" id="map-height" name="map-height" value="600"/>
-        </div>
-      </div>
+ <div class="modal-header">
+  <h3>Latitude and Longitude</h3>
+ </div>
+ <div class="modal-body">
+  <form>
+   <fieldset>
+    <legend>Latitude</legend><select id="lat" name="lat"></select>
+    <legend>Longitude</legend><select id="lon" name="lon"></select>
+   </fieldset>
+  </form>
+  <br/>
+  <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-map">More options</a>
+  <div class="collapse-group">
+   <div class="collapse" id="option-map">
+    <div style='float:left;padding:5px'>
+     <h4 for="map-width">Map width</h4><input type="text" id="map-width" name="map-width" value="600"/>
     </div>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-      <a href="#" class="btn btn-primary" id="mapRun" data-dismiss="modal" aria-hidden="true">Create map</a>
+    <div style='float:left;padding:5px'>
+     <h4 for="map-height">Map height</h4><input type="text" id="map-height" name="map-height" value="400"/>
     </div>
+   </div>
   </div>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" class="btn btn-primary" id="mapRun" data-dismiss="modal" aria-hidden="true">Create map</a>
+  </div>
+ </div>
 </div>
 
 
 <div class="modal hide fade" id="chart-dialog">
-  <div class="modal-header">
-    <h3>Chart</h3>
-  </div>
-  <div class="modal-body">
-
-    <legend for="var1">X Axis</legend><select id="var1" name="var1"></select>
-    <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
-    <legend for="chart-type">Chart type</legend><select id="chart-type" name="chart-type">
-                                                 <option value="ColumnChartVisualization">Column</option>
-                                                 <option value="LineChartVisualization">Line</option>
-                                                 <option value="ScatterPlotVisualization">Scatter</option>
-                                                </select>    <br/>
-
-    <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-chart">More options</a>
-    <div class="collapse-group">
-      <div class="collapse" id="option-chart">
-        <div style='float:left;padding:5px'>
-          <h4 for="chart-width">Chart width</h4><input type="text" id="chart-width" name="map-width" value="600"/>
-        </div>
-        <div style='float:left;padding:5px'>
-          <h4 for="chart-height">Chart height</h4><input type="text" id="chart-height" name="map-height" value="600"/>
-        </div>
-      </div>
+ <div class="modal-header">
+  <h3>Chart</h3>
+ </div>
+ <div class="modal-body">
+  <legend for="var1">X Axis</legend><select id="var1" name="var1"></select>
+  <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
+  <legend for="chart-type">Chart type</legend>
+  <select id="chart-type" name="chart-type">
+   <option value="ColumnChartVisualization">Column</option>
+   <option value="LineChartVisualization">Line</option>
+   <option value="ScatterPlotVisualization">Scatter</option>
+  </select>
+  <br/>
+  <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-chart">More options</a>
+  <div class="collapse-group">
+   <div class="collapse" id="option-chart">
+    <div style='float:left;padding:5px'>
+     <h4 for="chart-width">Chart width</h4><input type="text" id="chart-width" name="map-width" value="600"/>
     </div>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-      <a href="#" id="chartRun" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
+    <div style='float:left;padding:5px'>
+     <h4 for="chart-height">Chart height</h4><input type="text" id="chart-height" name="map-height" value="400"/>
     </div>
+   </div>
   </div>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" id="chartRun" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Create</a>
+  </div>
+ </div>
 </div>
 
 <div class="modal hide fade" id="error-dialog">
-  <div class="modal-header">
-    <h3>Error</h3>
+ <div class="modal-header">
+  <h3>Error</h3>
+ </div>
+ <div class="modal-body">
+  <div class="alert alert-error" id="error-message"></div>
+   <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   </div>
   </div>
-  <div class="modal-body">
-    <div class="alert alert-error" id="error-message"></div>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-    </div>
-  </div>
+ </div>
 </div>
 
 <div class="modal hide fade" id="share-dialog">
@@ -108,27 +105,22 @@
 </div>
 
 <div class="modal hide fade" id="title-dialog">
-  <div class="modal-header">
-    <h3>Give it a title</h3>
-    <p>Put a title for this visualization</p>
-    <input type='text' value='' id="visualization-title"/>
+ <div class="modal-header">
+  <h3>Give it a title</h3>
+  <p>Put a title for this visualization</p>
+  <input type='text' value='' id="visualization-title"/>
+ </div>
+ <div class="modal-body">
+  <a href="#" target="_blank" id="share-link"></a>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" id="confirmShare" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Share It!</a>
   </div>
-  <div class="modal-body">
-    <a href="#" target="_blank" id="share-link"></a>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-      <a href="#" id="confirmShare" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Share It!</a>
-    </div>
-  </div>
+ </div>
 </div>
 
-
-
-  <script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>
-  <script src="{{lodspk.home}}js/editor.js"></script>
-
-</div>
-
+<script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>
+<script src="{{lodspk.home}}js/editor.js"></script>
 <script>
 var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}";
 var headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ];
@@ -140,6 +132,39 @@ $.each(headerColumns, function(i, item){
   $("#var2").append(option);
 });
 $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
+</script>
+
+<script>
+  var grid;
+  var columns = [
+/*    {id: "title", name: "Title", field: "title"},
+    {id: "duration", name: "Duration", field: "duration"},
+    {id: "%", name: "% Complete", field: "percentComplete"},
+    {id: "start", name: "Start", field: "start"},
+    {id: "finish", name: "Finish", field: "finish"},
+    {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
+  */
+  {% for row in models.header %}
+     {%if !forloop.first%},{%endif%} {id: "{{row.val.value}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title" }
+      {%endfor%}
+  ];
+
+  var options = {
+    editable: false,
+    enableAddRow: false,
+    enableCellNavigation: true
+  };
+
+    var data = [];
+    {%for i in models.local.rows%}
+      {%ifchanged i.row.value%}{%if !forloop.first%}
+         };
+        {%endif%}
+      data[{{i.row.value}}] = {
+      {%endifchanged%}
+        {{i.headerValue.value}}: "{{i.val.value}}",    {%endfor%}
+    };
+    grid = new Slick.Grid("#myGrid", data, columns, options);
 </script>
 </body>
 </html>
