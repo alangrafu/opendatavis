@@ -145,26 +145,67 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
   */
   {% for row in models.header %}
-     {%if !forloop.first%},{%endif%} {id: "{{row.val.value}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title" }
+     {%if !forloop.first%},{%endif%} {id: "{{row.val.value}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title", sortable: true }
       {%endfor%}
   ];
 
   var options = {
-    editable: false,
-    enableAddRow: false,
-    enableCellNavigation: true
-  };
+  editable: false,
+  enableAddRow: false,
+  enableCellNavigation: true,
+  asyncEditorLoading: true,
+  forceFitColumns: true,
+  topPanelHeight: 25,
+      multiColumnSort: true
+
+};
+
+  $(function () {
 
     var data = [];
+    var dataView = new Slick.Data.DataView({ inlineFilters: true });
+
     {%for i in models.local.rows%}
       {%ifchanged i.row.value%}{%if !forloop.first%}
          };
         {%endif%}
       data[{{i.row.value}}] = {
+        id: "id_{{i.row.value}}",
       {%endifchanged%}
         {{i.headerValue.value}}: "{{i.val.value}}",    {%endfor%}
     };
-    grid = new Slick.Grid("#myGrid", data, columns, options);
+    grid = new Slick.Grid("#myGrid", dataView, columns, options);
+    
+    dataView.onRowCountChanged.subscribe(function (e, args) {
+      grid.updateRowCount();
+      grid.render();
+    });
+    
+    dataView.onRowsChanged.subscribe(function (e, args) {
+      grid.invalidateRows(args.rows);
+      grid.render();
+    });
+    var sortcol = "numero";
+    
+    
+    grid.onSort.subscribe(function (e, args) {
+      sortcol = args.sortCols[0].sortCol.field;
+      dataView.sort(comparer, args.sortCols[0].sortAsc);
+    });
+    function comparer(a, b) {
+    var x = a[sortcol], y = b[sortcol];
+    return (x == y ? 0 : (x > y ? 1 : -1));
+    }
+    
+    dataView.beginUpdate();
+    dataView.setItems(data);
+    dataView.setFilterArgs(0);
+    dataView.endUpdate();
+
+  });
 </script>
+
+
+
 </body>
 </html>

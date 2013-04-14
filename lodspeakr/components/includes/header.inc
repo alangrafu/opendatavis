@@ -9,9 +9,11 @@
   <link href="{{lodspk.home}}css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
   <link href="{{lodspk.home}}css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
   <link href="{{lodspk.home}}css/basic.css" rel="stylesheet" type="text/css" media="screen" />
-  <link rel="stylesheet" href="{{lodspk.home}}css/leaflet.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
   <link rel="stylesheet" href="{{lodspk.home}}css/slick.grid.css"/>
+  <link rel="stylesheet" href="{{lodspk.home}}css/slick.columnpicker.css"/>
   <link rel="stylesheet" href="{{lodspk.home}}css/jquery-ui-1.8.16.custom.css"/>
+  <link rel="stylesheet" href="http://mleibman.github.io/SlickGrid/controls/slick.columnpicker.css"/>
   <link rel="alternate" type="application/rdf+xml" title="RDF/XML Version" href="{{lodspk.local.value}}.rdf" />
   <link rel="alternate" type="text/turtle" title="Turtle Version" href="{{lodspk.local.value}}.ttl" />
   <link rel="alternate" type="text/plain" title="N-Triples Version" href="{{lodspk.local.value}}.nt" />
@@ -52,15 +54,18 @@
     }
     </style>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.js"></script>
-    <script type="text/javascript" src="{{lodpsk.home}}js/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="{{lodpsk.home}}js/jquery.event.drag-2.0.min.js"></script>
-    <script type="text/javascript" src="{{lodpsk.home}}js/slick.formatters.js"></script>
+    <script type="text/javascript" src="{{lodspk.home}}js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="{{lodspk.home}}js/jquery.event.drag-2.0.min.js"></script>
+    <script type="text/javascript" src="{{lodspk.home}}js/slick.formatters.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/bootstrap-typeahead.js"></script>
-    <script src="{{lodspk.home}}js/leaflet.js"></script>
-    <script src="{{lodpsk.home}}js/slick.core.js"></script>
-    <script src="{{lodpsk.home}}js/slick.formatters.js"></script>
-    <script src="{{lodpsk.home}}js/slick.grid.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script src="http://mleibman.github.io/SlickGrid/plugins/slick.rowselectionmodel.js"></script>
+    <script src="http://mleibman.github.io/SlickGrid/controls/slick.columnpicker.js"></script>
+    <script src="{{lodspk.home}}js/slick.core.js"></script>
+    <script src="{{lodspk.home}}js/slick.dataview.js"></script>
+    <script src="{{lodspk.home}}js/slick.formatters.js"></script>
+    <script src="{{lodspk.home}}js/slick.grid.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
       $('.typeahead').typeahead({
