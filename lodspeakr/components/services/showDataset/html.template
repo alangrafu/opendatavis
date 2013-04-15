@@ -148,7 +148,7 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
   */
   {% for row in models.header %}
-     {%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title", sortable: true }
+     {%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value|slugify}}", cssClass: "cell-title", sortable: true }
       {%endfor%}
   ];
 
