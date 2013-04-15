@@ -8,5 +8,4 @@ SELECT ?row ?col ?val ?headerValue WHERE{
           ex:colNumber ?col . 
     ?x ex:header [ ex:value ?headerValue; ex:colNumber ?col ].
   }
-}ORDER BY ASC(?row) ASC(?col)
-LIMIT 100
+}

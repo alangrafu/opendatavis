@@ -9,6 +9,7 @@
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
     <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
+    <button class="btn btn-large btn-info" id="otro">Otro</button>
    </div>
   </div>
  </div>
@@ -123,119 +124,32 @@
 </div>
 
 <script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>
-<script src="{{lodspk.home}}js/editor.js"></script>
 <script>
-var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}";
-var headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ];
-$.each(headerColumns, function(i, item){
-  var option = "<option value='"+i+"'>"+item+"</option>";
-  $("#lat").append(option);
-  $("#lon").append(option);
-  $("#var1").append(option);
-  $("#var2").append(option);
-});
-$(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
-</script>
 
-<script>
-  var grid;
-  var columns = [
-/*    {id: "title", name: "Title", field: "title"},
-    {id: "duration", name: "Duration", field: "duration"},
-    {id: "%", name: "% Complete", field: "percentComplete"},
-    {id: "start", name: "Start", field: "start"},
-    {id: "finish", name: "Finish", field: "finish"},
-    {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
-  */
-  {% for row in models.header %}
-     {%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value|slugify}}", cssClass: "cell-title", sortable: true }
-      {%endfor%}
-  ];
+var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}",
+    headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ],
+    grid = null,
+    firstField = "{{first.header.val.value|slugify}}",
+    columns = [
+{% for row in models.header %}
+{%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value|slugify}}", cssClass: "cell-title", sortable: true }
+{%endfor%}
+],
+    data = [], 
+    dataSelection = {rows: []};
 
-  var options = {
-  editable: false,
-  enableAddRow: false,
-  enableCellNavigation: true,
-  asyncEditorLoading: false,
-  forceFitColumns: true,
-  topPanelHeight: 25,
-  multiColumnSort: true
+{%for i in models.local.rows%}
+{%ifchanged i.row.value%}{%if !forloop.first%}
+};
+{%endif%}
+data[{{i.row.value}}] = {
+id: "id_{{i.row.value}}",
+{%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
 };
 
-  $(function () {
-
-    var data = [];
-    var dataView = new Slick.Data.DataView({ inlineFilters: true });
-
-    
-    
-    function myFilter(item, args) {
-      if(args.searchString != undefined && args.searchString != "" && item["{{first.header.val.value|slugify}}"].indexOf(args.searchString) == -1) {
-        return false;
-      }    
-      return true;
-    }
-    
-    var searchString;
-    $("#txtSearch").keyup(function (e) {
-    //Slick.GlobalEditorLock.cancelCurrentEdit();
-    
-    // clear on Esc
-    if (e.which == 27) {
-    this.value = "";
-    }
-    
-    searchString = this.value;
-    updateFilter();
-    });
-    
-    
-    function updateFilter() {
-    dataView.setFilterArgs({
-    searchString: searchString
-    });
-    dataView.refresh();
-    }
-    {%for i in models.local.rows%}
-      {%ifchanged i.row.value%}{%if !forloop.first%}
-         };
-        {%endif%}
-      data[{{i.row.value}}] = {
-        id: "id_{{i.row.value}}",
-      {%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
-    };
-    grid = new Slick.Grid("#myGrid", dataView, columns, options);
-    
-    dataView.onRowCountChanged.subscribe(function (e, args) {
-      grid.updateRowCount();
-      grid.render();
-    });
-    
-    dataView.onRowsChanged.subscribe(function (e, args) {
-      grid.invalidateRows(args.rows);
-      grid.render();
-    });
-    
-    var sortcol = "{{first.header.val.value|slugify}}";
-    grid.onSort.subscribe(function (e, args) {
-      sortcol = args.sortCols[0].sortCol.field;
-      dataView.sort(comparer, args.sortCols[0].sortAsc);
-    });
-
-    function comparer(a, b) {
-      var x = a[sortcol], y = b[sortcol];
-      return (x == y ? 0 : (x > y ? 1 : -1));
-    }
-    
-    dataView.beginUpdate();
-    dataView.setItems(data);
-    dataView.setFilter(myFilter);
-    dataView.setFilterArgs(0);
-    dataView.endUpdate();
-    
-    });
 </script>
 
+<script src="{{lodspk.home}}js/editor.js"></script>
 
 
 </body>
