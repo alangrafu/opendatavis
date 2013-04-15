@@ -3,6 +3,8 @@
  <div class="row">
   <div class="span12">
   <input type="text" id="txtSearch" />
+  <h3>there is {{models.local.rows|length}} rows</h3>
+
    <div id="myGrid" style="width:100%;min-height:300px;max-height:500px;" class="span5"></div>
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
@@ -146,7 +148,7 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     {id: "effort-driven", name: "Effort Driven", field: "effortDriven"}
   */
   {% for row in models.header %}
-     {%if !forloop.first%},{%endif%} {id: "{{row.val.value}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title", sortable: true }
+     {%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value}}", cssClass: "cell-title", sortable: true }
       {%endfor%}
   ];
 
@@ -154,11 +156,10 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
   editable: false,
   enableAddRow: false,
   enableCellNavigation: true,
-  asyncEditorLoading: true,
+  asyncEditorLoading: false,
   forceFitColumns: true,
   topPanelHeight: 25,
-      multiColumnSort: true
-
+  multiColumnSort: true
 };
 
   $(function () {
@@ -169,7 +170,7 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     
     
     function myFilter(item, args) {
-      if(args.searchString != "" && item["disco"].indexOf(args.searchString) == -1) {
+      if(args.searchString != undefined && args.searchString != "" && item["{{first.header.val.value|slugify}}"].indexOf(args.searchString) == -1) {
         return false;
       }    
       return true;
@@ -195,15 +196,13 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
     });
     dataView.refresh();
     }
-
     {%for i in models.local.rows%}
       {%ifchanged i.row.value%}{%if !forloop.first%}
          };
         {%endif%}
       data[{{i.row.value}}] = {
         id: "id_{{i.row.value}}",
-      {%endifchanged%}
-        {{i.headerValue.value}}: "{{i.val.value}}",    {%endfor%}
+      {%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
     };
     grid = new Slick.Grid("#myGrid", dataView, columns, options);
     
@@ -216,25 +215,25 @@ $(".collapse-element").on('click', function(event){var elem = event.target; var 
       grid.invalidateRows(args.rows);
       grid.render();
     });
-    var sortcol = "numero";
     
-    
+    var sortcol = "{{first.header.val.value|slugify}}";
     grid.onSort.subscribe(function (e, args) {
       sortcol = args.sortCols[0].sortCol.field;
       dataView.sort(comparer, args.sortCols[0].sortAsc);
     });
+
     function comparer(a, b) {
-    var x = a[sortcol], y = b[sortcol];
-    return (x == y ? 0 : (x > y ? 1 : -1));
+      var x = a[sortcol], y = b[sortcol];
+      return (x == y ? 0 : (x > y ? 1 : -1));
     }
     
     dataView.beginUpdate();
     dataView.setItems(data);
-  dataView.setFilter(myFilter);
+    dataView.setFilter(myFilter);
     dataView.setFilterArgs(0);
     dataView.endUpdate();
-
-  });
+    
+    });
 </script>
 
 

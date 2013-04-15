@@ -99,7 +99,6 @@ function requestStatus(){
       key: id
     },
     success: function(data){
-      console.log(data);
       if(data.msg == "error"){
         $("#load-message").html("Error loading the dataset");
       }else{
@@ -121,6 +120,11 @@ function requestStatus(){
         msg = data.msg
         $("#progress-bar").css("width", newValue+'%');           
       }
+    },
+    error: function(){
+      $("#load-message").html("Error loading the dataset");
+      $("#progress-bar").css("width", '0%');           
+      clearInterval(interval);
     }
   });
 }
@@ -140,6 +144,9 @@ $.ajax({
       id = data.id;
       console.log(data);
       interval = setInterval(function(){requestStatus()}, 5000);
+    },
+    error: function(){
+      $("#load-message").html("Error loading the dataset");
     }
   });
 });

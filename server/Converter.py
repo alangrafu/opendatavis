@@ -61,10 +61,10 @@ class Converter(threading.Thread):
     self.parent and self.parent._setstatus(self.id, 'converting')
     self.status="converting"
     f = open("../data/"+self.filename)
-    ex = Namespace(self.baseUrl)
-    store = Graph()
+    dialect = csv.Sniffer().sniff(f.read(1024))
+    f.seek(0)
+    reader = csv.reader(f, dialect)
     datasetURI = str(URIRef('%s/dataset/%s'%(self.baseUrl, self.filename)))
-    reader = csv.reader(f)
     rowNumber=0
     ex_hasCell = u'ex:hasCell'
     ex_hasRecord = u'ex:hasRecord'
@@ -79,21 +79,41 @@ class Converter(threading.Thread):
       xbuff = u"<%s> a dcat:Dataset. "%(datasetURI)
       colNumber=0
       for value in header:
-        xbuff += """<%s> ex:header <%s/dataset/%s/header/%d> .
-                    <%s/dataset/%s/header/%d> %s \"%s\"; 
-                                                              %s %d . """%(datasetURI, self.baseUrl, self.filename, colNumber, self.baseUrl, self.filename, colNumber, ex_value, Literal(value), ex_colNumber, colNumber)
+        try:
+          valLiteral = Literal(unicode(value, 'utf-8'))
+        except UnicodeDecodeError:
+          try:
+            print "No unicode value, trying latin"
+            valLiteral = Literal(unicode(value, "ISO-8859-1"))
+          except Exception:
+            print "Not latin, I'll kill myself"
+            self.parent._setstatus(self.id, 'idle')
+            exit(1)
+        xbuff += u"""<%s> ex:header <%s/dataset/%s/header/%d> .
+                     <%s/dataset/%s/header/%d> ex:value \"%s\"; 
+                                                              ex:colNumber %d . """%(datasetURI, self.baseUrl, self.filename, colNumber, self.baseUrl, self.filename, colNumber, valLiteral, colNumber)
         colNumber = colNumber+1  
-        buff.append(xbuff)                                                            
+      buff.append(xbuff)                                                            
       for row in reader:
         colNumber=0
         recordURI = u'%s/dataset/%s/%d'%(self.baseUrl, self.filename, rowNumber)
         for value in row:
+          try:
+            valLiteral = Literal(unicode(value, 'utf-8'))
+          except UnicodeDecodeError:
+            try:
+              print "No unicode value, trying latin"
+              valLiteral = Literal(unicode(value, "ISO-8859-1"))
+            except Exception:
+              print "Not latin, I'll kill myself"
+              self.parent._setstatus(self.id, 'idle')
+              exit(1)
           currentURI = u'%s/dataset/%s/%d/%d'%(self.baseUrl, self.filename, rowNumber, colNumber)
           xbuff = u"<%s> %s <%s> .\n"%(datasetURI, ex_hasRecord, recordURI) 
           xbuff += u"<%s> %s %d .\n"%(recordURI, ex_rowNumber, rowNumber) 
           xbuff += u"<%s> %s <%s> .\n"%(recordURI, ex_hasCell, currentURI) 
           xbuff += u"<%s> %s %d;\n"%(currentURI, ex_colNumber, colNumber) 
-          xbuff += u"%s \"%s\".\n"%(ex_value, Literal(value)) 
+          xbuff += u"%s \"%s\".\n"%(ex_value, valLiteral) 
           buff.append(xbuff)
           colNumber = colNumber+1
         rowNumber = rowNumber+1
