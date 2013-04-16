@@ -1,0 +1,52 @@
+{%include "../../includes/header.inc"%}
+    <div class="container-fluid">
+    <h1>{{first.main.title.value}}</h1>
+    <div id="chartContainer" class="vizContainer"></div>
+    
+    <div class="modal hide fade" id="error-dialog">
+  <div class="modal-header">
+    <h3>Error</h3>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-error" id="error-message"></div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+</div>
+
+</div>    
+<script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>    
+<script src="{{lodspk.home}}js/editor.js"></script>
+<script>
+var config = {
+      chartType: "ScatterPlotVisualization",
+      dataset: "{{first.main.dataset.mirroredUri|urifier}}",
+      width: {{first.main.width.value|default:"600"}},
+      height: {{first.main.height.value|default:"600"}},
+      params: {
+         var1: "{{first.params.paramY.value}}",
+         var2: "{{first.params.paramX.value}}",
+      },
+      readonly: true,
+      manualdata: true
+    };
+
+
+var data = [];
+{%for i in models.rows%}
+{%ifchanged i.row.value%}{%if !forloop.first%}
+};
+{%endif%}
+data[{{i.row.value}}] = {
+id: "id_{{i.row.value}}",
+{%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
+};
+
+Editor.setData(data);
+console.log(data, Editor.dataSelection);
+Editor.renderChart(config);
+
+</script>
+</body>
+</html>

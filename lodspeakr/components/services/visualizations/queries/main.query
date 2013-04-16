@@ -1,9 +1,14 @@
-PREFIX : <http://opendatav.is/vocab/>
+PREFIX ex: <http://opendatav.is/vocab/>
 
-SELECT DISTINCT ?viz WHERE {
+SELECT DISTINCT ?viz ?title ?identifier ?creationDate ?type WHERE {
   {
     GRAPH ?g {
-    	?viz a :Visualization .
+    	?viz a ex:Visualization ;
+    	     a ?type ;
+    	     dcterms:identifier ?id;
+    	     dcterms:created ?creationDate .
+    	OPTIONAL{ ?viz dcterms:title ?title}
+    	FILTER(?type != ex:Visualization)
     }
   }
 }order by ?viz

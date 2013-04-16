@@ -2,15 +2,14 @@
 <div class="container-fluid" style="width:40%">
  <div class="row">
   <div class="span12">
-  <input type="text" id="txtSearch" />
-  <h3>there is {{models.local.rows|length}} rows</h3>
+  <h5 id="numberOfSelected"></h5>
 
    <div id="myGrid" style="width:100%;min-height:300px;max-height:500px;" class="span5"></div>
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
     <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
-    <button class="btn btn-large btn-info" id="otro">Otro</button>
    </div>
+<select id="fieldSearch"></select>  <input type="text" id="txtSearch" />
   </div>
  </div>
  <div class="row">
@@ -30,7 +29,7 @@
     <legend>Latitude</legend><select id="lat" name="lat"></select>
     <legend>Longitude</legend><select id="lon" name="lon"></select>
    </fieldset>
-  </form>
+  </form>                                     
   <br/>
   <a href='#' id="collapse-option-map" class="collapse-element" data-target="option-map">More options</a>
   <div class="collapse-group">
@@ -127,9 +126,9 @@
 <script>
 
 var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}",
-    headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}"{{i.val.value}}"{%endfor%} ],
+    headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}{name: "{{i.val.value}}", value: "{{i.val.value|slugify}}"}{%endfor%} ],
     grid = null,
-    firstField = "{{first.header.val.value|slugify}}",
+    searchField = "{{first.header.val.value|slugify}}",
     columns = [
 {% for row in models.header %}
 {%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value|slugify}}", cssClass: "cell-title", sortable: true }
@@ -150,7 +149,8 @@ id: "id_{{i.row.value}}",
 </script>
 
 <script src="{{lodspk.home}}js/editor.js"></script>
-
-
+<script>
+Editor.showTable();
+</script>
 </body>
 </html>

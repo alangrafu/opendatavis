@@ -15,22 +15,36 @@
   </div>
 </div>
 
-    </div>        
-    <script src="{{lodspk.home}}js/editor.js"></script>
-    <script>
-    var dataset = "{{first.main.dataset.mirroredUri|urifier}}";
-    var datasetUrl = "{{first.main.dataset.mirroredUri}}";
-    var config = {
+</div>        
+<script src="{{lodspk.home}}js/editor.js"></script>
+<script>
+var config = {
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",
       width: {{first.main.width.value|default:"600"}},
       height: {{first.main.height.value|default:"600"}},
       params: {
-         lat: {{first.params.paramY.value}},
-         lon: {{first.params.paramX.value}},
+         lat: "{{first.params.paramY.value}}",
+         lon: "{{first.params.paramX.value}}",
       },
-      readonly: true
-    }
-    renderMap(config);
-    </script>
-  </body>
+      readonly: true,
+      manualdata: true
+    };
+
+
+var data = [];
+{%for i in models.rows%}
+{%ifchanged i.row.value%}{%if !forloop.first%}
+};
+{%endif%}
+data[{{i.row.value}}] = {
+id: "id_{{i.row.value}}",
+{%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
+};
+
+Editor.setData(data);
+console.log(data, Editor.dataSelection);
+Editor.renderMap(config);
+
+</script>
+</body>
 </html>

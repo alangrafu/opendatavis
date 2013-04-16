@@ -1,9 +1,12 @@
 {%include "../../includes/header.inc"%}
     <div class="container-fluid">
-    <h1>Classes available</h1>
+    <h1>Visualizations</h1>
 	<ul>
     {% for row in models.main %}
-        <li><a href="{{ row.viz.value }}">{{row.viz.value}}</a></li>
+        <li>
+          {%if row.type.mirroredUri == "http://opendatav.is/vocab/ScatterPlotVisualization" %}<i class="icon-signal"></i>{%endif%}
+          {%if row.type.mirroredUri == "http://opendatav.is/vocab/MapVisualization"%}<i class="icon-map-marker"></i>{%endif%} 
+          <a href="{{ row.viz.value }}">{%if row.title.value%}{{row.title.value}}{%else%}{{row.viz.value}}{%endif%} ({{row.creationDate.value|date:"Y/m/d G:i:s"}})</a></li>
     {% endfor %}
       </ul>
     </div>

@@ -1,18 +1,42 @@
 //Global varis
-var vizObj = {},
-dataView = new Slick.Data.DataView({ inlineFilters: true }),
-searchString = "";
+var vizObj = {};
 
 
-$(function () {   
+var Editor = {
+  dataSelection: {rows: []},
+  searchString: "",
+  dataView: null,
+  setData: function(data){
+    var self = this;
+    self.dataSelection["rows"] = data;
+  },
+  fillHeaders: function (){
+    var option = "";
     $.each(headerColumns, function(i, item){
-        var option = "<option value='"+item+"'>"+item+"</option>";
-        $("#lat").append(option);
-        $("#lon").append(option);
-        $("#var1").append(option);
-        $("#var2").append(option);
+      option += "<option value='"+item.value+"'>"+item.name+"</option>";
     });
+    $("#lat").append(option);
+    $("#lon").append(option);
+    $("#var1").append(option);
+    $("#var2").append(option);
+    $("#fieldSearch").append(option).on('change', function(){
+      searchField = $("#fieldSearch option:selected").val();
+    });
+  },
+  myFilter: function(item, args) {
+    self = this;
+    if(args.searchString != undefined && args.searchString != "" && item[searchField].indexOf(args.searchString) == -1) {
+      return false;
+    }    
+    return true;
+  },
+  showTable: function(){
+    var self = this;
     $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
+
+    self.fillHeaders();
+    self.dataView = new Slick.Data.DataView({ inlineFilters: true });
+
     
     var options = {
       editable: false,
@@ -23,92 +47,109 @@ $(function () {
       topPanelHeight: 25,
       multiColumnSort: true
     };
-        
+
     
-    function myFilter(item, args) {
-      if(args.searchString != undefined && args.searchString != "" && item[firstField].indexOf(args.searchString) == -1) {
-        return false;
-      }    
-      return true;
-    }
     
     $("#txtSearch").keyup(function (e) {
-        //Slick.GlobalEditorLock.cancelCurrentEdit();
-        
-        // clear on Esc
-        if (e.which == 27) {
-          this.value = "";
-        }
-        
-        searchString = this.value;
-        updateFilter();
+      //Slick.GlobalEditorLock.cancelCurrentEdit();
+      // clear on Esc
+      if (e.which == 27) {
+        this.value = "";
+      }
+      self.searchString = this.value;
+      self.updateFilter();
+      $("#numberOfSelected").html(self.dataView.getLength()+" rows selected")
+    });
+
+    grid = new Slick.Grid("#myGrid", self.dataView, columns, options);
+    
+    self.dataView.onRowCountChanged.subscribe(function (e, args) {
+      grid.updateRowCount();
+      grid.render();
     });
     
-    
-    function updateFilter() {
-      dataView.setFilterArgs({
-          searchString: searchString
-      });
-      dataView.refresh();
-    }
-    grid = new Slick.Grid("#myGrid", dataView, columns, options);
-    
-    dataView.onRowCountChanged.subscribe(function (e, args) {
-        grid.updateRowCount();
-        grid.render();
-    });
-    
-    dataView.onRowsChanged.subscribe(function (e, args) {
-        grid.invalidateRows(args.rows);
-        grid.render();
+    self.dataView.onRowsChanged.subscribe(function (e, args) {
+      grid.invalidateRows(args.rows);
+      grid.render();
     });
     
     var sortcol = "{{first.header.val.value|slugify}}";
     grid.onSort.subscribe(function (e, args) {
-        sortcol = args.sortCols[0].sortCol.field;
-        dataView.sort(comparer, args.sortCols[0].sortAsc);
+      sortcol = args.sortCols[0].sortCol.field;
+      self.dataView.sort(comparer, args.sortCols[0].sortAsc);
     });
-    
-    function comparer(a, b) {
-      var x = a[sortcol], y = b[sortcol];
-      return (x == y ? 0 : (x > y ? 1 : -1));
-    }
-    
-    dataView.beginUpdate();
-    dataView.setItems(data);
-    dataView.setFilter(myFilter);
-    dataView.setFilterArgs(0);
-    dataView.endUpdate();
-    
-    
-    function obtainSelection(){
-      dataSelection.rows = [];
-      for (var i = 0; i < 10 && i < dataView.getLength(); i++) {
-        dataSelection.rows.push(dataView.getItem(i));
-      }
-    }
-    
-    
-    //Map chart
+
+        
+    self.dataView.beginUpdate();
+    self.dataView.setItems(data);
+    self.dataView.setFilter(self.myFilter);
+    self.dataView.setFilterArgs(0);
+    self.dataView.endUpdate();
+    $("#numberOfSelected").html(self.dataView.getLength()+" rows selected")
+
+//Map chart
     $("#mapRun").on('click', function(){
-        var config = {
-          dataset: dataset,
-          params: {
+      var config = {
+        dataset: dataset,
+        params: {
             lat: $("#lat").val(),
             lon: $("#lon").val()
           },
-          height: $("#map-height").val(),
-          width: $("#map-width").val(),
-          readOnly: false
-        }
-        renderMap(config);
+        height: $("#map-height").val(),
+        width: $("#map-width").val(),
+        readOnly: false
+      };
+      self.renderMap(config);
     });
-    function renderMap(config){
-      obtainSelection();
+    
+
+    //Bar chart
+    $("#chartRun").on('click', function(){
+      config = {
+        chartType: $("#chart-type").val(),
+        dataset: dataset,
+        params: {
+          var1: $("#var1").val(),
+          var2: $("#var2").val(),
+        },
+        height: $("#chart-height").val(),
+        width: $("#chart-width").val(),
+        readOnly: false
+      };
+      self.renderChart(config);
+    });
+    
+
+
+    },
+    updateFilter: function() {
+      var self = this;
+      self.dataView.setFilterArgs({
+        searchString: self.searchString
+      });
+      self.dataView.refresh();
+    },
+    
+    comparer: function(a, b) {
+      var x = a[sortcol], y = b[sortcol];
+      return (x == y ? 0 : (x > y ? 1 : -1));
+    },
+    obtainSelection: function(){
+      var self = this;
+      self.dataSelection.rows = [];
+      for (var i = 0; i < self.dataView.getLength(); i++) {
+        self.dataSelection.rows.push(self.dataView.getItem(i));
+      }
+    },
+    renderMap: function(config){
+      var self = this;
+      if(config.manualdata != true){
+        self.obtainSelection();
+      }
       $("#mapContainer").empty();
       $('<div id="map"></div>').prependTo("#mapContainer"); 
       if(!config.readonly){
-        addMenu("map");
+        self.addMenu("map");
       }
       $("#map").css("width", config.width+"px").css("height", config.height+"px");
       var map = L.map('map').setView([0, 0], 13);
@@ -122,8 +163,8 @@ $(function () {
       var validPoints = 0;
       var indexLat = config.params.lat, indexLong = config.params.lon;
       north = -100, south=100, east = -100, west = 100;
-      console.log(dataSelection);
-      $.each(dataSelection.rows, function(i, item){
+      console.log(self.dataSelection);
+      $.each(self.dataSelection.rows, function(i, item){
           lat = parseFloat(item[indexLat]);
           lon = parseFloat(item[indexLong]);
           if(!isNaN(lat) && !isNaN(lon)){
@@ -156,39 +197,27 @@ $(function () {
         $("#mapDelete").trigger('click');
       }        
       
-      runEvents();
-    }
-    
-    
-    
-    //Bar chart
-    $("#chartRun").on('click', function(){
-        config = {
-          dataset: dataset,
-          params: {
-            lat: $("#lat").val(),
-            lon: $("#lon").val()
-          },
-          height: $("#chart-height").val(),
-          width: $("#chart-width").val(),
-        readOnly: false                              };
-        renderChart(config);
-    });
-    
-    function renderChart(config){
-      obtainSelection();
+      self.runEvents();
+    },
+    renderChart: function(config){
+      var self = this;
+      if(config.manualdata != true){
+        self.obtainSelection();
+      }
       $("#chartContainer").empty();
-      $('<div style="width:100%;height:100px;"></div><div id="chart" style="height:'+config.height+'px;width:'+config.width+'px;position:absolute;"></div>').prependTo("#chartContainer");
+      $('<div id="chart" style="height:'+config.height+'px;width:'+config.width+'px;position:absolute;"></div>').prependTo("#chartContainer");
       if(!config.readonly){
-        addMenu("chart");
+        $('<div style="width:100%;height:100px;"></div>').prependTo("#chartContainer");
+        self.addMenu("chart");
       }
       var dataObj = {}, d1 = [];
-      var $var2 = $("#var2").val(), $var1 = $("#var1").val();
-      $.each(dataSelection.rows, function(i, item){
-          var x = item[$var1], y = parseFloat(item[$var2]);
+      var $var2 = config.params.var2, $var1 = config.params.var1;
+
+      $.each(self.dataSelection.rows, function(i, item){
+          var x = item[$var1], y = (item[$var2]);
           d1.push([x, y]);
       });
-      $chart_type = $("#chart-type").val();
+      $chart_type = config.chartType
       
       if($chart_type == "ColumnChartVisualization"){
         dataObj = {
@@ -216,20 +245,21 @@ $(function () {
         vizObj['chart'] = {};
         vizObj['chart'].type=$chart_type;
         vizObj['chart'].dataset=datasetUrl;
+        vizObj['chart'].width=config.width;
+        vizObj['chart'].height=config.height;
         vizObj['chart'].params={x: $var1, y: $var2};
       }
       
-      runEvents();
-    }
+      self.runEvents();
+    },
 
 
     
     //auxiliary functions
-    function addMenu(id){
+    addMenu: function(id){
       $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
-    }
-    
-    function runEvents(){
+    },
+    runEvents: function(){
       $(".deleteButton").on('click', function(){$(this).parent().parent().empty()});
       $(".editButton").on('click', function(){
           var modalId = "#"+$(this).attr("data-edit");
@@ -272,6 +302,6 @@ $(function () {
     }
     
     
-});
+}
 
 
