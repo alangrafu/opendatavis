@@ -100,8 +100,7 @@
         <div class="nav-collapse">
           <ul class="nav">
             <li><a href="{{lodspk.home}}">Home</a></li>
-            <li><a href="{{lodspk.home}}classes">Classes</a></li>
-            <li><a href="{{lodspk.home}}namedGraphs">Datasets</a></li>
+            <li><a href="{{lodspk.home}}datasets">Datasets</a></li>
             <li><a href="{{lodspk.home}}visualizations">Visualizations</a></li>
           </ul>
           <form class="navbar-search pull-left" action="#">

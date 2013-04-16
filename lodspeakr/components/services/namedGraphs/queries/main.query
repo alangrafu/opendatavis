@@ -1,8 +1,0 @@
-PREFIX dcat: <http://www.w3.org/ns/dcat#> 
-
-SELECT DISTINCT ?g WHERE {
-  GRAPH ?x{
-        ?g a dcat:Dataset .
-  }
-}
-order by ?g
