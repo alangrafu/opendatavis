@@ -6,6 +6,37 @@ var Editor = {
   dataSelection: {rows: []},
   searchString: "",
   dataView: null,
+  init: function(){
+      $("#confirmShare").on('click', function(){
+          var id = $(this).attr("data-chart");
+          vizObj[id].title = $("#visualization-title").val();
+          if(vizObj[id].url == undefined){
+            $.ajax({
+                url:'/data/share',
+                type: 'POST',
+                contentType: "application/json",
+                dataType: 'json',
+                data: JSON.stringify(vizObj[id]),
+                success: function(data){
+                  if(data.success == true){
+                    vizObj[id].url = home+data.url;
+                    $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+                    $("#share-dialog").modal('show');
+                  }else{
+                    alert("NO funca :-()");
+                  }
+                },
+                error: function(){
+                  $("#error-message").html("<h4>Share Error</h4><p>OpenDataVis couldn't connect with the server. Try later.</p>");
+                  $("#error-dialog").modal('show');
+                }
+            });
+          }else{
+            $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+            $("#share-dialog").modal('show');
+          }
+      });
+  },
   setData: function(data){
     var self = this;
     self.dataSelection["rows"] = data;
@@ -268,37 +299,7 @@ var Editor = {
       $(".shareButton").on('click', function(e){
           $("#confirmShare").attr("data-chart", $(this).attr("data-chart"));
           $("#title-dialog").modal('show');
-      });
-      
-      $("#confirmShare").on('click', function(){
-          var id = $(this).attr("data-chart");
-          vizObj[id].title = $("#visualization-title").val();
-          if(vizObj[id].url == undefined){
-            $.ajax({
-                url:'/data/share',
-                type: 'POST',
-                contentType: "application/json",
-                dataType: 'json',
-                data: JSON.stringify(vizObj[id]),
-                success: function(data){
-                  if(data.success == true){
-                    vizObj[id].url = home+data.url;
-                    $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
-                    $("#share-dialog").modal('show');
-                  }else{
-                    alert("NO funca :-()");
-                  }
-                },
-                error: function(){
-                  $("#error-message").html("<h4>Share Error</h4><p>OpenDataVis couldn't connect with the server. Try later.</p>");
-                  $("#error-dialog").modal('show');
-                }
-            });
-          }else{
-            $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
-            $("#share-dialog").modal('show');
-          }
-      });
+      });      
     }
     
     

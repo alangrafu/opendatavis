@@ -150,6 +150,7 @@ id: "id_{{i.row.value}}",
 
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
+Editor.init();
 Editor.showTable();
 </script>
 </body>

@@ -1,3 +1,4 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX ex: <http://opendatav.is/vocab/>
 
 SELECT DISTINCT ?viz ?title ?identifier ?creationDate ?type WHERE {
