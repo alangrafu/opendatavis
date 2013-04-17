@@ -1,6 +1,37 @@
 {%include "../../includes/header.inc"%}
     <div class="container-fluid">
     <h1>{{first.main.title.value}}</h1>
+    <div id="metadata" style="float:right;" class="well" about="{{uri}}">
+      <h4>Metadata</h4>
+      <hr/>
+      <div>
+       <strong>Creation Date:</strong>
+       <span property="http://purl.org/dc/terms/created">{{first.main.creationdate.value}}</span>
+      </div>
+      <div>
+        <strong>Parameters:</strong>
+        <div>
+         <strong>Y axis:</strong> "<span>{{first.params.paramX.value}}</span>"
+        </div>
+        <div>
+         <strong>X axis:</strong> "<span>{{first.params.paramY.value}}</span>"
+        </div>
+      </div>
+      <hr/>
+      <div>
+       <strong>Dataset used:</strong>
+       <span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{{first.main.dataset.value}}">{{first.main.dataset.value|explode:"/"|pop}}</a></span>
+      </div>
+      <div>
+       <strong>Obtained from:</strong>
+       <span about="{{first.main.dataset.value}}">
+       <a rel="http://www.w3.org/ns/dcat#distribution" href="{{first.main.original.value}}">{{first.main.original.value}}</a></span>
+      </div>
+      <div>
+       <strong>Downloaded at:</strong>
+       <span about="{{first.main.dataset.value}}" property="dcterms:created"> {{first.main.datasetdate.value}}</span>
+      </div>
+    </div>
     <div id="chartContainer" class="vizContainer"></div>
     
     <div class="modal hide fade" id="error-dialog">
@@ -25,9 +56,10 @@ var config = {
       width: {{first.main.width.value|default:"600"}},
       height: {{first.main.height.value|default:"600"}},
       params: {
-         var1: "{{first.params.paramY.value}}",
-         var2: "{{first.params.paramX.value}}",
+         var1: "{{first.params.paramX.value}}",
+         var2: "{{first.params.paramY.value}}",
       },
+      sortcol: "{{first.params.sort.value}}",
       readonly: true,
       manualdata: true
     };
@@ -44,7 +76,6 @@ id: "id_{{i.row.value}}",
 };
 
 Editor.setData(data);
-console.log(data, Editor.dataSelection);
 Editor.renderChart(config);
 
 </script>

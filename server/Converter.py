@@ -43,8 +43,11 @@ class Converter(threading.Thread):
     self.status="downloading"
     self.parent and self.parent._setstatus(self.id, 'downloading')
     response = urllib2.urlopen(self.url)
+    extension = self.url.split(".")[-1]
     content = response.read()
-    self.filename=hashlib.md5(content).hexdigest()
+    identifier = hashlib.md5(content).hexdigest()
+    fileSize = len(content)
+    self.filename=identifier+"."+extension
     try:
       with open(self.filename) as f: pass
       #Nothing to do, file already exists
@@ -61,10 +64,17 @@ class Converter(threading.Thread):
     self.parent and self.parent._setstatus(self.id, 'converting')
     self.status="converting"
     f = open("../data/"+self.filename)
-    dialect = csv.Sniffer().sniff(f.read(1024))
+    try:
+      dialect = csv.Sniffer().sniff(f.read(2048))
+    except Exception:
+      print "Can't snif dialect"
+      self.parent._setstatus(self.id, False)
+      exit(1)      
     f.seek(0)
     reader = csv.reader(f, dialect)
-    datasetURI = str(URIRef('%s/dataset/%s'%(self.baseUrl, self.filename)))
+    datasetURI = str(URIRef('%s/dataset/%s'%(self.baseUrl, identifier)))
+    distributionURI = str(URIRef('%s/distribution/%s'%(self.baseUrl, identifier)))
+    downloadURI = str(URIRef('%s/data/%s'%(self.baseUrl, self.filename)))
     rowNumber=0
     ex_hasCell = u'ex:hasCell'
     ex_hasRecord = u'ex:hasRecord'
@@ -87,16 +97,16 @@ class Converter(threading.Thread):
             valLiteral = Literal(unicode(value, "ISO-8859-1"))
           except Exception:
             print "Not latin, I'll kill myself"
-            self.parent._setstatus(self.id, 'idle')
+            self.parent._setstatus(self.id, False)
             exit(1)
         xbuff += u"""<%s> ex:header <%s/dataset/%s/header/%d> .
                      <%s/dataset/%s/header/%d> ex:value \"%s\"; 
-                                                              ex:colNumber %d . """%(datasetURI, self.baseUrl, self.filename, colNumber, self.baseUrl, self.filename, colNumber, valLiteral, colNumber)
+                                                              ex:colNumber %d . """%(datasetURI, self.baseUrl, identifier, colNumber, self.baseUrl, identifier, colNumber, valLiteral, colNumber)
         colNumber = colNumber+1  
       buff.append(xbuff)                                                            
       for row in reader:
         colNumber=0
-        recordURI = u'%s/dataset/%s/%d'%(self.baseUrl, self.filename, rowNumber)
+        recordURI = u'%s/dataset/%s/%d'%(self.baseUrl, identifier, rowNumber)
         for value in row:
           try:
             valLiteral = Literal(unicode(value, 'utf-8'))
@@ -106,9 +116,9 @@ class Converter(threading.Thread):
               valLiteral = Literal(unicode(value, "ISO-8859-1"))
             except Exception:
               print "Not latin, I'll kill myself"
-              self.parent._setstatus(self.id, 'idle')
+              self.parent._setstatus(self.id, False)
               exit(1)
-          currentURI = u'%s/dataset/%s/%d/%d'%(self.baseUrl, self.filename, rowNumber, colNumber)
+          currentURI = u'%s/dataset/%s/%d/%d'%(self.baseUrl, identifier, rowNumber, colNumber)
           xbuff = u"<%s> %s <%s> .\n"%(datasetURI, ex_hasRecord, recordURI) 
           xbuff += u"<%s> %s %d .\n"%(recordURI, ex_rowNumber, rowNumber) 
           xbuff += u"<%s> %s <%s> .\n"%(recordURI, ex_hasCell, currentURI) 
@@ -134,9 +144,12 @@ class Converter(threading.Thread):
 <%s> a dcat:Dataset;
      dcterms:created "%s"^^xsd:dateTime;
      prov:wasDerivedFrom <%s> ;
-     dcterms:identifier "%s".
-
-"""%(self.baseUrl, datasetURI, t, self.url, self.filename)
+     dcterms:identifier "%s";
+     dcat:distribution <%s>.
+<%s> a dcat:Distribution;
+     dcat:downloadURL <%s> .
+<%s> dcat:byteSize %d .
+"""%(self.baseUrl, datasetURI, t, self.url, identifier, distributionURI, distributionURI, downloadURI, downloadURI, fileSize)
       r = requests.post("http://localhost:3030/asd/data?graph=%s/metadata"%self.baseUrl , data=turtle.encode('utf-8'), headers=headers)
       print "Code:",r.status_code
       self.status="idle"

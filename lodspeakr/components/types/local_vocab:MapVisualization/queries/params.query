@@ -1,12 +1,14 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?paramX ?paramY WHERE{
+SELECT ?paramX ?paramY ?sort WHERE{
   GRAPH <{{uri}}>{
-    <{{uri}}> :hasParameter ?p1, ?p2 .
+    <{{uri}}> :hasParameter ?p1, ?p2 ;
+              :sortedBy ?sort .
     ?p1 :parameterName "lon";
        :parameterValue ?paramX .    
     ?p2 :parameterName "lat";
        :parameterValue ?paramY .    
+
   }
 }

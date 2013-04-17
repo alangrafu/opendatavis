@@ -1,12 +1,16 @@
 //Global varis
 var vizObj = {};
-
+var sortcol = null;
 
 var Editor = {
   dataSelection: {rows: []},
   searchString: "",
+  sortcol: null,
   dataView: null,
-  init: function(){
+  init: function(config){
+    if(config != undefined && config.sortcol != undefined){
+          self.sortcol = config.sortcol;
+    }
       $("#confirmShare").on('click', function(){
           var id = $(this).attr("data-chart");
           vizObj[id].title = $("#visualization-title").val();
@@ -39,6 +43,8 @@ var Editor = {
   },
   setData: function(data){
     var self = this;
+    self.dataView = new Slick.Data.DataView({ inlineFilters: true });
+    self.dataView.setItems(data);
     self.dataSelection["rows"] = data;
   },
   fillHeaders: function (){
@@ -61,7 +67,7 @@ var Editor = {
     }    
     return true;
   },
-  showTable: function(){
+  showTable: function(config){
     var self = this;
     $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
 
@@ -104,10 +110,9 @@ var Editor = {
       grid.render();
     });
     
-    var sortcol = "{{first.header.val.value|slugify}}";
     grid.onSort.subscribe(function (e, args) {
       sortcol = args.sortCols[0].sortCol.field;
-      self.dataView.sort(comparer, args.sortCols[0].sortAsc);
+      self.dataView.sort(self.comparer, args.sortCols[0].sortAsc);
     });
 
         
@@ -162,6 +167,7 @@ var Editor = {
     },
     
     comparer: function(a, b) {
+      var self = this;
       var x = a[sortcol], y = b[sortcol];
       return (x == y ? 0 : (x > y ? 1 : -1));
     },
@@ -171,12 +177,17 @@ var Editor = {
       for (var i = 0; i < self.dataView.getLength(); i++) {
         self.dataSelection.rows.push(self.dataView.getItem(i));
       }
+      console.log("selection", self.dataSelection.rows);
     },
     renderMap: function(config){
       var self = this;
-      if(config.manualdata != true){
-        self.obtainSelection();
+      if(config.sortcol != undefined){
+        sortcol = config.sortcol;
       }
+      if(config.manualdata != true){
+              self.dataView.sort(self.comparer, args.sortCols[0].sortAsc);
+      }
+        self.obtainSelection();
       $("#mapContainer").empty();
       $('<div id="map"></div>').prependTo("#mapContainer"); 
       if(!config.readonly){
@@ -194,7 +205,6 @@ var Editor = {
       var validPoints = 0;
       var indexLat = config.params.lat, indexLong = config.params.lon;
       north = -100, south=100, east = -100, west = 100;
-      console.log(self.dataSelection);
       $.each(self.dataSelection.rows, function(i, item){
           lat = parseFloat(item[indexLat]);
           lon = parseFloat(item[indexLong]);
@@ -221,6 +231,7 @@ var Editor = {
           vizObj['map'].width=config.width;
           vizObj['map'].height=config.height;
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
+          vizObj['map'].sortcol = sortcol;
         }
       }else{
         $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
@@ -232,9 +243,14 @@ var Editor = {
     },
     renderChart: function(config){
       var self = this;
-      if(config.manualdata != true){
-        self.obtainSelection();
+      if(config.sortcol != undefined){
+        sortcol = config.sortcol;
+      }        console.log("sorting", config.manualdata);
+      if(config.manualdata == true){
+        console.log("sorting");
+              self.dataView.sort(self.comparer, 1);
       }
+      self.obtainSelection();
       $("#chartContainer").empty();
       $('<div id="chart" style="height:'+config.height+'px;width:'+config.width+'px;position:absolute;"></div>').prependTo("#chartContainer");
       if(!config.readonly){
@@ -279,6 +295,7 @@ var Editor = {
         vizObj['chart'].width=config.width;
         vizObj['chart'].height=config.height;
         vizObj['chart'].params={x: $var1, y: $var2};
+        vizObj['chart'].sortcol = sortcol;
       }
       
       self.runEvents();

@@ -6,12 +6,13 @@
    <div class="row">
     <div class="span12">
      <h2>{{row.url.value|explode:"/"|pop}}</h2>
-     <p>Taken from {{row.url.value}} on {{row.dateDownloaded.value|date:"M-y-d \\a\\t G:i:s"}} </p>
+     <h4>{{row.size.value}} bytes</h4>
+     <p>Taken from <a href="{{row.url.value}}">{{row.url.value}}</a> on {{row.dateDownloaded.value|date:"M-y-d \\a\\t G:i:s"}} </p>
      <div class="btn-group">
       <a href='{{lodspk.home}}showDataset/{{row.g.mirroredUri|urifier}}'>
-       <button class="btn">Create visualization</button>
+       <button class="btn"><i class="icon-signal"></i> Create visualization</button>
       </a>
-      <a href='{{row.g.value|deurifier}}'>
+      <a href='{{row.download.value}}'>
        <button class="btn"><i class="icon-download-alt"></i> Download Dataset</button>
       </a>
      </div>
@@ -19,8 +20,8 @@
 </div>
     {% endfor %}      
   {%else%}
-    <div class="alert alert-info">
-      <p>No named graphs found</p>
+    <div class="alert alert-warning">
+      <p>No datasets found</p>
     </div>
   {%endif%}
     </div>

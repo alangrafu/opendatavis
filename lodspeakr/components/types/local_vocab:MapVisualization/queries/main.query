@@ -1,8 +1,10 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX viz: <http://opendatav.is/vocab/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
 
-SELECT ?creationdate ?dataset ?width ?height ?title WHERE{
+
+SELECT ?creationdate ?dataset ?width ?height ?title ?original ?datasetdate WHERE{
   GRAPH <{{uri}}>{
     <{{uri}}> dcterms:created ?creationdate;
               viz:hasWidth ?width;
@@ -11,5 +13,9 @@ SELECT ?creationdate ?dataset ?width ?height ?title WHERE{
     OPTIONAL{
       <{{uri}}> dcterms:title ?title .
     }
+  }
+  GRAPH <{{lodspk.metadata}}>{
+    ?dataset prov:wasDerivedFrom ?original ;
+             dcterms:created ?datasetdate .
   }
 }

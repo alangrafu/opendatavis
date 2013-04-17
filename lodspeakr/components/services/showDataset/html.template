@@ -150,7 +150,11 @@ id: "id_{{i.row.value}}",
 
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
-Editor.init();
+
+config = {
+  sortcol: "{{first.header.val.value|slugify}}"
+}
+Editor.init(config);
 Editor.showTable();
 </script>
 </body>

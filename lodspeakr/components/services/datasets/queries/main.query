@@ -2,11 +2,13 @@ PREFIX dcat: <http://www.w3.org/ns/dcat#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX prov:    <http://www.w3.org/ns/prov#>
 
-SELECT DISTINCT ?g ?url ?dateDownloaded WHERE {
+SELECT DISTINCT ?g ?url ?dateDownloaded ?download ?size WHERE {
   GRAPH ?x{
         ?g a dcat:Dataset ;
            prov:wasDerivedFrom ?url;
-           dcterms:created ?dateDownloaded .
+           dcterms:created ?dateDownloaded ;
+           dcat:distribution [ dcat:downloadURL ?download ].
+        ?download dcat:byteSize ?size .
   }
 }
 order by ?url
