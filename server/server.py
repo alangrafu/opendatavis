@@ -74,7 +74,15 @@ def saveViz():
             store.add((URIRef(myurl), VIZ["hasParameter"], paramBNode))
             store.add((paramBNode, VIZ["parameterValue"], Literal(params[key])))
             store.add((paramBNode, VIZ["parameterName"], Literal(key)))
-
+        filters = request.json.get("filters")
+        if not(filters is None):
+            for myFilter in filters:
+                print myFilter
+                if "column"  in myFilter:
+                    blankFilter = BNode()
+                    store.add((URIRef(myurl), VIZ["hasFilter"], blankFilter))
+                    store.add((blankFilter, VIZ["filterColumn"], Literal(myFilter["column"])))
+                    store.add((blankFilter, VIZ["filterValue"], Literal(myFilter["value"])))
         store.add((URIRef(myurl), RDF.type, VIZ[chartType]))
         store.add((URIRef(myurl), RDF.type, VIZ["Visualization"]))
         store.add((URIRef(myurl), VIZ["hasWidth"], Literal(request.json.get("width"), datatype=XSD.nonNegativeInteger)))

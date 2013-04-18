@@ -50,6 +50,8 @@
 <script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>    
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
+var searchField = "{{first.params.filterColumn.value}}";
+
 var config = {
       chartType: "LineChartVisualization",
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",
@@ -60,6 +62,7 @@ var config = {
          var2: "{{first.params.paramY.value}}",
       },
       sortcol: "{{first.params.sort.value}}",
+      filter: [ {%if first.params.filterValue.value%}{searchString: "{{first.params.filterValue.value}}"}{%endif%}],
       readonly: true,
       manualdata: true
     };

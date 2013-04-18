@@ -49,6 +49,8 @@
 </div>        
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
+var searchField = "{{first.params.filterColumn.value}}";
+
 var config = {
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",
       width: {{first.main.width.value|default:"600"}},
@@ -57,6 +59,7 @@ var config = {
          lat: "{{first.params.paramY.value}}",
          lon: "{{first.params.paramX.value}}",
       },
+      filter: [ {searchString: "{{first.params.filterValue.value}}"}],
       sortcol: "{{first.params.sort.value}}",
       readonly: true,
       manualdata: true

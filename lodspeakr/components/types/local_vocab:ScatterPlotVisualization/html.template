@@ -60,6 +60,7 @@ var config = {
          var2: "{{first.params.paramY.value}}",
       },
       sortcol: "{{first.params.sort.value}}",
+      filter: [ {%if first.params.filterValue.value%}{searchString: "{{first.params.filterValue.value}}"}{%endif%}],
       readonly: true,
       manualdata: true
     };
