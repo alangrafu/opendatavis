@@ -1,7 +1,7 @@
 {%include "../../includes/header.inc"%}
     <div class="container-fluid">
     <h1>{{first.main.title.value}}</h1>
-    <div id="metadata" style="float:right;" class="well" about="{{uri}}">
+    <div id="metadata" style="float:right;max-width:500px;" class="well" about="{{uri}}">
       <h4>Metadata</h4>
       <hr/>
       <div>
