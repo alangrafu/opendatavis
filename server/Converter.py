@@ -44,10 +44,14 @@ class Converter(threading.Thread):
     self.parent and self.parent._setstatus(self.id, 'downloading')
     response = urllib2.urlopen(self.url)
     extension = self.url.split(".")[-1]
+    if extension == self.url or "/" in self.url:
+      extension = ""
+    else:
+      extension = "."+extension
     content = response.read()
     identifier = hashlib.md5(content).hexdigest()
     fileSize = len(content)
-    self.filename=identifier+"."+extension
+    self.filename=identifier+extension
     try:
       with open(self.filename) as f: pass
       #Nothing to do, file already exists
