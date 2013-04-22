@@ -40,6 +40,11 @@ var Editor = {
         $("#share-dialog").modal('show');
       }
     });
+
+    $("#confirmLoad").on('click', function(){
+      var loadDataset = $("#dataset-list option:selected").val();
+      alert(loadDataset);
+    })
 },
 setData: function(data){
   var self = this;

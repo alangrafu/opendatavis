@@ -8,7 +8,7 @@
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
     <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
-    <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">Load new dataset</button>
+    <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
    </div>
 <select id="fieldSearch"></select>  <input type="text" id="txtSearch" />
   </div>
@@ -132,6 +132,7 @@
   <select id="dataset-list"></select>
   <div class="modal-footer">
    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" id="confirmLoad" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Load</a>
   </div>
  </div>
 </div>
@@ -179,7 +180,7 @@ $(function(){
     success: function(data){
       var options = "";
       $.each(data.datasets, function(i, item){
-        options += "<option value='"+item.uri+"'>"+item.name+"</option>";
+        options += "<option value='"+item.download+"'>"+item.name+"</option>";
       });
       $("#dataset-list").append(options);
     }
