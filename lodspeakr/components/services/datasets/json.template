@@ -3,7 +3,7 @@
 {% for row in models.main %}{%if !forloop.first%},{%endif%}
   {
     "id": "{{row.g.value|explode:"/"|pop}}",
-    "uri": "{{row.g.value}}",
+    "download": "{{lodspk.home}}showDataset/{{row.g.mirroredUri|urifier}}",
     "name": "{{row.url.value|explode:"/"|pop}}",
     "size": {{row.size.value}},
     "source": "{{row.url.value}}",
