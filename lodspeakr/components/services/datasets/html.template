@@ -5,8 +5,7 @@
     {% for row in models.main %}
    <div class="row">
     <div class="span12">
-     <h2>{{row.url.value|explode:"/"|pop}}</h2>
-     <h4>{{row.size.value}} bytes</h4>
+     <h2>{{row.url.value|explode:"/"|pop}} (<span data-size="{{row.size.value}}" class="file-size"></span>)</h2>
      <p>Taken from <a href="{{row.url.value}}">{{row.url.value}}</a> on {{row.dateDownloaded.value|date:"M-y-d \\a\\t G:i:s"}} </p>
      <div class="btn-group">
       <a href='{{lodspk.home}}showDataset/{{row.g.mirroredUri|urifier}}'>
@@ -25,5 +24,19 @@
     </div>
   {%endif%}
     </div>
+    <script>
+    $(function(){
+      var sizeSuffixes = [" bytes", "KB", "MB", "GB", "TB", "HB"];
+      $(".file-size").each(function(i, item){
+        var size = $(item).attr("data-size");
+        var suffixCounter = 0;
+        while(size >1023){
+          size = parseInt(size/1024);
+          suffixCounter++;
+        }
+        $(item).html(size+sizeSuffixes[suffixCounter]);
+      });
+    })
+    </script>
   </body>
 </html>

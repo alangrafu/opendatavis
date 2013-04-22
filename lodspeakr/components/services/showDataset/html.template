@@ -8,6 +8,7 @@
    <div class="btn-group">
     <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
     <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
+    <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">Load new dataset</button>
    </div>
 <select id="fieldSearch"></select>  <input type="text" id="txtSearch" />
   </div>
@@ -122,7 +123,20 @@
  </div>
 </div>
 
-<script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>
+<div class="modal hide fade" id="dataset-dialog">
+ <div class="modal-header">
+  <h3>Add a new dataset</h3>
+  <p>Select dataset to load</p>
+ </div>
+ <div class="modal-body">
+  <select id="dataset-list"></select>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+  </div>
+ </div>
+</div>
+
+<script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script>
 
 var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}",
@@ -156,6 +170,21 @@ config = {
 }
 Editor.init(config);
 Editor.showTable();
+
+$(function(){
+  $.ajax({
+    url: home+"datasets",
+    dataType: "json",
+    contentType:"application/json; charset=utf-8",
+    success: function(data){
+      var options = "";
+      $.each(data.datasets, function(i, item){
+        options += "<option value='"+item.uri+"'>"+item.name+"</option>";
+      });
+      $("#dataset-list").append(options);
+    }
+  })
+});
 </script>
 </body>
 </html>
