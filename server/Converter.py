@@ -6,6 +6,7 @@ import urllib, urllib2
 import time
 import hashlib
 import os.path
+import json
 
 from rdflib.graph import Graph
 from rdflib.term import URIRef, Literal, BNode
@@ -24,6 +25,20 @@ class Converter(threading.Thread):
 
   def getVersion(self):
     return self.version
+
+  def getLiteral(self, value):
+    valLiteral = None
+    try:
+      valLiteral = unicode(value, 'utf-8')
+    except UnicodeDecodeError:
+      try:
+        print "No unicode value, trying latin"
+        valLiteral = unicode(value, "ISO-8859-1")
+      except Exception:
+        print "Not latin, I'll kill myself"
+        self.parent._setstatus(self.id, False)
+        exit(1)
+    return valLiteral
 
   def setStatus(self, status):
     self.status=status
@@ -61,100 +76,76 @@ class Converter(threading.Thread):
       return
     except IOError as e:
       print 'New file!'
-    f=open("../data/"+self.filename, 'w')
+    f=open("../original/"+self.filename, 'w')
     f.write(content)
     f.close()
-    print "Converting"
-    self.parent and self.parent._setstatus(self.id, 'converting')
-    self.status="converting"
-    f = open("../data/"+self.filename)
+    datasetURI = str(URIRef('%s/dataset/%s'%(self.baseUrl, identifier)))
+    distributionURI = str(URIRef('%s/distribution/%s'%(self.baseUrl, identifier)))
+    downloadURI = str(URIRef('%s/original/%s'%(self.baseUrl, self.filename)))
+    jsonDistributionURI = str(URIRef('%s/distributionJson/%s'%(self.baseUrl, self.filename)))
+    jsonURI = str(URIRef('%s/data/%s'%(self.baseUrl, self.filename)))
+    f = open("../original/"+self.filename)
     try:
       dialect = csv.Sniffer().sniff(f.read(2048))
     except Exception:
-      print "Can't snif dialect"
+      print "Can't sniff dialect"
       self.parent._setstatus(self.id, False)
       exit(1)      
     f.seek(0)
     reader = csv.reader(f, dialect)
-    datasetURI = str(URIRef('%s/dataset/%s'%(self.baseUrl, identifier)))
-    distributionURI = str(URIRef('%s/distribution/%s'%(self.baseUrl, identifier)))
-    downloadURI = str(URIRef('%s/data/%s'%(self.baseUrl, self.filename)))
-    rowNumber=0
-    ex_hasCell = u'ex:hasCell'
-    ex_hasRecord = u'ex:hasRecord'
-    ex_colNumber = u'ex:colNumber'
-    ex_rowNumber = u'ex:rowNumber'
-    ex_value = u'ex:value'
+    headers = reader.next()
 
-    buff=[]
-    buff.append(u"@prefix ex: <%s/> .\n@prefix dcat: <http://www.w3.org/ns/dcat#> .\n"%self.baseUrl)
+    #Creating JSON object
     try:
-      header = reader.next()
-      xbuff = u"<%s> a dcat:Dataset. "%(datasetURI)
-      colNumber=0
-      for value in header:
-        try:
-          valLiteral = Literal(unicode(value, 'utf-8'))
-        except UnicodeDecodeError:
-          try:
-            print "No unicode value, trying latin"
-            valLiteral = Literal(unicode(value, "ISO-8859-1"))
-          except Exception:
-            print "Not latin, I'll kill myself"
-            self.parent._setstatus(self.id, False)
-            exit(1)
-        xbuff += u"""<%s> ex:header <%s/dataset/%s/header/%d> .
-                     <%s/dataset/%s/header/%d> ex:value \"%s\"; 
-                                                              ex:colNumber %d . """%(datasetURI, self.baseUrl, identifier, colNumber, self.baseUrl, identifier, colNumber, valLiteral, colNumber)
-        colNumber = colNumber+1  
-      buff.append(xbuff)                                                            
+      jsonData = { 'header': [], 'rows': []}
+      #Define headers
+      for value in headers:
+        myVal = self.getLiteral(value)
+        headerValue = {"value": myVal, "name": myVal}
+        jsonData['header'].append(headerValue)
+
+      #Define rows
+      rowNumber = 0
       for row in reader:
         colNumber=0
-        recordURI = u'%s/dataset/%s/%d'%(self.baseUrl, identifier, rowNumber)
+        currentRow = {}
+        currentRow['id'] = "_id"+str(rowNumber)
         for value in row:
-          try:
-            valLiteral = Literal(unicode(value, 'utf-8'))
-          except UnicodeDecodeError:
-            try:
-              print "No unicode value, trying latin"
-              valLiteral = Literal(unicode(value, "ISO-8859-1"))
-            except Exception:
-              print "Not latin, I'll kill myself"
-              self.parent._setstatus(self.id, False)
-              exit(1)
-          currentURI = u'%s/dataset/%s/%d/%d'%(self.baseUrl, identifier, rowNumber, colNumber)
-          xbuff = u"<%s> %s <%s> .\n"%(datasetURI, ex_hasRecord, recordURI) 
-          xbuff += u"<%s> %s %d .\n"%(recordURI, ex_rowNumber, rowNumber) 
-          xbuff += u"<%s> %s <%s> .\n"%(recordURI, ex_hasCell, currentURI) 
-          xbuff += u"<%s> %s %d;\n"%(currentURI, ex_colNumber, colNumber) 
-          xbuff += u"%s \"%s\".\n"%(ex_value, valLiteral) 
-          buff.append(xbuff)
-          colNumber = colNumber+1
+          thisValue = self.getLiteral(value)
+          headerValue = jsonData['header'][colNumber]
+          currentRow[headerValue['value']] = thisValue
+          colNumber = colNumber + 1
+        jsonData['rows'].append(currentRow)
         rowNumber = rowNumber+1
       print "Loading"
       self.parent and self.parent._setstatus(self.id, 'loading')
-      headers = {'content-type': 'text/turtle; charset=utf-8'}
-      turtle = u''.join(buff)
       self.status="loading"
-      r = requests.post("http://localhost:3030/asd/data?graph=%s"%datasetURI, data=turtle.encode('utf-8'), headers=headers)
-      print "Code:",r.status_code
-
+      with open('../data/'+self.filename, 'w') as outfile:
+        json.dump(jsonData, outfile)
       turtle = u"""@prefix ex: <%s/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
+""" % self.baseUrl
 
-<%s> a dcat:Dataset;
+      turtle = turtle + """<%s> a dcat:Dataset;
      dcterms:created "%s"^^xsd:dateTime;
      prov:wasDerivedFrom <%s> ;
      dcterms:identifier "%s";
-     dcat:distribution <%s>.
-<%s> a dcat:Distribution;
+     dcat:distribution <%s>, <%s>. """ %( datasetURI, t, self.url, identifier, distributionURI, jsonDistributionURI)
+
+      turtle = turtle + """<%s> a dcat:Distribution;
+     dcat:mediaType 'text/csv';
      dcat:downloadURL <%s> .
 <%s> dcat:byteSize %d .
-"""%(self.baseUrl, datasetURI, t, self.url, identifier, distributionURI, distributionURI, downloadURI, downloadURI, fileSize)
-      r = requests.post("http://localhost:3030/asd/data?graph=%s/metadata"%self.baseUrl , data=turtle.encode('utf-8'), headers=headers)
+<%s> a dcat:Distribution;
+     dcat:mediaType 'application/json';
+     dcat:downloadURL <%s> .
+""" %(distributionURI, downloadURI, downloadURI, fileSize, jsonDistributionURI, jsonURI)
+      httpHeaders = {}
+      httpHeaders['content-type'] = "text/turtle; charset=utf8"
+      r = requests.post("http://localhost:3030/asd/data?graph=%s/metadata"%self.baseUrl , data=turtle.encode('utf-8'), headers=httpHeaders)
       print "Code:",r.status_code
       self.status="idle"
       self.parent and self.parent._setstatus(self.id, 'idle')

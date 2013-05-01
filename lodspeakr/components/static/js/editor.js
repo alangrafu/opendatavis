@@ -1,16 +1,30 @@
 //Global varis
 var vizObj = {};
 var sortcol = null;
+var datasetNumber = 1;
 
 var Editor = {
   dataSelection: {rows: []},
+  div: null,
   searchString: "",
   sortcol: null,
   dataView: null,
+  dataset: null,
   init: function(config){
+    var self = this;
     if(config != undefined && config.sortcol != undefined){
       self.sortcol = config.sortcol;
     }
+    self.div = config.div;
+    self.dataset = config.dataset;
+    $("#main").append('<div class="row dataset0"><div class="span12 dataset0 datasetCell"></div></div>');
+    $cell = $(".dataset0 .datasetCell");
+    $cell.append('<h5 class="numberOfSelected dataset0"></h5>');
+    $cell.append('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset0"></div>');
+    $cell.append('<div class="btn-group"><button class="btn btn-large btn-info chart-button" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button><button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button></div>');
+    $cell.append('<select class="fieldSearch dataset0"></select>');
+    $cell.append('<input type="text" class="dataset0 txtSearch" />');
+    $("#main").append('<div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>');
     $("#confirmShare").on('click', function(){
       var id = $(this).attr("data-chart");
       vizObj[id].title = $("#visualization-title").val();
@@ -27,7 +41,7 @@ var Editor = {
               $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
               $("#share-dialog").modal('show');
             }else{
-              alert("NO funca :-()");
+              alert("Error while storing visualization");
             }
           },
           error: function(){
@@ -53,6 +67,7 @@ setData: function(data){
   self.dataSelection["rows"] = data;
 },
 fillHeaders: function (){
+  var self = this;
   var option = "";
   $.each(headerColumns, function(i, item){
     option += "<option value='"+item.value+"'>"+item.name+"</option>";
@@ -61,8 +76,9 @@ fillHeaders: function (){
   $("#lon").append(option);
   $("#var1").append(option);
   $("#var2").append(option);
-  $("#fieldSearch").append(option).on('change', function(){
-    searchField = $("#fieldSearch option:selected").val();
+  console.log($(".fieldSearch."+self.div).length, self.div);
+  $(".fieldSearch."+self.div).append(option).on('change', function(){
+    searchField = $(".fieldSearch."+self.div+" option:selected").val();
   });
 },
 myFilter: function(item, args) {
@@ -72,7 +88,7 @@ myFilter: function(item, args) {
   }    
   return true;
 },
-showTable: function(config){
+showTable: function(){
   var self = this;
   $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
 
@@ -89,10 +105,7 @@ showTable: function(config){
     topPanelHeight: 25,
     multiColumnSort: true
   };
-
-
-
-  $("#txtSearch").keyup(function (e) {
+  $(".txtSearch."+self.div).keyup(function (e) {
       //Slick.GlobalEditorLock.cancelCurrentEdit();
       // clear on Esc
       if (e.which == 27) {
@@ -100,10 +113,11 @@ showTable: function(config){
       }
       self.searchString = this.value;
       self.updateFilter();
-      $("#numberOfSelected").html(self.dataView.getLength()+" rows selected")
+      console.log($(".numberOfSelected."+self.div));
+      $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
     });
 
-  grid = new Slick.Grid("#myGrid", self.dataView, columns, options);
+  grid = new Slick.Grid(".grid."+self.div, self.dataView, columns, options);
 
   self.dataView.onRowCountChanged.subscribe(function (e, args) {
     grid.updateRowCount();
@@ -126,12 +140,12 @@ showTable: function(config){
   self.dataView.setFilter(self.myFilter);
   self.dataView.setFilterArgs(0);
   self.dataView.endUpdate();
-  $("#numberOfSelected").html(self.dataView.getLength()+" rows selected")
+  $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
 
 //Map chart
 $("#mapRun").on('click', function(){
   var config = {
-    dataset: dataset,
+    dataset: $("#map-dataset").val(),
     params: {
       lat: $("#lat").val(),
       lon: $("#lon").val()
@@ -148,7 +162,7 @@ $("#mapRun").on('click', function(){
     $("#chartRun").on('click', function(){
       config = {
         chartType: $("#chart-type").val(),
-        dataset: dataset,
+        dataset: $("#chart-dataset").val(),
         params: {
           var1: $("#var1").val(),
           var2: $("#var2").val(),
@@ -238,11 +252,11 @@ $("#mapRun").on('click', function(){
           //Metadata
           vizObj['map'] = {};
           vizObj['map'].type='MapVisualization';
-          vizObj['map'].dataset=datasetUrl;
+          vizObj['map'].dataset=config.dataset;
           vizObj['map'].width=config.width;
           vizObj['map'].height=config.height;
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
-          vizObj['map'].filters = [ {column: $("#fieldSearch option:selected").val(), value: $("#txtSearch").val()} ];
+          vizObj['map'].filters = [ {column: $(".fieldSearch."+self.div+" option:selected").val(), value: $("#txtSearch").val()} ];
           vizObj['map'].sortcol = sortcol;
         }
       }else{
@@ -309,12 +323,13 @@ $("#mapRun").on('click', function(){
         //Metadata
         vizObj['chart'] = {};
         vizObj['chart'].type=$chart_type;
-        vizObj['chart'].dataset=datasetUrl;
+        vizObj['chart'].dataset=self.dataset;
         vizObj['chart'].width=config.width;
         vizObj['chart'].height=config.height;
         vizObj['chart'].params={x: $var1, y: $var2};
         vizObj['chart'].filters = [ {column: $("#fieldSearch option:selected").val(), value: $("#txtSearch").val()} ];
         vizObj['chart'].sortcol = sortcol;
+        console.log(vizObj['chart']);
       }
       
       self.runEvents();
@@ -327,6 +342,12 @@ $("#mapRun").on('click', function(){
       $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
     },
     runEvents: function(){
+      $(".chart-button").on('click', function(){
+        $("#chart-dataset").val($(this).attr("data-dataset"));
+      });
+      $(".map-button").on('click', function(){
+        $("#map-dataset").val($(this).attr("data-dataset"));
+      });
       $(".deleteButton").on('click', function(){$(this).parent().parent().empty()});
       $(".editButton").on('click', function(){
         var modalId = "#"+$(this).attr("data-edit");

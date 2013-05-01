@@ -1,24 +1,6 @@
 {%include "../../includes/header.inc"%}
-<div class="container-fluid" style="width:40%">
- <div class="row">
-  <div class="span12">
-  <h5 id="numberOfSelected"></h5>
-
-   <div id="myGrid" style="width:100%;min-height:300px;max-height:500px;" class="span5"></div>
-   <div class="btn-group">
-    <button class="btn btn-large btn-info" id="chart-button" data-toggle="modal" data-target="#chart-dialog">Chart</button>
-    <button class="btn btn-large btn-info" id="map-button" data-toggle="modal" data-target="#map-dialog">Map</button>
-    <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
-   </div>
-<select id="fieldSearch"></select>  <input type="text" id="txtSearch" />
-  </div>
- </div>
- <div class="row">
-  <div class="span12">
-   <div id="mapContainer" class="vizContainer"></div>
-   <div id="chartContainer" class="vizContainer"></div>
-  </div>
- </div>
+<div class="container-fluid" id="main" style="width:40%">
+ 
 </div>
 <div class="modal hide fade" id="map-dialog">
  <div class="modal-header">
@@ -29,6 +11,7 @@
    <fieldset>
     <legend>Latitude</legend><select id="lat" name="lat"></select>
     <legend>Longitude</legend><select id="lon" name="lon"></select>
+    <input type="hidden" id="map-dataset"/>
    </fieldset>
   </form>                                     
   <br/>
@@ -58,6 +41,7 @@
  <div class="modal-body">
   <legend for="var1">X Axis</legend><select id="var1" name="var1"></select>
   <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
+  <input type="hidden" id="chart-dataset"/>
   <legend for="chart-type">Chart type</legend>
   <select id="chart-type" name="chart-type">
    <option value="ColumnChartVisualization">Column</option>
@@ -140,39 +124,38 @@
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script>
 
-var dataset = "{{lodspk.args.all}}", datasetUrl = "{{lodspk.args.all|deurifier}}",
-    headerColumns = [{%for i in models.header%}{%if forloop.counter0!=0%}, {%endif%}{name: "{{i.val.value}}", value: "{{i.val.value|slugify}}"}{%endfor%} ],
-    grid = null,
-    searchField = "{{first.header.val.value|slugify}}",
-    columns = [
-{% for row in models.header %}
-{%if !forloop.first%},{%endif%} {id: "{{row.val.value|slugify}}", name: "{{row.val.value}}", field: "{{row.val.value|slugify}}", cssClass: "cell-title", sortable: true }
-{%endfor%}
-],
-    data = [], 
-    dataSelection = {rows: []};
-
-{%for i in models.local.rows%}
-{%ifchanged i.row.value%}{%if !forloop.first%}
-};
-{%endif%}
-data[{{i.row.value}}] = {
-id: "id_{{i.row.value}}",
-{%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
-};
-
+var datasets = [];
+datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
+var headerColumns = null, columns = [], data = [], searchField = "";
 </script>
 
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
 
-config = {
-  sortcol: "{{first.header.val.value|slugify}}"
-}
-Editor.init(config);
-Editor.showTable();
-
 $(function(){
+ config = {
+    sortcol: "{{first.header.val.value|slugify}}",
+    div: "dataset0",
+    dataset: "{{first.jsonfile.jsonURL.value}}"
+  }
+
+  $.ajax({
+    url: datasets[0].json,
+    dataType: "json",
+    contentType:"application/json; charset=utf-8",
+    success: function(d){
+      headerColumns = d.header;
+      searchField = headerColumns[0];
+      for(var i in d.header){
+        columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
+      }
+      data = d.rows;
+      config['sortcol'] = headerColumns[0];
+      var datasetEditor = Editor;
+      datasetEditor.init(config);
+      datasetEditor.showTable();
+    }    
+  })
   $.ajax({
     url: home+"datasets",
     dataType: "json",
