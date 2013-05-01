@@ -248,11 +248,14 @@ $("#mapRun").on('click', function(){
     if(validPoints > 0){
         //map.panTo([center[0]/validPoints, center[1]/validPoints]);
         map.fitBounds([[north, west], [south, east]]);
+        $('html, body').stop().animate({
+                      scrollTop: $('#map').offset().top
+                    }, 1000);
         if(!config.readonly){
           //Metadata
           vizObj['map'] = {};
           vizObj['map'].type='MapVisualization';
-          vizObj['map'].dataset=config.dataset;
+          vizObj['map'].dataset=self.dataset;
           vizObj['map'].width=config.width;
           vizObj['map'].height=config.height;
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
@@ -319,6 +322,9 @@ $("#mapRun").on('click', function(){
       
       var d1 = [];
       $.plot("#chart", [dataObj]);
+        $('html, body').stop().animate({
+                      scrollTop: $('#chart').offset().top
+                    }, 1000);
       if(!config.readonly){
         //Metadata
         vizObj['chart'] = {};

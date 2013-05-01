@@ -78,13 +78,14 @@ def saveViz():
         if not(filters is None):
             for myFilter in filters:
                 print myFilter
-                if "column"  in myFilter:
+                if "column"  in myFilter and "value" in myFilter:
                     blankFilter = BNode()
                     store.add((URIRef(myurl), VIZ["hasFilter"], blankFilter))
                     store.add((blankFilter, VIZ["filterColumn"], Literal(myFilter["column"])))
                     store.add((blankFilter, VIZ["filterValue"], Literal(myFilter["value"])))
         store.add((URIRef(myurl), RDF.type, VIZ[chartType]))
-        store.add((URIRef(myurl), RDF.type, VIZ["ChartVisualization"]))
+        if chartType != "MapVisualization":
+          store.add((URIRef(myurl), RDF.type, VIZ["ChartVisualization"]))
         store.add((URIRef(myurl), VIZ["hasWidth"], Literal(request.json.get("width"), datatype=XSD.nonNegativeInteger)))
         store.add((URIRef(myurl), VIZ["hasHeight"], Literal(request.json.get("height"), datatype=XSD.nonNegativeInteger)))
         store.add((URIRef(myurl), VIZ["sortedBy"], Literal(request.json.get("sortcol"))))
