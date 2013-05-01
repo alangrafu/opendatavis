@@ -10,21 +10,51 @@ var Editor = {
   sortcol: null,
   dataView: null,
   dataset: null,
+  editorId: 0,
+  data: null,
+  headerColumns: [],
+  searchField: null,
   init: function(config){
     var self = this;
-    if(config != undefined && config.sortcol != undefined){
-      self.sortcol = config.sortcol;
-    }
+    if(config != undefined){
+      if(config.sortcol != undefined){
+        self.sortcol = config.sortcol;
+      }
+      if(config.editorId != undefined){
+        self.editorId = config.editorId;
+      }
+      if(config.data != undefined){
+        self.data = config.data;
+      }
+      if(config.columns != undefined){
+        self.columns = config.columns;
+      }
+      if(config.headerColumns != undefined){
+        self.headerColumns = config.headerColumns;
+      }
+    }      
     self.div = config.div;
     self.dataset = config.dataset;
-    $("#main").append('<div class="row dataset0"><div class="span12 dataset0 datasetCell"></div></div>');
-    $cell = $(".dataset0 .datasetCell");
-    $cell.append('<h5 class="numberOfSelected dataset0"></h5>');
-    $cell.append('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset0"></div>');
-    $cell.append('<div class="btn-group"><button class="btn btn-large btn-info chart-button" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button><button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button></div>');
-    $cell.append('<select class="fieldSearch dataset0"></select>');
-    $cell.append('<input type="text" class="dataset0 txtSearch" />');
-    $("#main").append('<div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>');
+    $("#main").prepend('<div class="row dataset'+self.editorId+'"><div class="span12 dataset'+self.editorId+' datasetCell"></div></div>');
+    $cell = $(".dataset"+self.editorId+" .datasetCell");
+    $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
+    $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
+    $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
+    $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
+    $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
+    options = "";
+    $.each(self.headerColumns, function(i, item){
+      options += "<option value='"+item.value+"'>"+item.name+"</option>";
+    });
+    $('.fieldSearch.'+self.div).html(options);
+    $(".fieldSearch."+self.div).on('change', function(){
+      aux = $(".fieldSearch."+self.div+" option:selected").val()
+      self.searchField = aux;
+    });
+    $(".fieldSearch."+self.div).trigger('change');
+    $('.editor'+self.editorId).on('click', function(){
+      self.fillHeaders();
+    })
     $("#confirmShare").on('click', function(){
       var id = $(this).attr("data-chart");
       vizObj[id].title = $("#visualization-title").val();
@@ -54,11 +84,6 @@ var Editor = {
         $("#share-dialog").modal('show');
       }
     });
-
-    $("#confirmLoad").on('click', function(){
-      var loadDataset = $("#dataset-list option:selected").val();
-      alert(loadDataset);
-    })
 },
 setData: function(data){
   var self = this;
@@ -69,21 +94,17 @@ setData: function(data){
 fillHeaders: function (){
   var self = this;
   var option = "";
-  $.each(headerColumns, function(i, item){
+  $.each(self.headerColumns, function(i, item){
     option += "<option value='"+item.value+"'>"+item.name+"</option>";
   });
-  $("#lat").append(option);
-  $("#lon").append(option);
-  $("#var1").append(option);
-  $("#var2").append(option);
-  console.log($(".fieldSearch."+self.div).length, self.div);
-  $(".fieldSearch."+self.div).append(option).on('change', function(){
-    searchField = $(".fieldSearch."+self.div+" option:selected").val();
-  });
+  $("#lat").html(option);
+  $("#lon").html(option);
+  $("#var1").html(option);
+  $("#var2").html(option);
 },
 myFilter: function(item, args) {
-  self = this;
-  if(args.searchString != undefined && args.searchString != "" && item[searchField].indexOf(args.searchString) == -1) {
+  var self = args;
+  if(args.searchString != undefined && args.searchString != "" && item[self.searchField].indexOf(args.searchString) == -1) {
     return false;
   }    
   return true;
@@ -92,7 +113,7 @@ showTable: function(){
   var self = this;
   $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
 
-  self.fillHeaders();
+  //self.fillHeaders();
   self.dataView = new Slick.Data.DataView({ inlineFilters: true });
 
 
@@ -113,11 +134,10 @@ showTable: function(){
       }
       self.searchString = this.value;
       self.updateFilter();
-      console.log($(".numberOfSelected."+self.div));
       $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
     });
 
-  grid = new Slick.Grid(".grid."+self.div, self.dataView, columns, options);
+  grid = new Slick.Grid(".grid."+self.div, self.dataView, self.columns, options);
 
   self.dataView.onRowCountChanged.subscribe(function (e, args) {
     grid.updateRowCount();
@@ -136,7 +156,7 @@ showTable: function(){
 
 
   self.dataView.beginUpdate();
-  self.dataView.setItems(data);
+  self.dataView.setItems(self.data);
   self.dataView.setFilter(self.myFilter);
   self.dataView.setFilterArgs(0);
   self.dataView.endUpdate();
@@ -180,7 +200,8 @@ $("#mapRun").on('click', function(){
   updateFilter: function() {
     var self = this;
     self.dataView.setFilterArgs({
-      searchString: self.searchString
+      searchString: self.searchString,
+      searchField: self.searchField
     });
     self.dataView.refresh();
   },
@@ -335,7 +356,6 @@ $("#mapRun").on('click', function(){
         vizObj['chart'].params={x: $var1, y: $var2};
         vizObj['chart'].filters = [ {column: $("#fieldSearch option:selected").val(), value: $("#txtSearch").val()} ];
         vizObj['chart'].sortcol = sortcol;
-        console.log(vizObj['chart']);
       }
       
       self.runEvents();

@@ -1,6 +1,7 @@
 {%include "../../includes/header.inc"%}
+<button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
 <div class="container-fluid" id="main" style="width:40%">
- 
+ <div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>
 </div>
 <div class="modal hide fade" id="map-dialog">
  <div class="modal-header">
@@ -120,42 +121,29 @@
   </div>
  </div>
 </div>
-
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script>
 
 var datasets = [];
 datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
-var headerColumns = null, columns = [], data = [], searchField = "";
 </script>
 
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
 
 $(function(){
+ var datasetEditors = [];
  config = {
     sortcol: "{{first.header.val.value|slugify}}",
     div: "dataset0",
-    dataset: "{{first.jsonfile.jsonURL.value}}"
+    dataset: "{{first.jsonfile.jsonURL.value}}",
+    columns: [],
+    headerColumns: null,
+    searchField: ""
   }
 
-  $.ajax({
-    url: datasets[0].json,
-    dataType: "json",
-    contentType:"application/json; charset=utf-8",
-    success: function(d){
-      headerColumns = d.header;
-      searchField = headerColumns[0];
-      for(var i in d.header){
-        columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
-      }
-      data = d.rows;
-      config['sortcol'] = headerColumns[0];
-      var datasetEditor = Editor;
-      datasetEditor.init(config);
-      datasetEditor.showTable();
-    }    
-  })
+  createEditor(config);
+
   $.ajax({
     url: home+"datasets",
     dataType: "json",
@@ -167,7 +155,44 @@ $(function(){
       });
       $("#dataset-list").append(options);
     }
+  });
+
+
+  $("#confirmLoad").on('click', function(){
+    var loadDataset = $("#dataset-list option:selected").val();
+    console.log(loadDataset);
+    var config = {
+      sortcol: "{{first.header.val.value|slugify}}",
+      div: "dataset1",
+      dataset: loadDataset,
+      editorId: 1,
+    columns: [],
+    headerColumns: null,
+    searchField: ""
+    };
+    createEditor(config)
+  });
+
+function createEditor(config){
+  $.ajax({
+    url: config.dataset,
+    dataType: "json",
+    contentType:"application/json; charset=utf-8",
+    success: function(d){
+      config.headerColumns = d.header;
+      searchField = config.headerColumns[0];
+      for(var i in d.header){
+        config.columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
+      }
+      config.data = d.rows;
+      config['sortcol'] = config.headerColumns[0];
+      i = datasetEditors.length;
+      datasetEditors[i] = Editor;
+      datasetEditors[i].init(config);
+      datasetEditors[i].showTable();
+    }    
   })
+}
 });
 </script>
 </body>
