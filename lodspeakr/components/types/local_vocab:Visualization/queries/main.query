@@ -2,14 +2,16 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX viz: <http://opendatav.is/vocab/>
 
-SELECT ?creationdate ?dataset ?width ?height ?title WHERE{
+SELECT ?creationdate ?dataset ?width ?height ?title ?vizType WHERE{
   GRAPH <{{uri}}>{
-    <{{uri}}> dcterms:created ?creationdate;
+    <{{uri}}> a ?vizType;
+              dcterms:created ?creationdate;
               viz:hasWidth ?width;
               viz:hasHeight ?height;
               prov:wasDerivedFrom ?dataset .
     OPTIONAL{
       <{{uri}}> dcterms:title ?title .
     }
+    FILTER(?vizType != <http://opendatav.is/vocab/Visualization>)
   }
 }

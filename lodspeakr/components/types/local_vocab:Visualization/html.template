@@ -50,8 +50,9 @@
 <script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>    
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
+$(function(){
 var config = {
-      chartType: "ColumnChartVisualization",
+      chartType: "{{first.main.vizType.curie|explode:":"|pop}}",
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",
       width: {{first.main.width.value|default:"600"}},
       height: {{first.main.height.value|default:"600"}},
@@ -67,19 +68,19 @@ var config = {
 
 
 var data = [];
-{%for i in models.rows%}
-{%ifchanged i.row.value%}{%if !forloop.first%}
-};
-{%endif%}
-data[{{i.row.value}}] = {
-id: "id_{{i.row.value}}",
-{%endifchanged%}  {{i.headerValue.value|slugify}}: "{{i.val.value}}",    {%endfor%}
-};
-
-Editor.setData(data);
+$.ajax({
+  url: "{{first.params.dataset.value}}",
+  dataType: "json",
+  success: function(d){
+    data = d.rows;
+    console.log(data);
+   Editor.setData(data);
 console.log(data, Editor.dataSelection);
 Editor.renderChart(config);
 
+  }
+})
+});
 </script>
 </body>
 </html>
