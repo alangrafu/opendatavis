@@ -153,6 +153,10 @@ class Converter(threading.Thread):
     except UnicodeEncodeError, e:
       traceback.print_exc()
       exit(0)
+    except:
+      traceback.print_exc()
+      self.parent._setstatus(self.id, False)
+      exit(0)
 
 
 
