@@ -54,7 +54,6 @@ function Editor(){
     });
     $(".fieldSearch."+self.div).trigger('change');
     $('.editor'+self.editorId).on('click', function(){
-      console.log(self.headerColumns, self.editorId, this);
       self.fillHeaders();
     })
     $("#confirmShare").on('click', function(){
@@ -106,7 +105,7 @@ fillHeaders: function (){
 },
 myFilter: function(item, args) {
   var self = args;
-  if(args.searchString != undefined && args.searchString != "" && item[self.searchField].indexOf(args.searchString) == -1) {
+  if(args.searchString != undefined && args.searchString != "" && item[self.searchField] != undefined && item[self.searchField].indexOf(args.searchString) == -1) {
     return false;
   }    
   return true;
@@ -282,7 +281,7 @@ $("#mapRun").on('click', function(){
           vizObj['map'].width=config.width;
           vizObj['map'].height=config.height;
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
-          vizObj['map'].filters = [ {column: $(".fieldSearch."+self.div+" option:selected").val(), value: $("#txtSearch").val()} ];
+          vizObj['map'].filters = [ {column: self.searchField, value: self.searchString} ];
           vizObj['map'].sortcol = sortcol;
         }
       }else{
@@ -300,7 +299,7 @@ $("#mapRun").on('click', function(){
       } 
       if(config.manualdata == true){
         self.dataView.beginUpdate();
-        if(config.filter.length > 0){
+        if(config.filter != undefined && config.filter.length > 0){
           arg = config.filter[0];
           self.dataView.setFilter(self.myFilter);
           self.dataView.setFilterArgs(arg);
@@ -317,7 +316,6 @@ $("#mapRun").on('click', function(){
       }
       var dataObj = {}, d1 = [];
       var $var2 = config.params.var2, $var1 = config.params.var1;
-
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
         d1.push([x, y]);
@@ -344,7 +342,16 @@ $("#mapRun").on('click', function(){
       }
       
       var d1 = [];
-      $.plot("#chart", [dataObj]);
+      $.plot("#chart", [dataObj],{
+        yaxis : {
+            show : true,
+            axisLabel : $var2,
+            position: 'left',
+        },
+        xaxis : {
+            show : true,
+            axisLabel : $var1,
+        }});
         $('html, body').stop().animate({
                       scrollTop: $('#chart').offset().top
                     }, 1000);

@@ -86,6 +86,7 @@ def saveViz():
         store.add((URIRef(myurl), RDF.type, VIZ[chartType]))
         if chartType != "MapVisualization":
           store.add((URIRef(myurl), RDF.type, VIZ["ChartVisualization"]))
+        store.add((URIRef(myurl), RDF.type, VIZ["Visualization"]))
         store.add((URIRef(myurl), VIZ["hasWidth"], Literal(request.json.get("width"), datatype=XSD.nonNegativeInteger)))
         store.add((URIRef(myurl), VIZ["hasHeight"], Literal(request.json.get("height"), datatype=XSD.nonNegativeInteger)))
         if request.json.get("sortcol") != None:

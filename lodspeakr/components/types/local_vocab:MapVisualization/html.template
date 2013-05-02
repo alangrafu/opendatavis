@@ -61,7 +61,7 @@ var config = {
          lat: "{{first.params.paramY.value}}",
          lon: "{{first.params.paramX.value}}",
       },
-      filter: [ {searchString: "{{first.params.filterValue.value}}"}],
+      filter: [ {searchString: "{{first.params.filterValue.value}}", searchField: "{{first.params.filterColumn.value}}"}],
       sortcol: "{{first.params.sort.value}}",
       readonly: true,
       manualdata: true
@@ -75,9 +75,9 @@ $.ajax({
   success: function(d){
     data = d.rows;
     console.log(data);
-   Editor.setData(data);
-console.log(data, Editor.dataSelection);
-Editor.renderMap(config);
+    var e = new Editor(config);
+   e.setData(data);
+e.renderMap(config);
 
   }
 })

@@ -12,6 +12,6 @@ SELECT ?creationdate ?dataset ?width ?height ?title ?vizType WHERE{
     OPTIONAL{
       <{{uri}}> dcterms:title ?title .
     }
-    FILTER(?vizType != <http://opendatav.is/vocab/ChartVisualization>)
+    FILTER(?vizType != <http://opendatav.is/vocab/ChartVisualization> && ?vizType != <http://opendatav.is/vocab/Visualization>)
   }
 }

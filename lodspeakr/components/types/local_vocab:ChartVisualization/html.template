@@ -47,7 +47,8 @@
 </div>
 
 </div>    
-<script src='http://www.flotcharts.org/flot/jquery.flot.js'></script>    
+<script src='{{lodspk.home}}js/jquery.flot.js'></script>
+<script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
 $(function(){
@@ -61,7 +62,9 @@ var config = {
          var2: "{{first.params.paramY.value}}",
       },
       sortcol: "{{first.params.sort.value}}",
-      filter: [ {searchString: "{{first.params.filterValue.value}}"}],
+      {%if first.params.filterValue.value != null && first.params.filterColumn.value != null %}
+      filter: [ {searchString: "{{first.params.filterValue.value}}", searchField: "{{first.params.filterColumn.value}}"}],
+      {%endif%}
       readonly: true,
       manualdata: true
     };
@@ -73,10 +76,10 @@ $.ajax({
   dataType: "json",
   success: function(d){
     data = d.rows;
-    console.log(data);
-   Editor.setData(data);
-console.log(data, Editor.dataSelection);
-Editor.renderChart(config);
+    var e = new Editor(config);
+   e.setData(data);
+console.log(data, e.dataSelection);
+e.renderChart(config);
 
   }
 })

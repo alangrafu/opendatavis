@@ -106,15 +106,20 @@ class Converter(threading.Thread):
 
       #Define rows
       rowNumber = 0
+      print jsonData['header']
       for row in reader:
         colNumber=0
         currentRow = {}
         currentRow['id'] = "_id"+str(rowNumber)
         for value in row:
-          thisValue = self.getLiteral(value)
-          headerValue = jsonData['header'][colNumber]
-          currentRow[headerValue['value']] = thisValue
-          colNumber = colNumber + 1
+          try:
+            thisValue = self.getLiteral(value)
+            headerValue = jsonData['header'][colNumber]
+            currentRow[headerValue['value']] = thisValue
+            colNumber = colNumber + 1
+          except IndexError:
+            print "Index error on column %d" % rowNumber
+            print row
         jsonData['rows'].append(currentRow)
         rowNumber = rowNumber+1
       print "Loading"

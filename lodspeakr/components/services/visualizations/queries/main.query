@@ -9,7 +9,7 @@ SELECT DISTINCT ?viz ?title ?identifier ?creationDate ?type WHERE {
     	     dcterms:identifier ?id;
     	     dcterms:created ?creationDate .
     	OPTIONAL{ ?viz dcterms:title ?title}
-    	FILTER(?type != ex:Visualization)
+    	FILTER(?type != ex:Visualization && ?type != ex:ChartVisualization)
     }
   }
 }order by ?viz

@@ -122,6 +122,7 @@
  </div>
 </div>
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
+<script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script>
 
 var datasets = [];
