@@ -187,7 +187,7 @@ function createEditor(config){
       config.data = d.rows;
       config['sortcol'] = config.headerColumns[0];
       i = datasetEditors.length;
-      datasetEditors[i] = Editor;
+      datasetEditors[i] = new Editor;
       datasetEditors[i].init(config);
       datasetEditors[i].showTable();
     }    

@@ -3,7 +3,8 @@ var vizObj = {};
 var sortcol = null;
 var datasetNumber = 1;
 
-var Editor = {
+function Editor(){
+  return {
   dataSelection: {rows: []},
   div: null,
   searchString: "",
@@ -53,6 +54,7 @@ var Editor = {
     });
     $(".fieldSearch."+self.div).trigger('change');
     $('.editor'+self.editorId).on('click', function(){
+      console.log(self.headerColumns, self.editorId, this);
       self.fillHeaders();
     })
     $("#confirmShare").on('click', function(){
@@ -354,7 +356,7 @@ $("#mapRun").on('click', function(){
         vizObj['chart'].width=config.width;
         vizObj['chart'].height=config.height;
         vizObj['chart'].params={x: $var1, y: $var2};
-        vizObj['chart'].filters = [ {column: $("#fieldSearch option:selected").val(), value: $("#txtSearch").val()} ];
+        vizObj['chart'].filters = [ {column: self.searchField, value: self.searchString} ];
         vizObj['chart'].sortcol = sortcol;
       }
       
@@ -387,5 +389,6 @@ $("#mapRun").on('click', function(){
     
     
   }
+}
 
 
