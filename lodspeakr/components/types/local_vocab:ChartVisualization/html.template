@@ -46,7 +46,7 @@
   </div>
 </div>
 
-</div>    
+</div> 
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script src="{{lodspk.home}}js/editor.js"></script>
@@ -85,5 +85,6 @@ e.renderChart(config);
 })
 });
 </script>
+
 </body>
 </html>

@@ -351,7 +351,11 @@ $("#mapRun").on('click', function(){
         xaxis : {
             show : true,
             axisLabel : $var1,
-        }});
+        },
+        grid: {
+            hoverable: true,
+        }
+      });
         $('html, body').stop().animate({
                       scrollTop: $('#chart').offset().top
                     }, 1000);
@@ -366,10 +370,39 @@ $("#mapRun").on('click', function(){
         vizObj['chart'].filters = [ {column: self.searchField, value: self.searchString} ];
         vizObj['chart'].sortcol = sortcol;
       }
-      
+      $("#chart").bind("plothover", function (event, pos, item) {
+        var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+        if (item) {
+          if (previousPoint != item.dataIndex) {
+
+            previousPoint = item.dataIndex;
+
+            $("#tooltip").remove();
+            var x = item.datapoint[0].toFixed(2),
+            y = item.datapoint[1].toFixed(2);
+
+            self.showTooltip(item.pageX, item.pageY,
+                "(" + x + ", " + y+")");
+          }
+        } else {
+          $("#tooltip").remove();
+          previousPoint = null;            
+        }
+    });
       self.runEvents();
     },
-
+    showTooltip: function(x, y, contents) {
+      $("<div id='tooltip'>" + contents + "</div>").css({
+        position: "absolute",
+        display: "none",
+        top: y + 5,
+        left: x + 5,
+        border: "1px solid #fdd",
+        padding: "2px",
+        "background-color": "#fee",
+        opacity: 0.80
+      }).appendTo("body").fadeIn(200);
+    },
 
     
     //auxiliary functions
