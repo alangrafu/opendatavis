@@ -41,7 +41,7 @@
   <h3>Chart</h3>
  </div>
  <div class="modal-body">
-  <legend for="var1">X Axis</legend><select id="var1" name="var1"></select>
+  <legend for="var1">X Axis</legend><select id="var1" name="var1"></select> <span id="stringvaluescheckbox">Values in X axis are not numbers <input type="checkbox" id="var1string"/></span>
   <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
   <input type="hidden" id="chart-dataset"/>
   <legend for="chart-type">Chart type</legend>
@@ -197,7 +197,7 @@ $(function(){
     };
     createEditor(config)
   });
-
+  
 
 function createEditor(config){
   $.ajax({

@@ -397,12 +397,33 @@ $("#runGroup").on('click', function(){
       }
       var dataObj = {}, d1 = [];
       var $var2 = config.params.var2, $var1 = config.params.var1;
+      var options = {
+        yaxis : {
+            show : true,
+            axisLabel : $var2,
+            position: 'left',
+        },
+        xaxis : {
+            show : true,
+            axisLabel : $var1,
+        },
+        grid: {
+            hoverable: true,
+        }
+      };
+      var xCounter = 0;
+      var ticks = [];
+      $chart_type = config.chartType
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
-        d1.push([x, y]);
+        if($('#var1string').is(':checked')){
+          d1.push([xCounter, y]);
+          ticks.push([xCounter++, x]);
+        }else{
+          d1.push([x, y]);
+        }
       });
-      $chart_type = config.chartType
-      
+
       if($chart_type == "ColumnChartVisualization"){
         dataObj = {
           data: d1,
@@ -421,22 +442,13 @@ $("#runGroup").on('click', function(){
           points: { show: true }
         }
       }
+
+      if($('#var1string').is(':checked')){
+        options.xaxis.ticks = ticks;
+      }
       
       var d1 = [];
-      $.plot("#chart", [dataObj],{
-        yaxis : {
-            show : true,
-            axisLabel : $var2,
-            position: 'left',
-        },
-        xaxis : {
-            show : true,
-            axisLabel : $var1,
-        },
-        grid: {
-            hoverable: true,
-        }
-      });
+      $.plot("#chart", [dataObj], options);
         $('html, body').stop().animate({
                       scrollTop: $('#chart').offset().top
                     }, 1000);
