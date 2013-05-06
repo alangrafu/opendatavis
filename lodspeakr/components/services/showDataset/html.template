@@ -1,6 +1,7 @@
 {%include "../../includes/header.inc"%}
 <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
-<div class="container-fluid" id="main" style="width:40%">
+<div class="container-fluid" id="main" style="width:40%"></div>
+<div class="container-fluid" id="viz" style="width:40%">
  <div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>
 </div>
 <div class="modal hide fade" id="map-dialog">
@@ -121,9 +122,34 @@
   </div>
  </div>
 </div>
+
+<div class="modal hide fade" id="group-dialog">
+ <div class="modal-header">
+  <h3>Group data</h3>
+ </div>
+ <div class="modal-body">
+  <p>
+   <select id="group-operation">
+    <option value="count">Count</option>
+    <option value="sum">Sum</option>
+    <option value="average">Average</option>
+    <option value="median">Median</option>
+   </select></p>
+   <p> values in  
+   <select id="group-variable"></select></p>
+   <p> grouped by <select id="grouped-by"></select></p>
+   <input type="hidden" id="group-dataset"/>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" id="runGroup" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Calculate</a>
+  </div>
+ </div>
+</div>
+
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script>
+var datasetEditors = [];
 
 var datasets = [];
 datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
@@ -133,7 +159,6 @@ datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jso
 <script>
 
 $(function(){
- var datasetEditors = [];
  config = {
     sortcol: "{{first.header.val.value|slugify}}",
     div: "dataset0",
@@ -161,7 +186,6 @@ $(function(){
 
   $("#confirmLoad").on('click', function(){
     var loadDataset = $("#dataset-list option:selected").val();
-    console.log(loadDataset);
     var config = {
       sortcol: "{{first.header.val.value|slugify}}",
       div: "dataset1",
@@ -173,6 +197,7 @@ $(function(){
     };
     createEditor(config)
   });
+
 
 function createEditor(config){
   $.ajax({

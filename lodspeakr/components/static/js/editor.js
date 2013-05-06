@@ -36,11 +36,11 @@ function Editor(){
     }      
     self.div = config.div;
     self.dataset = config.dataset;
-    $("#main").prepend('<div class="row dataset'+self.editorId+'"><div class="span12 dataset'+self.editorId+' datasetCell"></div></div>');
+    $("#main").append('<div class="row dataset'+self.editorId+'"><div class="span12 dataset'+self.editorId+' datasetCell"></div></div>');
     $cell = $(".dataset"+self.editorId+" .datasetCell");
     $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
     $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
-    $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
+    $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
     $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
     $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
     options = "";
@@ -56,6 +56,11 @@ function Editor(){
     $('.editor'+self.editorId).on('click', function(){
       self.fillHeaders();
     })
+
+    $(".group-button").on('click', function(){
+      $("#group-dataset").val($(this).attr("data-dataset"));
+    });
+
     $("#confirmShare").on('click', function(){
       var id = $(this).attr("data-chart");
       vizObj[id].title = $("#visualization-title").val();
@@ -102,6 +107,8 @@ fillHeaders: function (){
   $("#lon").html(option);
   $("#var1").html(option);
   $("#var2").html(option);
+  $("#group-variable").html(option);
+  $("#grouped-by").html(option);
 },
 myFilter: function(item, args) {
   var self = args;
@@ -139,6 +146,9 @@ showTable: function(){
     });
 
   grid = new Slick.Grid(".grid."+self.div, self.dataView, self.columns, options);
+        $('html, body').stop().animate({
+                      scrollTop: $(".grid."+self.div).offset().top
+                    }, 1000);
 
   self.dataView.onRowCountChanged.subscribe(function (e, args) {
     grid.updateRowCount();
@@ -179,24 +189,95 @@ $("#mapRun").on('click', function(){
 });
 
 
-    //Bar chart
-    $("#chartRun").on('click', function(){
-      config = {
-        chartType: $("#chart-type").val(),
-        dataset: $("#chart-dataset").val(),
-        params: {
-          var1: $("#var1").val(),
-          var2: $("#var2").val(),
-        },
-        height: $("#chart-height").val(),
-        width: $("#chart-width").val(),
-        readOnly: false
-      };
-      self.renderChart(config);
-    });
+//Bar chart
+$("#chartRun").on('click', function(){
+  config = {
+    chartType: $("#chart-type").val(),
+    dataset: $("#chart-dataset").val(),
+    params: {
+      var1: $("#var1").val(),
+      var2: $("#var2").val(),
+    },
+    height: $("#chart-height").val(),
+    width: $("#chart-width").val(),
+    readOnly: false
+  };
+  self.renderChart(config);
+});
     
+//Group operations
+$("#runGroup").on('click', function(){
+  config = {
+    dataset: $("#group-dataset").val(),
+    operation: $("#group-operation option:selected").val(), 
+    groupby: $("#grouped-by option:selected").val(),
+    variable: $("#group-variable option:selected").val(),
+  };
+  self.renderGroup(config);
+});
 
 
+
+  },
+  renderGroup: function(config){
+    var self = this;
+    var groupby = config.groupby, variable = config.variable;
+    self.obtainSelection();
+    var i = datasetEditors.length;
+    var countData = [], sumData = [];
+    
+    $.each(self.dataSelection.rows, function(i, item){
+      if(item[groupby] != undefined){
+        if(countData[item[groupby]] == undefined){
+          countData[item[groupby]] = 1;
+        }else{
+          countData[item[groupby]]++;          
+        }
+        if(sumData[item[groupby]] == undefined){
+          sumData[item[groupby]] = parseFloat(item[variable]);
+        }else{
+          sumData[item[groupby]] += parseFloat(item[variable]);
+        }
+      }
+    });
+    var newData = [], groupedData = [];
+
+    //What operation was asked?
+    //TODO: Median!
+    if(config.operation == "count"){
+      groupedData = countData;
+    }else if(config.operation == "sum"){
+      groupedData = sumData;
+    }else if(config.operation == "average"){
+      for(i in sumData){
+        groupedData[i] = sumData[i]/countData[i];
+      }
+      console.log(groupedData);
+    }
+
+    //Convert into slickgrid data structure
+    var counter = 0;
+    var newColumn = config.operation+"_"+variable
+    for(i in groupedData){
+      var newItem = {};
+      var item = groupedData[i];
+      newItem["id"] = "id_"+counter;
+      newItem[groupby] = i;
+      newItem[newColumn] = item;
+      newData.push(newItem);
+      counter++;
+    }
+    var c = {
+      dataset: "grouped",
+      editorId: i,
+      div: "dataset"+i,
+      columns: [{id: groupby, name: groupby, field: groupby, cssClass: "cell-title", sortable: true }, {id: newColumn, name: newColumn, field: newColumn, cssClass: "cell-title", sortable: true }],
+      headerColumns: [{name: groupby, value: groupby}, {name: newColumn, value: newColumn}],
+      data: newData
+    }
+    datasetEditors[i] = new Editor;
+    datasetEditors[i].init(c);
+    datasetEditors[i].showTable();
   },
   updateFilter: function() {
     var self = this;
