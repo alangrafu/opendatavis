@@ -54,7 +54,7 @@
 $(function(){
 var config = {
       chartType: "{{first.main.vizType.curie|explode:":"|pop}}",
-      dataset: "{{first.main.dataset.mirroredUri|urifier}}",
+      dataset: "{{first.params.dataset.value}}",
       width: {{first.main.width.value|default:"600"}},
       height: {{first.main.height.value|default:"600"}},
       params: {
