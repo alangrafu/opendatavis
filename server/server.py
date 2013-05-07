@@ -115,7 +115,7 @@ def saveViz():
                 store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))                
                 store.add((groupBNode, RDF.type, PROV["Entity"]))                
                 store.add((groupBNode, RDF.type, RDFS.Literal))                
-                store.add((groupBNode, RDF.value, URIRef(datasetDict['groupby'])))                
+                store.add((groupBNode, RDF.value, Literal(datasetDict['groupby'])))                
                 store.add((activityBNode, PROV["generated"], newDatasetURI))                
             else:
                 return jsonify(success=False)
