@@ -1,0 +1,19 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX : <http://opendatav.is/vocab/>
+
+SELECT ?dataset ?groupVariable WHERE {
+  GRAPH ?g{
+    <{{uri}}> prov:wasGeneratedBy [ 
+      a prov:Activity;
+      prov:qualifiedUsage [ 
+        prov:hadRole :datasetGrouped;
+        prov:entity ?dataset
+      ], [ 
+        prov:hadRole :groupVariable;
+        prov:entity [
+          rdf:value ?groupVariable 
+        ]
+      ]
+    ]
+  }
+}

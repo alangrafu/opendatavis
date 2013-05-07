@@ -1,0 +1,4 @@
+{
+  "groupby": "{{first.main.groupVariable.value}}",
+  "dataset": "{{first.main.dataset.value}}"
+}
