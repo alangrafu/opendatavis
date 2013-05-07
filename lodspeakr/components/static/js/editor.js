@@ -60,8 +60,8 @@ function Editor(){
     $(".group-button").on('click', function(){
       $("#group-dataset").val($(this).attr("data-dataset"));
     });
-
-    $("#confirmShare").on('click', function(){
+    $("#confirmShare").unbind('click');
+    $("#confirmShare").on('click', function(event){
       var id = $(this).attr("data-chart");
       vizObj[id].title = $("#visualization-title").val();
       if(vizObj[id].url == undefined){
@@ -268,7 +268,11 @@ $("#runGroup").on('click', function(){
       counter++;
     }
     var c = {
-      dataset: "grouped",
+      dataset: {
+        groupby: groupby,
+        dataset: self.dataset,
+        filterby: [ {column: self.searchField, value: self.searchString} ]
+      },
       editorId: i,
       div: "dataset"+i,
       columns: [{id: groupby, name: groupby, field: groupby, cssClass: "cell-title", sortable: true }, {id: newColumn, name: newColumn, field: newColumn, cssClass: "cell-title", sortable: true }],

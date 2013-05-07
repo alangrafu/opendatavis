@@ -3,7 +3,7 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
-from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, XSD
+from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, XSD, RDFS
 import urllib2
 import time
 import datetime
@@ -91,7 +91,34 @@ def saveViz():
         store.add((URIRef(myurl), VIZ["hasHeight"], Literal(request.json.get("height"), datatype=XSD.nonNegativeInteger)))
         if request.json.get("sortcol") != None:
           store.add((URIRef(myurl), VIZ["sortedBy"], Literal(request.json.get("sortcol"))))
-        store.add((URIRef(myurl), PROV["wasDerivedFrom"], URIRef(request.json.get("dataset"))))        
+        if isinstance(request.json.get("dataset"), basestring):
+            store.add((URIRef(myurl), PROV["wasDerivedFrom"], URIRef(request.json.get("dataset"))))
+        else:
+            datasetDict = request.json.get("dataset")
+            if "groupby" in datasetDict.keys():
+                newDatasetURI = URIRef('%s/virtual/%s/groupby/%s'%(host, datasetDict['dataset'].replace("://", "/"), datasetDict['groupby']))
+                store.add((URIRef(myurl), PROV["wasDerivedFrom"], newDatasetURI))
+                activityBNode = BNode()
+                usageBNode = BNode()
+                usageBNode2 = BNode()
+                groupBNode = BNode()
+                store.add((newDatasetURI, PROV["wasGeneratedBy"], activityBNode))
+                store.add((newDatasetURI, RDF.type, VIZ["VirtualDataset"]))
+                store.add((activityBNode, RDF.type, PROV["Activity"]))
+                store.add((activityBNode, PROV["qualifiedUsage"], usageBNode))
+                store.add((usageBNode, RDF.type, PROV["Usage"]))
+                store.add((usageBNode, PROV["entity"], groupBNode))                
+                store.add((usageBNode, PROV["hadRole"], VIZ["groupVariable"]))                
+                store.add((activityBNode, PROV["qualifiedUsage"], usageBNode2))
+                store.add((usageBNode2, RDF.type, PROV["Usage"]))
+                store.add((usageBNode2, PROV["entity"], URIRef(datasetDict['dataset'])))                
+                store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))                
+                store.add((groupBNode, RDF.type, PROV["Entity"]))                
+                store.add((groupBNode, RDF.type, RDFS.Literal))                
+                store.add((groupBNode, RDF.value, URIRef(datasetDict['groupby'])))                
+                store.add((activityBNode, PROV["generated"], newDatasetURI))                
+            else:
+                return jsonify(success=False)
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))
         store.add((URIRef(myurl), DCTERMS["title"], Literal(request.json.get("title"))))
         store.add((URIRef(myurl), DCTERMS["created"], Literal(creationDate, datatype=XSD.dateTime)))
