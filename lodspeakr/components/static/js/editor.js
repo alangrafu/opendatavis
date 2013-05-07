@@ -200,7 +200,8 @@ $("#chartRun").on('click', function(){
     },
     height: $("#chart-height").val(),
     width: $("#chart-width").val(),
-    readOnly: false
+    readOnly: false,
+    numericx: $('#var1string').is(':checked')
   };
   self.renderChart(config);
 });
@@ -270,6 +271,7 @@ $("#runGroup").on('click', function(){
     var c = {
       dataset: {
         groupby: groupby,
+        variable: variable,
         dataset: self.dataset,
         filterby: [ {column: self.searchField, value: self.searchString} ]
       },
@@ -420,7 +422,7 @@ $("#runGroup").on('click', function(){
       $chart_type = config.chartType
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
-        if($('#var1string').is(':checked')){
+        if(config.numericx){
           d1.push([xCounter, y]);
           ticks.push([xCounter++, x]);
         }else{
@@ -446,8 +448,7 @@ $("#runGroup").on('click', function(){
           points: { show: true }
         }
       }
-
-      if($('#var1string').is(':checked')){
+      if(config.numericx){
         options.xaxis.ticks = ticks;
       }
       
@@ -466,6 +467,7 @@ $("#runGroup").on('click', function(){
         vizObj['chart'].params={x: $var1, y: $var2};
         vizObj['chart'].filters = [ {column: self.searchField, value: self.searchString} ];
         vizObj['chart'].sortcol = sortcol;
+        vizObj['chart'].numericx = config.numericx;
       }
       $("#chart").bind("plothover", function (event, pos, item) {
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";

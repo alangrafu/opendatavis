@@ -101,27 +101,43 @@ def saveViz():
                 activityBNode = BNode()
                 usageBNode = BNode()
                 usageBNode2 = BNode()
+                usageBNode3 = BNode()
                 groupBNode = BNode()
+                varBNode = BNode()
                 store.add((newDatasetURI, PROV["wasGeneratedBy"], activityBNode))
                 store.add((newDatasetURI, RDF.type, VIZ["VirtualDataset"]))
                 store.add((activityBNode, RDF.type, PROV["Activity"]))
+
                 store.add((activityBNode, PROV["qualifiedUsage"], usageBNode))
                 store.add((usageBNode, RDF.type, PROV["Usage"]))
                 store.add((usageBNode, PROV["entity"], groupBNode))                
-                store.add((usageBNode, PROV["hadRole"], VIZ["groupVariable"]))                
-                store.add((activityBNode, PROV["qualifiedUsage"], usageBNode2))
-                store.add((usageBNode2, RDF.type, PROV["Usage"]))
-                store.add((usageBNode2, PROV["entity"], URIRef(datasetDict['dataset'])))                
-                store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))                
+                store.add((usageBNode, PROV["hadRole"], VIZ["groupVariable"]))     
+
                 store.add((groupBNode, RDF.type, PROV["Entity"]))                
                 store.add((groupBNode, RDF.type, RDFS.Literal))                
                 store.add((groupBNode, RDF.value, Literal(datasetDict['groupby'])))                
+
+                store.add((activityBNode, PROV["qualifiedUsage"], usageBNode3))
+                store.add((usageBNode3, RDF.type, PROV["Usage"]))
+                store.add((usageBNode3, PROV["entity"], varBNode))                
+                store.add((usageBNode3, PROV["hadRole"], VIZ["variableGrouped"]))  
+
+                store.add((varBNode, RDF.type, PROV["Entity"]))                
+                store.add((varBNode, RDF.type, RDFS.Literal))                
+                store.add((varBNode, RDF.value, Literal(datasetDict['variable'])))                
+
+                store.add((activityBNode, PROV["qualifiedUsage"], usageBNode2))
+                store.add((usageBNode2, RDF.type, PROV["Usage"]))
+                store.add((usageBNode2, PROV["entity"], URIRef(datasetDict['dataset'])))                
+                store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))  
+
                 store.add((activityBNode, PROV["generated"], newDatasetURI))                
             else:
                 return jsonify(success=False)
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))
         store.add((URIRef(myurl), DCTERMS["title"], Literal(request.json.get("title"))))
         store.add((URIRef(myurl), DCTERMS["created"], Literal(creationDate, datatype=XSD.dateTime)))
+        store.add((URIRef(myurl), VIZ["numericXAxis"], Literal(request.json.get("numericx"), datatype=XSD.boolean)))
         rdfstring = store.serialize(format="turtle")
         print rdfstring
         opener = urllib2.build_opener(urllib2.HTTPHandler)

@@ -1,9 +1,10 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?dataset ?paramX ?paramY ?sort ?filterValue ?filterColumn WHERE{
+SELECT ?dataset ?paramX ?paramY ?sort ?filterValue ?filterColumn ?numericx WHERE{
   GRAPH <{{uri}}>{
     <{{uri}}> :hasParameter ?p1, ?p2 ;
+              :numericXAxis ?numericx;
               prov:wasDerivedFrom ?dataset .
     ?p1 :parameterName "x";
        :parameterValue ?paramX .    

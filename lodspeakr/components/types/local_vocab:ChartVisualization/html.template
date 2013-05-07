@@ -61,6 +61,7 @@ var config = {
          var1: "{{first.params.paramX.value}}",
          var2: "{{first.params.paramY.value}}",
       },
+      numericx: {{first.params.numericx.value}},
       sortcol: "{{first.params.sort.value}}",
       {%if first.params.filterValue.value != null && first.params.filterColumn.value != null %}
       filter: [ {searchString: "{{first.params.filterValue.value}}", searchField: "{{first.params.filterColumn.value}}"}],
@@ -71,18 +72,83 @@ var config = {
 
 
 var data = [];
-$.ajax({
-  url: "{{first.params.dataset.value}}",
-  dataType: "json",
-  success: function(d){
-    data = d.rows;
-    var e = new Editor(config);
-   e.setData(data);
-console.log(data, e.dataSelection);
+var newData = null;
+function getData(url){
+  var data = null;
+  $.ajax({
+    url: url,
+    async: false,
+    dataType: "json",
+    success: function(d){
+      if(d.rows !=undefined){
+        data = d;
+      }else{
+        if(d.groupby != undefined && d.dataset != undefined){
+          var groupby = d.groupby, variable = d.variable;
+          getData(d.dataset);
+          var countData = [], sumData = [];
+          $.each(newData.rows, function(i, item){
+            if(item[groupby] != undefined){
+              if(countData[item[groupby]] == undefined){
+                countData[item[groupby]] = 1;
+              }else{
+                countData[item[groupby]]++;          
+              }
+              if(sumData[item[groupby]] == undefined){
+                sumData[item[groupby]] = parseFloat(item[variable]);
+              }else{
+                sumData[item[groupby]] += parseFloat(item[variable]);
+              }
+            }
+          });
+          $.each(newData, function(i, item){
+            if(item[d.groupby] != undefined){
+              if(countData[item[groupby]] == undefined){
+                countData[item[groupby]] = 1;
+              }else{
+                countData[item[groupby]]++;          
+              }
+  
+              if(sumData[item[groupby]] == undefined){
+                sumData[item[groupby]] = parseFloat(item[variable]);
+              }else{
+                sumData[item[groupby]] += parseFloat(item[variable]);
+              }
+            }
+          });
+          var counter = 0;
+          var newColumn = "count"+"_"+variable;
+          var groupedData = countData;
+          var auxData = [];
+          data = {};
+          data.header = [
+                          {"name": "id", "value": "id"},
+                          {"name": groupby, "value": groupby},
+                          {"name": newColumn, "value": newColumn},
+                        ];
+          for(i in groupedData){
+            var newItem = {};
+            var item = groupedData[i];
+            newItem["id"] = "id_"+counter;
+            newItem[groupby] = i;
+            newItem[newColumn] = item;
+            auxData.push(newItem);
+            counter++;
+          }
+          data.rows = auxData;
+        }
+      }//end else
+      newData = data;
+    }
+  });
+}
+
+data = getData("{{first.params.dataset.value}}");
+var e = new Editor(config);
+console.log(newData.rows);
+e.setData(newData.rows);
 e.renderChart(config);
 
-  }
-})
 });
 </script>
 

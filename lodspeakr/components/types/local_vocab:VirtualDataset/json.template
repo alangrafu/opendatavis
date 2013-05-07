@@ -1,4 +1,5 @@
 {
   "groupby": "{{first.main.groupVariable.value}}",
-  "dataset": "{{first.main.dataset.value}}"
+  "dataset": "{{first.main.dataset.value}}",
+  "variable": "{{first.main.variableGrouped.value}}"
 }
