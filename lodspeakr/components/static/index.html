@@ -28,7 +28,7 @@
 <script>
 var msg = "", interval = null;
 
-function requestStatus(){
+function requestStatus(id){
   console.log("requesting data");
   $.ajax({
     url:"/data",
@@ -36,14 +36,15 @@ function requestStatus(){
       key: id
     },
     success: function(data){
-      if(data.msg == "error"){
+      if(data.msg == "error" || data.msg ==  false){
         $("#load-message").html("Error loading the dataset");
       }else{
         $("#load-message").html(data.msg);   
         newValue = "0";
-        if(data.msg == "idle"){
+        if(data.msg == "done"){
           newValue = "100";
           clearInterval(interval);
+          window.location = home+"showDataset/"+data.url.replace("://", "/");
         }
         if(data.msg == "downloading"){
           newValue = "20";
@@ -78,9 +79,8 @@ $.ajax({
     },
     dataType: "json",
     success: function(data){
-      id = data.id;
-      console.log(data);
-      interval = setInterval(function(){requestStatus()}, 5000);
+      id = data.msg;
+      interval = setInterval(function(){requestStatus(id)}, 5000);
     },
     error: function(){
       $("#load-message").html("Error loading the dataset");

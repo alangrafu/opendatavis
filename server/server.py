@@ -14,7 +14,8 @@ import traceback
 tp = ThreadPool()
 tp.startPool()
 app = Flask(__name__)
-host = "http://opendatav.is"
+#host = "http://opendatav.is"
+host = "http://localhost/~alvarograves/opendatavis"
 
 @app.route('/data', methods=['POST'])
 def getData():
@@ -27,8 +28,8 @@ def getData():
             filename = url.replace(":", "_colon_").replace("/", "_slash_")+str(ts)
             r = tp.addThread(filename, url)
             if r == None:
-                return "\n\n\nBusy!\n\n\n", 503
-            return jsonify(id = r)
+                return jsonify({"msg": "busy"}), 503
+            return jsonify({"msg": r})
 
         else:
             error = 'Invalid URL'
@@ -38,7 +39,7 @@ def getData():
     except:
         error = "error"
         print traceback.format_exc()
-    return jsonify(msg2 = error)
+    return jsonify({"msg": "error"})
 
 
 @app.route('/data', methods=['GET'])
@@ -47,9 +48,9 @@ def processLevel():
     ts = str(request.args.get('key'))
     r = tp.checkStatus(ts)
     if r != False:
-        return jsonify(msg = r)
+        return jsonify(r)
     else:
-        return jsonify(msg = "error"), 404
+        return jsonify({"msg": "error"}), 404
 
 
 
@@ -96,7 +97,7 @@ def saveViz():
         else:
             datasetDict = request.json.get("dataset")
             if "groupby" in datasetDict.keys():
-                newDatasetURI = URIRef('%s/virtual/%s/groupby/%s'%(host, datasetDict['dataset'].replace("://", "/"), datasetDict['groupby']))
+                newDatasetURI = URIRef('%s/virtual/%s%s'%(host, str(int(time.time())), str(random.randrange(1, 99999999))))
                 store.add((URIRef(myurl), PROV["wasDerivedFrom"], newDatasetURI))
                 activityBNode = BNode()
                 usageBNode = BNode()
