@@ -105,9 +105,9 @@ function getData(url){
                 }
 
                 if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
-                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[variable]);
+                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
                 }else{
-                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[variable]);
+                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
                 }
               });
             }

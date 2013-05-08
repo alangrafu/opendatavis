@@ -144,10 +144,10 @@ showTable: function(){
       self.updateFilter();
       $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
     });
-
-  grid = new Slick.Grid(".grid."+self.div, self.dataView, self.columns, options);
+console.log("grid", ".grid.dataset"+self.editorId);
+  grid = new Slick.Grid(".grid.dataset"+self.editorId, self.dataView, self.columns, options);
         $('html, body').stop().animate({
-                      scrollTop: $(".grid."+self.div).offset().top
+                      scrollTop: $(".grid.dataset"+self.editorId).offset().top
                     }, 1000);
 
   self.dataView.onRowCountChanged.subscribe(function (e, args) {
@@ -302,7 +302,7 @@ $("#runGroup").on('click', function(){
         dataset: self.dataset,
         filterby: [ {column: self.searchField, value: self.searchString} ]
       },
-      editorId: i,
+      editorId: datasetEditors.length,
       div: "dataset"+i,
       columns: columns,
       headerColumns: headerColumns,
