@@ -90,51 +90,70 @@ function getData(url){
           $.each(newData.rows, function(i, item){
             if(item[groupby] != undefined){
               if(countData[item[groupby]] == undefined){
-                countData[item[groupby]] = 1;
-              }else{
-                countData[item[groupby]]++;          
+                countData[item[groupby]] = {};
               }
+
               if(sumData[item[groupby]] == undefined){
-                sumData[item[groupby]] = parseFloat(item[variable]);
-              }else{
-                sumData[item[groupby]] += parseFloat(item[variable]);
+                sumData[item[groupby]] = {};
               }
+
+              $.each(d.variable, function(i, v){
+                if(countData[item[groupby]][d.operation+"_"+v] == undefined){
+                  countData[item[groupby]][d.operation+"_"+v] = 1;
+                }else{
+                  countData[item[groupby]][d.operation+"_"+v]++;          
+                }
+
+                if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
+                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[variable]);
+                }else{
+                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[variable]);
+                }
+              });
             }
           });
-          $.each(newData, function(i, item){
-            if(item[d.groupby] != undefined){
-              if(countData[item[groupby]] == undefined){
-                countData[item[groupby]] = 1;
-              }else{
-                countData[item[groupby]]++;          
-              }
-  
-              if(sumData[item[groupby]] == undefined){
-                sumData[item[groupby]] = parseFloat(item[variable]);
-              }else{
-                sumData[item[groupby]] += parseFloat(item[variable]);
+
+          var groupedData = [];
+
+          if(d.operation == "count"){
+            groupedData = countData;
+          }else if(d.operation == "sum"){
+            groupedData = sumData;
+          }else if(d.operation == "average"){
+            for(i in sumData){
+              for(j in sumData[i]){
+                if(groupedData[i] == undefined){
+                  groupedData[i] = {};
+                }
+                groupedData[i][j] = sumData[i][j]/countData[i][j];
               }
             }
-          });
+          }
+          console.log(groupedData);
+
           var counter = 0;
-          var newColumn = "count"+"_"+variable;
-          var groupedData = countData;
           var auxData = [];
           data = {};
           data.header = [
                           {"name": "id", "value": "id"},
                           {"name": groupby, "value": groupby},
-                          {"name": newColumn, "value": newColumn},
                         ];
+          $.each(d.variable, function(i, v){
+            data.header.push({"name": v, "value": v});
+          });
           for(i in groupedData){
             var newItem = {};
             var item = groupedData[i];
             newItem["id"] = "id_"+counter;
             newItem[groupby] = i;
-            newItem[newColumn] = item;
+            console.log(item);
+            $.each(item, function(i, v){
+              newItem[i]=v;
+            });
             auxData.push(newItem);
             counter++;
           }
+          console.log(auxData);
           data.rows = auxData;
         }
       }//end else
@@ -145,7 +164,6 @@ function getData(url){
 
 data = getData("{{first.params.dataset.value}}");
 var e = new Editor(config);
-console.log(newData.rows);
 e.setData(newData.rows);
 e.renderChart(config);
 

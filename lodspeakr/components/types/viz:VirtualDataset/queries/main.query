@@ -1,7 +1,7 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?dataset ?groupVariable ?variableGrouped WHERE {
+SELECT ?dataset ?groupVariable ?variableGrouped ?operation WHERE {
   GRAPH ?g{
     <{{uri}}> prov:wasGeneratedBy [ 
       a prov:Activity;
@@ -17,6 +17,11 @@ SELECT ?dataset ?groupVariable ?variableGrouped WHERE {
         prov:hadRole :variableGrouped;
         prov:entity [
           rdf:value ?variableGrouped 
+        ]
+      ], [ 
+        prov:hadRole :groupOperation;
+        prov:entity [
+          rdf:value ?operation 
         ]
       ]
     ]

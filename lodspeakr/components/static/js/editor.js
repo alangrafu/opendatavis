@@ -208,11 +208,15 @@ $("#chartRun").on('click', function(){
     
 //Group operations
 $("#runGroup").on('click', function(){
+  var fields = [];
+  $.each($(".group-variable"), function(i, item){
+    fields.push($(item).find(":selected").val());
+  });
   config = {
     dataset: $("#group-dataset").val(),
     operation: $("#group-operation option:selected").val(), 
     groupby: $("#grouped-by option:selected").val(),
-    variable: $("#group-variable option:selected").val(),
+    variable: fields
   };
   self.renderGroup(config);
 });
@@ -222,23 +226,34 @@ $("#runGroup").on('click', function(){
   },
   renderGroup: function(config){
     var self = this;
-    var groupby = config.groupby, variable = config.variable;
+    var groupby = config.groupby, variables = config.variable;
     self.obtainSelection();
     var i = datasetEditors.length;
     var countData = [], sumData = [];
-    
     $.each(self.dataSelection.rows, function(i, item){
       if(item[groupby] != undefined){
         if(countData[item[groupby]] == undefined){
-          countData[item[groupby]] = 1;
-        }else{
-          countData[item[groupby]]++;          
+          countData[item[groupby]] = {};
         }
+
+
         if(sumData[item[groupby]] == undefined){
-          sumData[item[groupby]] = parseFloat(item[variable]);
-        }else{
-          sumData[item[groupby]] += parseFloat(item[variable]);
+          sumData[item[groupby]] = {};
         }
+
+        $.each(variables, function(i, variable){
+          if(countData[item[groupby]][config.operation+"_"+variable] == undefined){
+            countData[item[groupby]][config.operation+"_"+variable] = 1;
+          }else{
+            countData[item[groupby]][config.operation+"_"+variable]++;          
+          }
+
+          if(sumData[item[groupby]][config.operation+"_"+variable] == undefined){
+            sumData[item[groupby]][config.operation+"_"+variable] = parseFloat(item[variable]);
+          }else{
+            sumData[item[groupby]][config.operation+"_"+variable] += parseFloat(item[variable]);
+          }
+        });
       }
     });
     var newData = [], groupedData = [];
@@ -251,34 +266,46 @@ $("#runGroup").on('click', function(){
       groupedData = sumData;
     }else if(config.operation == "average"){
       for(i in sumData){
-        groupedData[i] = sumData[i]/countData[i];
+        for(j in sumData[i]){
+          if(groupedData[i] == undefined){
+            groupedData[i] = {};
+          }
+          groupedData[i][j] = sumData[i][j]/countData[i][j];
+        }
       }
-      console.log(groupedData);
     }
 
     //Convert into slickgrid data structure
     var counter = 0;
-    var newColumn = config.operation+"_"+variable
+    var newColumn = [], headerColumns = [{name: groupby, value: groupby}], columns = [{id: groupby, name: groupby, field: groupby, cssClass: "cell-title", sortable: true }]
+    $.each(variables, function(i, variable){
+      newColumn.push(config.operation+"_"+variable);
+      headerColumns.push({name: config.operation+"_"+variable, value: config.operation+"_"+variable});
+      columns.push({id: config.operation+"_"+variable, name: config.operation+"_"+variable, field: config.operation+"_"+variable, cssClass: "cell-title", sortable: true });
+    });
     for(i in groupedData){
       var newItem = {};
       var item = groupedData[i];
       newItem["id"] = "id_"+counter;
       newItem[groupby] = i;
-      newItem[newColumn] = item;
+      $.each(groupedData[i], function(j, item){
+        newItem[j] = item;
+      });
       newData.push(newItem);
       counter++;
     }
     var c = {
       dataset: {
         groupby: groupby,
-        variable: variable,
+        operation: config.operation,
+        variable: variables,
         dataset: self.dataset,
         filterby: [ {column: self.searchField, value: self.searchString} ]
       },
       editorId: i,
       div: "dataset"+i,
-      columns: [{id: groupby, name: groupby, field: groupby, cssClass: "cell-title", sortable: true }, {id: newColumn, name: newColumn, field: newColumn, cssClass: "cell-title", sortable: true }],
-      headerColumns: [{name: groupby, value: groupby}, {name: newColumn, value: newColumn}],
+      columns: columns,
+      headerColumns: headerColumns,
       data: newData
     }
     datasetEditors[i] = new Editor;
@@ -342,6 +369,7 @@ $("#runGroup").on('click', function(){
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
       lon = parseFloat(item[indexLong]);
+      console.log(indexLat, indexLong, lat, lon, item);
       if(!isNaN(lat) && !isNaN(lon)){
         var m = L.marker([lat,lon]).addTo(map);       
         m.bindPopup(item[2]+"<br/>"+lat+", "+lon);
@@ -355,9 +383,9 @@ $("#runGroup").on('click', function(){
       }
     });
     if(validPoints > 0){
-        //map.panTo([center[0]/validPoints, center[1]/validPoints]);
-        map.fitBounds([[north, west], [south, east]]);
-        $('html, body').stop().animate({
+      //map.panTo([center[0]/validPoints, center[1]/validPoints]);
+      map.fitBounds([[north, west], [south, east]]);
+      $('html, body').stop().animate({
                       scrollTop: $('#map').offset().top
                     }, 1000);
         if(!config.readonly){
@@ -371,11 +399,11 @@ $("#runGroup").on('click', function(){
           vizObj['map'].filters = [ {column: self.searchField, value: self.searchString} ];
           vizObj['map'].sortcol = sortcol;
         }
-      }else{
+    }else{
         $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
         $("#error-dialog").modal('show');
         $("#mapDelete").trigger('click');
-      }        
+    }        
       
       self.runEvents();
     },

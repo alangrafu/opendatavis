@@ -1,0 +1,167 @@
+{%include "../../includes/header.inc"%}
+    <div class="container-fluid">
+    <h1>{{first.main.title.value}}</h1>
+    <div id="metadata" style="float:right;min-width:300px;max-width:500px;" class="well" about="{{uri}}">
+      <h4>Metadata</h4>
+      <hr/>
+      <div>
+       <strong>Creation Date:</strong>
+       <span property="http://purl.org/dc/terms/created">{{first.main.creationdate.value}}</span>
+      </div>
+      <div>
+        <strong>Parameters:</strong>
+        <div>
+         <strong>Longitude:</strong> "<span>{{first.params.paramX.value}}</span>"
+        </div>
+        <div>
+         <strong>Latitude:</strong> "<span>{{first.params.paramY.value}}</span>"
+        </div>
+      </div>
+      <hr/>
+      <div>
+       <strong>Dataset used:</strong>
+       <span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{{first.main.dataset.value}}">{{first.main.dataset.value|explode:"/"|pop}}</a></span>
+      </div>
+      <div>
+       <strong>Obtained from:</strong>
+       <span about="{{first.main.dataset.value}}">
+       <a rel="http://www.w3.org/ns/dcat#distribution" href="{{first.main.original.value}}">{{first.main.original.value}}</a></span>
+      </div>
+      <div>
+       <strong>Downloaded at:</strong>
+       <span about="{{first.main.dataset.value}}" property="dcterms:created"> {{first.main.datasetdate.value}}</span>
+      </div>
+    </div>
+    <div id="mapContainer" class="vizContainer"></div>
+
+    <div class="modal hide fade" id="error-dialog">
+  <div class="modal-header">
+    <h3>Error</h3>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-error" id="error-message"></div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+</div>
+
+</div>        
+<script src="{{lodspk.home}}js/editor.js"></script>
+<script>
+
+$(function(){
+var searchField = "{{first.params.filterColumn.value}}";
+
+var config = {
+      dataset: "{{first.main.dataset.mirroredUri|urifier}}",
+      width: {{first.main.width.value|default:"600"}},
+      height: {{first.main.height.value|default:"600"}},
+      params: {
+         lat: "{{first.params.paramY.value}}",
+         lon: "{{first.params.paramX.value}}",
+      },
+      filter: [ {searchString: "{{first.params.filterValue.value}}", searchField: "{{first.params.filterColumn.value}}"}],
+      sortcol: "{{first.params.sort.value}}",
+      readonly: true,
+      manualdata: true
+    };
+
+
+var data = [];
+var newData = null;
+function getData(url){
+  var data = null;
+  $.ajax({
+    url: url,
+    async: false,
+    dataType: "json",
+    success: function(d){
+      if(d.rows !=undefined){
+        data = d;
+      }else{
+        if(d.groupby != undefined && d.dataset != undefined){
+          var groupby = d.groupby, variable = d.variable;
+          getData(d.dataset);
+          var countData = [], sumData = [];
+          $.each(newData.rows, function(i, item){
+            if(item[groupby] != undefined){
+              if(countData[item[groupby]] == undefined){
+                countData[item[groupby]] = {};
+              }
+
+              if(sumData[item[groupby]] == undefined){
+                sumData[item[groupby]] = {};
+              }
+              $.each(d.variable, function(i, v){
+                if(countData[item[groupby]][d.operation+"_"+v] == undefined){
+                  countData[item[groupby]][d.operation+"_"+v] = 1;
+                }else{
+                  countData[item[groupby]][d.operation+"_"+v]++;          
+                }
+                if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
+                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
+                }else{
+                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
+                }
+                console.log(sumData[item[groupby]][d.operation+"_"+v]);
+              });
+            }
+          });
+          var groupedData = [];
+
+          if(d.operation == "count"){
+            groupedData = countData;
+          }else if(d.operation == "sum"){
+            groupedData = sumData;
+          }else if(d.operation == "average"){
+            for(i in sumData){
+              for(j in sumData[i]){
+                if(groupedData[i] == undefined){
+                  groupedData[i] = {};
+                }
+                groupedData[i][j] = sumData[i][j]/countData[i][j];
+              }
+            }
+          }
+          var counter = 0;
+          var auxData = [];
+          data = {};
+          data.header = [
+                          {"name": "id", "value": "id"},
+                          {"name": groupby, "value": groupby},
+                        ];
+          $.each(d.variable, function(i, v){
+            data.header.push({"name": v, "value": v});
+          });
+          for(i in groupedData){
+            var newItem = {};
+            var item = groupedData[i];
+            newItem["id"] = "id_"+counter;
+            newItem[groupby] = i;
+            console.log(item);
+            $.each(item, function(i, v){
+              newItem[i]=v;
+            });
+            auxData.push(newItem);
+            counter++;
+          }
+          console.log(auxData);
+          data.rows = auxData;
+        }
+      }//end else
+      newData = data;
+    }
+  });
+}
+
+data = getData("{{first.params.dataset.value}}");
+var e = new Editor(config);
+console.log(newData.rows);
+e.setData(newData.rows);
+e.renderMap(config);
+
+});
+</script>
+</body>
+</html>

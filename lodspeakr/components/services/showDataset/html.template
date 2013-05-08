@@ -135,8 +135,9 @@
     <option value="average">Average</option>
     <option value="median">Median</option>
    </select></p>
-   <p> values in  
-   <select id="group-variable"></select></p>
+   <p id="group-fields"> values in  
+   <div><select id="group-variable" class="group-variable"></select></p> <button id="add-group-field" class="btn btn-info btn-mini">Add field</button></div>
+   </p>
    <p> grouped by <select id="grouped-by"></select></p>
    <input type="hidden" id="group-dataset"/>
   <div class="modal-footer">
@@ -197,8 +198,17 @@ $(function(){
     };
     createEditor(config)
   });
-  
 
+  //Remove added fields in grouping dialog
+  $("body").on('click', ".remove-group-field", function(){
+    $(this).parent().remove();
+  });
+  
+  //Add fields in grouping dialog
+  $("#add-group-field").on('click', function(){
+    var o = $("#group-variable").html();
+    $("#group-fields").append("<div><select class='group-variable'>"+o+"</select> <button class='btn btn-warning btn-mini remove-group-field'>Remove field</button></div>");
+  });
 function createEditor(config){
   $.ajax({
     url: config.dataset,
@@ -219,6 +229,7 @@ function createEditor(config){
     }    
   })
 }
+
 });
 </script>
 </body>
