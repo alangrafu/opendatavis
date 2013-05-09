@@ -52,6 +52,38 @@
     .slick-row.selected .cell-selection {
       background-color: transparent; /* show default selected row background */
     }
+
+    .logbox{
+      box-shadow: 10px 10px 5px #888;
+      font-family: Monaco;
+      font-size: 12px;
+      font-weight: bold;
+      color: lightgreen;
+      border: 1px solid black; 
+      position: fixed;
+      background: black;
+      opacity: 0.8;
+      top: 300px;
+      right: 25px;
+      width:450px;
+      min-height:200px;
+      max-height:200px;
+      overflow:auto;
+      z-index: 100;
+    }
+    .logbutton {
+    position: fixed;
+    color: black;
+    top: 300px;
+    right: 25px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    z-index: 200;
+    cursor: pointer;
+    }
     </style>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -82,6 +114,31 @@
         }
       });
     });
+    var loglevel = 1;
+    function log(msg, id){
+      if(loglevel > 0){
+        if($("#logdiv").length == 0){
+
+          $("#main").append("<div id='logdiv' class='logbox'></div>");
+          $("#main").append("<div id='logbutton' class='logbutton'>Hide log window</div>");
+          $("#logbutton").on('click', function(){
+            if($("#logdiv").is(":visible")){
+              $("#logdiv").hide(300);
+              $(this).html("Show log window");
+            }else{
+              $("#logdiv").show(300);
+              $(this).html("Hide log window");
+            }
+          })
+        }
+        var source = "";
+        if(!isNaN(id)){ source = "Editor "+id+": "}
+        $("#logdiv").append("<p> "+source+": "+msg+"</p>");   
+        var n = $("#logdiv").get(0).scrollHeight;
+        $("#logdiv").animate({ scrollTop: n },'10'); 
+      }
+    }
+
     </script>
   </head>
   <body>

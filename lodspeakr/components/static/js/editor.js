@@ -90,6 +90,8 @@ function Editor(){
         $("#share-dialog").modal('show');
       }
     });
+    log("New editor created", self.editorId);
+
 },
 setData: function(data){
   var self = this;
@@ -119,6 +121,7 @@ myFilter: function(item, args) {
 },
 showTable: function(){
   var self = this;
+  log("Show table", self.editorId);
   $(".collapse-element").on('click', function(event){var elem = event.target; var id = $(elem).attr("data-target"); $("#"+id).collapse("toggle"); });
 
   //self.fillHeaders();
@@ -226,6 +229,7 @@ $("#runGroup").on('click', function(){
   },
   renderGroup: function(config){
     var self = this;
+    log("Grouping dataset", self.editorId);
     var groupby = config.groupby, variables = config.variable;
     self.obtainSelection();
     var i = datasetEditors.length;
@@ -241,17 +245,22 @@ $("#runGroup").on('click', function(){
           sumData[item[groupby]] = {};
         }
 
-        $.each(variables, function(i, variable){
-          if(countData[item[groupby]][config.operation+"_"+variable] == undefined){
-            countData[item[groupby]][config.operation+"_"+variable] = 1;
-          }else{
-            countData[item[groupby]][config.operation+"_"+variable]++;          
-          }
+        $.each(variables, function(j, variable){
+          var thisValue = parseFloat(item[variable]);
+          if(config.operation == 'count' || !isNaN(thisValue)){
+            if(countData[item[groupby]][config.operation+"_"+variable] == undefined){
+              countData[item[groupby]][config.operation+"_"+variable] = 1;
+            }else{
+              countData[item[groupby]][config.operation+"_"+variable]++;          
+            }
 
-          if(sumData[item[groupby]][config.operation+"_"+variable] == undefined){
-            sumData[item[groupby]][config.operation+"_"+variable] = parseFloat(item[variable]);
+            if(sumData[item[groupby]][config.operation+"_"+variable] == undefined){
+              sumData[item[groupby]][config.operation+"_"+variable] = thisValue;
+            }else{
+              sumData[item[groupby]][config.operation+"_"+variable] += thisValue;
+            }
           }else{
-            sumData[item[groupby]][config.operation+"_"+variable] += parseFloat(item[variable]);
+            log("Not a number in row "+i+" when operation needed a number", self.editorId);
           }
         });
       }
@@ -335,6 +344,7 @@ $("#runGroup").on('click', function(){
   },
   renderMap: function(config){
     var self = this;
+    log("Render map", self.editorId);
     if(config.sortcol != undefined){
       sortcol = config.sortcol;
     }
@@ -365,6 +375,7 @@ $("#runGroup").on('click', function(){
     var center = [0, 0];
     var validPoints = 0;
     var indexLat = config.params.lat, indexLong = config.params.lon;
+    log("Latitude and Longitude: "+indexLat+", "+indexLong, self.editorId);
     north = -100, south=100, east = -100, west = 100;
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
@@ -409,6 +420,7 @@ $("#runGroup").on('click', function(){
     },
     renderChart: function(config){
       var self = this;
+      log("Render chart", self.editorId);
       if(config.sortcol != undefined){
         sortcol = config.sortcol;
       } 
