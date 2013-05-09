@@ -5,92 +5,92 @@ var datasetNumber = 1;
 
 function Editor(){
   return {
-  dataSelection: {rows: []},
-  div: null,
-  searchString: "",
-  sortcol: null,
-  dataView: null,
-  dataset: null,
-  editorId: 0,
-  data: null,
-  headerColumns: [],
-  searchField: null,
-  init: function(config){
-    var self = this;
-    if(config != undefined){
-      if(config.sortcol != undefined){
-        self.sortcol = config.sortcol;
-      }
-      if(config.editorId != undefined){
-        self.editorId = config.editorId;
-      }
-      if(config.data != undefined){
-        self.data = config.data;
-      }
-      if(config.columns != undefined){
-        self.columns = config.columns;
-      }
-      if(config.headerColumns != undefined){
-        self.headerColumns = config.headerColumns;
-      }
-    }      
-    self.div = config.div;
-    self.dataset = config.dataset;
-    $("#main").append('<div class="row dataset'+self.editorId+'"><div class="span12 dataset'+self.editorId+' datasetCell"></div></div>');
-    $cell = $(".dataset"+self.editorId+" .datasetCell");
-    $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
-    $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
-    $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
-    $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
-    $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
-    options = "";
-    $.each(self.headerColumns, function(i, item){
-      options += "<option value='"+item.value+"'>"+item.name+"</option>";
-    });
-    $('.fieldSearch.'+self.div).html(options);
-    $(".fieldSearch."+self.div).on('change', function(){
-      aux = $(".fieldSearch."+self.div+" option:selected").val()
-      self.searchField = aux;
-    });
-    $(".fieldSearch."+self.div).trigger('change');
-    $('.editor'+self.editorId).on('click', function(){
-      self.fillHeaders();
-    })
+    dataSelection: {rows: []},
+    div: null,
+    searchString: "",
+    sortcol: null,
+    dataView: null,
+    dataset: null,
+    editorId: 0,
+    data: null,
+    headerColumns: [],
+    searchField: null,
+    init: function(config){
+      var self = this;
+      if(config != undefined){
+        if(config.sortcol != undefined){
+          self.sortcol = config.sortcol;
+        }
+        if(config.editorId != undefined){
+          self.editorId = config.editorId;
+        }
+        if(config.data != undefined){
+          self.data = config.data;
+        }
+        if(config.columns != undefined){
+          self.columns = config.columns;
+        }
+        if(config.headerColumns != undefined){
+          self.headerColumns = config.headerColumns;
+        }
+      }      
+      self.div = config.div;
+      self.dataset = config.dataset;
+      $("#main").append('<div class="row dataset'+self.editorId+'"><div class="span12 dataset'+self.editorId+' datasetCell"></div></div>');
+      $cell = $(".dataset"+self.editorId+" .datasetCell");
+      $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
+      $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
+      $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
+      $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
+      $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
+      options = "";
+      $.each(self.headerColumns, function(i, item){
+        options += "<option value='"+item.value+"'>"+item.name+"</option>";
+      });
+      $('.fieldSearch.'+self.div).html(options);
+      $(".fieldSearch."+self.div).on('change', function(){
+        aux = $(".fieldSearch."+self.div+" option:selected").val()
+        self.searchField = aux;
+      });
+      $(".fieldSearch."+self.div).trigger('change');
+      $('.editor'+self.editorId).on('click', function(){
+        self.fillHeaders();
+      })
 
-    $(".group-button").on('click', function(){
-      $("#group-dataset").val($(this).attr("data-dataset"));
-    });
-    $("#confirmShare").unbind('click');
-    $("#confirmShare").on('click', function(event){
-      var id = $(this).attr("data-chart");
-      vizObj[id].title = $("#visualization-title").val();
-      if(vizObj[id].url == undefined){
-        $.ajax({
-          url:'/data/share',
-          type: 'POST',
-          contentType: "application/json",
-          dataType: 'json',
-          data: JSON.stringify(vizObj[id]),
-          success: function(data){
-            if(data.success == true){
-              vizObj[id].url = home+data.url;
-              $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
-              $("#share-dialog").modal('show');
-            }else{
-              alert("Error while storing visualization");
+      $(".group-button").on('click', function(){
+        $("#group-dataset").val($(this).attr("data-dataset"));
+      });
+      $("#confirmShare").unbind('click');
+      $("#confirmShare").on('click', function(event){
+        var id = $(this).attr("data-chart");
+        vizObj[id].title = $("#visualization-title").val();
+        if(vizObj[id].url == undefined){
+          $.ajax({
+            url:'/data/share',
+            type: 'POST',
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify(vizObj[id]),
+            success: function(data){
+              if(data.success == true){
+                vizObj[id].url = home+data.url;
+                $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+                $("#share-dialog").modal('show');
+              }else{
+                alert("Error while storing visualization");
+              }
+            },
+            error: function(){
+              $("#error-message").html("<h4>Share Error</h4><p>OpenDataVis couldn't connect with the server. Try later.</p>");
+              $("#error-dialog").modal('show');
             }
-          },
-          error: function(){
-            $("#error-message").html("<h4>Share Error</h4><p>OpenDataVis couldn't connect with the server. Try later.</p>");
-            $("#error-dialog").modal('show');
-          }
-        });
-      }else{
-        $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
-        $("#share-dialog").modal('show');
-      }
-    });
-    log("New editor created", self.editorId);
+          });
+        }else{
+          $("#share-link").attr("href", vizObj[id].url).html(vizObj[id].url);
+          $("#share-dialog").modal('show');
+        }
+      });
+log("New editor created", self.editorId);
 
 },
 setData: function(data){
@@ -147,11 +147,11 @@ showTable: function(){
       self.updateFilter();
       $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
     });
-console.log("grid", ".grid.dataset"+self.editorId);
+  console.log("grid", ".grid.dataset"+self.editorId);
   grid = new Slick.Grid(".grid.dataset"+self.editorId, self.dataView, self.columns, options);
-        $('html, body').stop().animate({
-                      scrollTop: $(".grid.dataset"+self.editorId).offset().top
-                    }, 1000);
+  $('html, body').stop().animate({
+    scrollTop: $(".grid.dataset"+self.editorId).offset().top
+  }, 1000);
 
   self.dataView.onRowCountChanged.subscribe(function (e, args) {
     grid.updateRowCount();
@@ -208,7 +208,7 @@ $("#chartRun").on('click', function(){
   };
   self.renderChart(config);
 });
-    
+
 //Group operations
 $("#runGroup").on('click', function(){
   var fields = [];
@@ -226,46 +226,49 @@ $("#runGroup").on('click', function(){
 
 
 
-  },
-  renderGroup: function(config){
-    var self = this;
-    log("Grouping dataset", self.editorId);
-    var groupby = config.groupby, variables = config.variable;
-    self.obtainSelection();
-    var i = datasetEditors.length;
-    var countData = [], sumData = [];
-    $.each(self.dataSelection.rows, function(i, item){
-      if(item[groupby] != undefined){
-        if(countData[item[groupby]] == undefined){
-          countData[item[groupby]] = {};
-        }
-
-
-        if(sumData[item[groupby]] == undefined){
-          sumData[item[groupby]] = {};
-        }
-
-        $.each(variables, function(j, variable){
-          var thisValue = parseFloat(item[variable]);
-          if(config.operation == 'count' || !isNaN(thisValue)){
-            if(countData[item[groupby]][config.operation+"_"+variable] == undefined){
-              countData[item[groupby]][config.operation+"_"+variable] = 1;
-            }else{
-              countData[item[groupby]][config.operation+"_"+variable]++;          
-            }
-
-            if(sumData[item[groupby]][config.operation+"_"+variable] == undefined){
-              sumData[item[groupby]][config.operation+"_"+variable] = thisValue;
-            }else{
-              sumData[item[groupby]][config.operation+"_"+variable] += thisValue;
-            }
-          }else{
-            log("Not a number in row "+i+" when operation needed a number", self.editorId);
-          }
-        });
+},
+renderGroup: function(config){
+  var self = this;
+  var groupby = config.groupby, variables = config.variable;
+  self.obtainSelection();
+  log("Grouping dataset", self.editorId);
+  log("* Operation: "+config.operation, self.editorId);
+  log("* Variables: "+variables, self.editorId);
+  log("* Group By: "+groupby, self.editorId);
+  var i = datasetEditors.length;
+  var countData = [], sumData = [];
+  $.each(self.dataSelection.rows, function(i, item){
+    if(item[groupby] != undefined){
+      if(countData[item[groupby]] == undefined){
+        countData[item[groupby]] = {};
       }
-    });
-    var newData = [], groupedData = [];
+
+
+      if(sumData[item[groupby]] == undefined){
+        sumData[item[groupby]] = {};
+      }
+
+      $.each(variables, function(j, variable){
+        var thisValue = parseFloat(item[variable]);
+        if(config.operation == 'count' || !isNaN(thisValue)){
+          if(countData[item[groupby]][config.operation+"_"+variable] == undefined){
+            countData[item[groupby]][config.operation+"_"+variable] = 1;
+          }else{
+            countData[item[groupby]][config.operation+"_"+variable]++;          
+          }
+
+          if(sumData[item[groupby]][config.operation+"_"+variable] == undefined){
+            sumData[item[groupby]][config.operation+"_"+variable] = thisValue;
+          }else{
+            sumData[item[groupby]][config.operation+"_"+variable] += thisValue;
+          }
+        }else{
+          log("Not a number in row "+i+" when operation needed a number", self.editorId);
+        }
+      });
+    }
+  });
+var newData = [], groupedData = [];
 
     //What operation was asked?
     //TODO: Median!
@@ -348,15 +351,16 @@ $("#runGroup").on('click', function(){
     if(config.sortcol != undefined){
       sortcol = config.sortcol;
     }
-      if(config.manualdata == true){
-        self.dataView.beginUpdate();
-        if(config.filter.length > 0){
-          arg = config.filter[0];
-          self.dataView.setFilter(self.myFilter);
-          self.dataView.setFilterArgs(arg);
-        }
-        self.dataView.sort(self.comparer, 1);
-       self.dataView.endUpdate();
+    log("* Sort Column: "+config.sortcol, self.editorId);
+    if(config.manualdata == true){
+      self.dataView.beginUpdate();
+      if(config.filter.length > 0){
+        arg = config.filter[0];
+        self.dataView.setFilter(self.myFilter);
+        self.dataView.setFilterArgs(arg);
+      }
+      self.dataView.sort(self.comparer, 1);
+      self.dataView.endUpdate();
     }
     self.obtainSelection();
     $("#mapContainer").empty();
@@ -375,7 +379,7 @@ $("#runGroup").on('click', function(){
     var center = [0, 0];
     var validPoints = 0;
     var indexLat = config.params.lat, indexLong = config.params.lon;
-    log("Latitude and Longitude: "+indexLat+", "+indexLong, self.editorId);
+    log("* Lat/Long: "+indexLat+", "+indexLong, self.editorId);
     north = -100, south=100, east = -100, west = 100;
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
@@ -391,15 +395,17 @@ $("#runGroup").on('click', function(){
         north = Math.max(north, lat);
         east = Math.max(east, lon);
         west = Math.min(west, lon);
-      }
-    });
+      }else{
+       log("Values in row "+i+" are not numeric", self.editorId);
+     }
+   });
     if(validPoints > 0){
       //map.panTo([center[0]/validPoints, center[1]/validPoints]);
       map.fitBounds([[north, west], [south, east]]);
       $('html, body').stop().animate({
-                      scrollTop: $('#map').offset().top
-                    }, 1000);
-        if(!config.readonly){
+        scrollTop: $('#map').offset().top
+      }, 1000);
+      if(!config.readonly){
           //Metadata
           vizObj['map'] = {};
           vizObj['map'].type='MapVisualization';
@@ -410,11 +416,11 @@ $("#runGroup").on('click', function(){
           vizObj['map'].filters = [ {column: self.searchField, value: self.searchString} ];
           vizObj['map'].sortcol = sortcol;
         }
-    }else{
+      }else{
         $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
         $("#error-dialog").modal('show');
         $("#mapDelete").trigger('click');
-    }        
+      }        
       
       self.runEvents();
     },
@@ -424,6 +430,7 @@ $("#runGroup").on('click', function(){
       if(config.sortcol != undefined){
         sortcol = config.sortcol;
       } 
+      log("* Sort Column: "+config.sortcol, self.editorId);
       if(config.manualdata == true){
         self.dataView.beginUpdate();
         if(config.filter != undefined && config.filter.length > 0){
@@ -443,23 +450,26 @@ $("#runGroup").on('click', function(){
       }
       var dataObj = {}, d1 = [];
       var $var2 = config.params.var2, $var1 = config.params.var1;
+      log("* Parameters: "+JSON.stringify(config.params), self.editorId);
       var options = {
         yaxis : {
-            show : true,
-            axisLabel : $var2,
-            position: 'left',
+          show : true,
+          axisLabel : $var2,
+          position: 'left',
         },
         xaxis : {
-            show : true,
-            axisLabel : $var1,
+          show : true,
+          axisLabel : $var1,
         },
         grid: {
-            hoverable: true,
+          hoverable: true,
         }
       };
       var xCounter = 0;
       var ticks = [];
       $chart_type = config.chartType
+      log("* Chart type: "+$chart_type, self.editorId);
+      log("* Non-numeric X axis: "+config.numericx, self.editorId);
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
         if(config.numericx){
@@ -494,9 +504,9 @@ $("#runGroup").on('click', function(){
       
       var d1 = [];
       $.plot("#chart", [dataObj], options);
-        $('html, body').stop().animate({
-                      scrollTop: $('#chart').offset().top
-                    }, 1000);
+      $('html, body').stop().animate({
+        scrollTop: $('#chart').offset().top
+      }, 1000);
       if(!config.readonly){
         //Metadata
         vizObj['chart'] = {};
@@ -521,13 +531,13 @@ $("#runGroup").on('click', function(){
             y = item.datapoint[1].toFixed(2);
 
             self.showTooltip(item.pageX, item.pageY,
-                "(" + x + ", " + y+")");
+              "(" + x + ", " + y+")");
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;            
         }
-    });
+      });
       self.runEvents();
     },
     showTooltip: function(x, y, contents) {

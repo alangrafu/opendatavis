@@ -133,7 +133,7 @@
         }
         var source = "";
         if(!isNaN(id)){ source = "Editor "+id+": "}
-        $("#logdiv").append("<p> "+source+": "+msg+"</p>");   
+        $("#logdiv").append("<p> "+source+msg+"</p>");   
         var n = $("#logdiv").get(0).scrollHeight;
         $("#logdiv").animate({ scrollTop: n },'10'); 
       }
