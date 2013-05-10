@@ -14,6 +14,7 @@
     <legend>Latitude</legend><select id="lat" name="lat"></select>
     <legend>Longitude</legend><select id="lon" name="lon"></select>
     <input type="hidden" id="map-dataset"/>
+    <input type="hidden" id="map-editor-id"/>
    </fieldset>
   </form>                                     
   <br/>
@@ -44,6 +45,7 @@
   <legend for="var1">X Axis</legend><select id="var1" name="var1"></select> <span id="stringvaluescheckbox">Values in X axis are not numbers <input type="checkbox" id="var1string"/></span>
   <legend for="var2">Y Axis</legend><select id="var2" name="var2"></select>
   <input type="hidden" id="chart-dataset"/>
+  <input type="hidden" id="chart-editor-id"/>
   <legend for="chart-type">Chart type</legend>
   <select id="chart-type" name="chart-type">
    <option value="ColumnChartVisualization">Column</option>
@@ -140,6 +142,7 @@
    </p>
    <p> grouped by <select id="grouped-by"></select></p>
    <input type="hidden" id="group-dataset"/>
+   <input type="hidden" id="group-editor-id"/>
   <div class="modal-footer">
    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
    <a href="#" id="runGroup" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Calculate</a>
@@ -166,7 +169,8 @@ $(function(){
     dataset: "{{first.jsonfile.jsonURL.value}}",
     columns: [],
     headerColumns: null,
-    searchField: ""
+    searchField: "",
+    editorId: datasetEditors.length
   }
 
   createEditor(config);
@@ -191,7 +195,7 @@ $(function(){
       sortcol: "{{first.header.val.value|slugify}}",
       div: "dataset1",
       dataset: loadDataset,
-      editorId: 1,
+      editorId: datasetEditors.length,
     columns: [],
     headerColumns: null,
     searchField: ""
@@ -229,6 +233,62 @@ function createEditor(config){
     }    
   })
 }
+
+
+//Map chart
+$("#mapRun").on('click', function(){
+  var id = $("#chart-editor-id").val()
+  log("running map from editor "+id);
+  var config = {
+    dataset: $("#map-dataset").val(),
+    params: {
+      lat: $("#lat").val(),
+      lon: $("#lon").val()
+    },
+    height: $("#map-height").val(),
+    width: $("#map-width").val(),
+    readOnly: false
+  };
+  datasetEditors[id].renderMap(config);
+});
+
+
+//Bar chart
+$("#chartRun").on('click', function(){
+  var id = $("#chart-editor-id").val()
+  log("running chart from editor "+id);
+  config = {
+    chartType: $("#chart-type").val(),
+    dataset: $("#chart-dataset").val(),
+    params: {
+      var1: $("#var1").val(),
+      var2: $("#var2").val(),
+    },
+    height: $("#chart-height").val(),
+    width: $("#chart-width").val(),
+    readOnly: false,
+    numericx: $('#var1string').is(':checked')
+  };
+  datasetEditors[id].renderChart(config);
+});
+
+//Group operations
+$("#runGroup").on('click', function(){
+  var id = $("#group-editor-id").val()
+  var fields = [];
+  log("running group from editor "+id);
+  $.each($(".group-variable"), function(i, item){
+    fields.push($(item).find(":selected").val());
+  });
+  log($("#group-dataset").val());
+  config = {
+    dataset: $("#group-dataset").val(),
+    operation: $("#group-operation option:selected").val(), 
+    groupby: $("#grouped-by option:selected").val(),
+    variable: fields
+  };
+  datasetEditors[id].renderGroup(config);
+});
 
 });
 </script>

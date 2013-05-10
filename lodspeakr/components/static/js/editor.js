@@ -40,7 +40,7 @@ function Editor(){
       $cell = $(".dataset"+self.editorId+" .datasetCell");
       $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
       $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
-      $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
+      $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" group-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" chart-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" map-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
       $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
       $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";
@@ -53,13 +53,7 @@ function Editor(){
         self.searchField = aux;
       });
       $(".fieldSearch."+self.div).trigger('change');
-      $('.editor'+self.editorId).on('click', function(){
-        self.fillHeaders();
-      })
 
-      $(".group-button").on('click', function(){
-        $("#group-dataset").val($(this).attr("data-dataset"));
-      });
       $("#confirmShare").unbind('click');
       $("#confirmShare").on('click', function(event){
         var id = $(this).attr("data-chart");
@@ -90,6 +84,7 @@ function Editor(){
           $("#share-dialog").modal('show');
         }
       });
+self.runEvents();
 log("New editor created", self.editorId);
 
 },
@@ -176,56 +171,6 @@ showTable: function(){
   self.dataView.endUpdate();
   $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
 
-//Map chart
-$("#mapRun").on('click', function(){
-  var config = {
-    dataset: $("#map-dataset").val(),
-    params: {
-      lat: $("#lat").val(),
-      lon: $("#lon").val()
-    },
-    height: $("#map-height").val(),
-    width: $("#map-width").val(),
-    readOnly: false
-  };
-  self.renderMap(config);
-});
-
-
-//Bar chart
-$("#chartRun").on('click', function(){
-  config = {
-    chartType: $("#chart-type").val(),
-    dataset: $("#chart-dataset").val(),
-    params: {
-      var1: $("#var1").val(),
-      var2: $("#var2").val(),
-    },
-    height: $("#chart-height").val(),
-    width: $("#chart-width").val(),
-    readOnly: false,
-    numericx: $('#var1string').is(':checked')
-  };
-  self.renderChart(config);
-});
-
-//Group operations
-$("#runGroup").on('click', function(){
-  var fields = [];
-  $.each($(".group-variable"), function(i, item){
-    fields.push($(item).find(":selected").val());
-  });
-  config = {
-    dataset: $("#group-dataset").val(),
-    operation: $("#group-operation option:selected").val(), 
-    groupby: $("#grouped-by option:selected").val(),
-    variable: fields
-  };
-  self.renderGroup(config);
-});
-
-
-
 },
 renderGroup: function(config){
   var self = this;
@@ -306,6 +251,7 @@ var newData = [], groupedData = [];
       newData.push(newItem);
       counter++;
     }
+    var i = datasetEditors.length;
     var c = {
       dataset: {
         groupby: groupby,
@@ -314,7 +260,7 @@ var newData = [], groupedData = [];
         dataset: self.dataset,
         filterby: [ {column: self.searchField, value: self.searchString} ]
       },
-      editorId: datasetEditors.length,
+      editorId: i,
       div: "dataset"+i,
       columns: columns,
       headerColumns: headerColumns,
@@ -323,6 +269,7 @@ var newData = [], groupedData = [];
     datasetEditors[i] = new Editor;
     datasetEditors[i].init(c);
     datasetEditors[i].showTable();
+    console.log(datasetEditors);
   },
   updateFilter: function() {
     var self = this;
@@ -559,21 +506,48 @@ var newData = [], groupedData = [];
       $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
     },
     runEvents: function(){
+      alert("eevnet!");
+
+      $(".chart-button").unbind('click');
       $(".chart-button").on('click', function(){
+        var id = $(this).attr("chart-editor-id");
+        datasetEditors[id].fillHeaders();
+        $("#chart-editor-id").val(id);
         $("#chart-dataset").val($(this).attr("data-dataset"));
       });
+      $(".map-button").unbind('click');
       $(".map-button").on('click', function(){
+        var id = $(this).attr("map-editor-id");
+        datasetEditors[id].fillHeaders();
+        $("#map-editor-id").val(id);
         $("#map-dataset").val($(this).attr("data-dataset"));
       });
+
+      $(".group-button").unbind('click');
+      $(".group-button").on('click', function(e){
+        var id = $(e.target).attr("group-editor-id");
+        alert("Asd"+ id);
+        console.log($(e.target));
+        datasetEditors[id].fillHeaders();
+        $("#group-editor-id").val(id);
+        $("#group-dataset").val($(this).attr("data-dataset"));
+      });
+
+      $(".deleteButton").unbind('click');
       $(".deleteButton").on('click', function(){$(this).parent().parent().empty()});
+
+      $(".editButton").unbind('click');
       $(".editButton").on('click', function(){
         var modalId = "#"+$(this).attr("data-edit");
         $(modalId).trigger('click');
       });
+
+      $(".shareButton").unbind('click');
       $(".shareButton").on('click', function(e){
         $("#confirmShare").attr("data-chart", $(this).attr("data-chart"));
         $("#title-dialog").modal('show');
       });      
+      
     }
     
     
