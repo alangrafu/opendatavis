@@ -347,27 +347,74 @@ $("#runMerge").on('click', function(){
       var1 = $("#merge-field1 option:selected").val(),
       var2 = $("#merge-field2 option:selected").val();
 
+  var title1 = datasetEditors[id1].title.replace(".", "_"),
+      title2 = datasetEditors[id2].title.replace(".", "_");
+
+  var newHeaderColumns = [], newColumns = [];
+  var hc1 = datasetEditors[id1].headerColumns,
+      hc2 = datasetEditors[id2].headerColumns,
+      c1 = datasetEditors[id1].columns,
+      c2 = datasetEditors[id2].columns;
+
+  //New headerColumns
+  for(var k in hc1){
+    var aux = {name: title1+"_"+hc1[k].name, value: title1+"_"+hc1[k].value};
+    newHeaderColumns.push(aux);
+  }
+  for(var k in hc2){
+    var aux = {name: title2+"_"+hc2[k].name, value: title1+"_"+hc2[k].value};
+    newHeaderColumns.push(aux);
+  }
+
+  //New columns
+  for(var k in c1){
+    var aux = {id: title1+"_"+c1[k].id, name: title1+"_"+c1[k].name, field: title1+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
+    newColumns.push(aux);
+  }
+  for(var k in c2){
+    var aux = {id: title2+"_"+c2[k].id, name: title2+"_"+c2[k].name, field: title2+"_"+c2[k].field, cssClass: "cell-title", sortable: true };
+    newColumns.push(aux);
+  }
+
   datasetEditors[id1].obtainSelection();
   datasetEditors[id2].obtainSelection();
+  var matchCounter = 0;
   var newRows = [];
   $.each(datasetEditors[id1].dataSelection.rows, function(i, item1){
     $.each(datasetEditors[id2].dataSelection.rows, function(j, item2){
       if(item1[var1] == item2[var2]){
-        var newItem = {};
-        var title1 = datasetEditors[id1].title.replace(".", "_"),
-            title2 = datasetEditors[id2].title.replace(".", "_");
+        var newItem = {id: matchCounter++};
         for(var k in item1){
-          newItem[title1+"_"+k] = item1[k];
+          if(k != "id"){
+            newItem[title1+"_"+k] = item1[k];
+          }
         }
         for(var k in item2){
-          newItem[title2+"_"+k] = item2[k];
+          if(k != "id"){
+            newItem[title2+"_"+k] = item2[k];
+          }
         }
         newRows.push(newItem);
       }    
     });
   });
-  console.log(newRows);
+var newConfig = {
+    sortcol: "",
+    div: "dataset"+datasetEditors.length,
+    dataset: "{{first.jsonfile.jsonURL.value}}",
+    columns: newColumns,
+    headerColumns: newHeaderColumns,
+    searchField: "",
+    title: "Merge dataset ("+title1+" and "+title2+")",
+    editorId: datasetEditors.length,
+    data: newRows
+  };
 
+      newConfig['sortcol'] = newConfig.headerColumns[0];
+      i = datasetEditors.length;
+      datasetEditors[i] = new Editor;
+      datasetEditors[i].init(newConfig);
+      datasetEditors[i].showTable();
 });
 });
 </script>
