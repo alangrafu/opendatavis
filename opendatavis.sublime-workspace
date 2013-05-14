@@ -1,0 +1,671 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ma",
+				"matchedElements"
+			],
+			[
+				"match",
+				"matchString"
+			],
+			[
+				"run",
+				"runEvents"
+			],
+			[
+				"fon",
+				"font-weight"
+			],
+			[
+				"font",
+				"font-style"
+			],
+			[
+				"edito",
+				"editorId"
+			],
+			[
+				"log",
+				"loglevel"
+			],
+			[
+				"option",
+				"option:selected"
+			],
+			[
+				"ani",
+				"animate"
+			],
+			[
+				"Column",
+				"ColumnChartVisualization"
+			],
+			[
+				"sele",
+				"selected"
+			],
+			[
+				"grouped",
+				"groupedData"
+			],
+			[
+				"count",
+				"countData"
+			],
+			[
+				"edi",
+				"editorId"
+			],
+			[
+				"searc",
+				"searchString"
+			],
+			[
+				"sea",
+				"searchField"
+			],
+			[
+				"header",
+				"headerColumns"
+			],
+			[
+				"fill",
+				"fillHeaders"
+			],
+			[
+				"json",
+				"jsonData"
+			],
+			[
+				"downlo",
+				"downloadURI"
+			],
+			[
+				"id",
+				"identifier"
+			],
+			[
+				"dataset",
+				"datasetDescription"
+			],
+			[
+				"namedG",
+				"namedGraphEnd"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "lodspeakr/components/services/showDataset/html.template",
+			"settings":
+			{
+				"buffer_size": 11073,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lodspeakr/components/static/js/editor.js",
+			"settings":
+			{
+				"buffer_size": 20610,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/LaTeXTools/LaTeX.sublime-build",
+	"command_palette":
+	{
+		"height": 147.0,
+		"selected_items":
+		[
+			[
+				"indn",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"inden",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"begin en",
+				"Snippet: \\begin{}…\\end{}"
+			],
+			[
+				"begin",
+				"Snippet: \\begin{}…\\end{}"
+			],
+			[
+				"figure",
+				"Snippet: figure"
+			],
+			[
+				"figur",
+				"Snippet: Figure"
+			],
+			[
+				"setti",
+				"Preferences: Settings - User"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"latex",
+				"LaTeXTools: View PDF"
+			],
+			[
+				"view",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"pac",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: table",
+				"Snippet: table"
+			],
+			[
+				"Snippet: math",
+				"Snippet: Display Math — \\[ … \\]"
+			],
+			[
+				"Snippet: tabl",
+				"Snippet: Table"
+			],
+			[
+				"Snippet: begin",
+				"Snippet: \\begin{}…\\end{}"
+			],
+			[
+				"Snippet:fi",
+				"Snippet: Figure"
+			],
+			[
+				"Snippet: fig",
+				"Snippet: Figure"
+			],
+			[
+				"Snippet: ite",
+				"Snippet: Itemize"
+			],
+			[
+				"Snippet: figu",
+				"Snippet: Figure"
+			],
+			[
+				"Snippet: item",
+				"Snippet: Itemize"
+			],
+			[
+				"Snippet: enum",
+				"Snippet: Enumerate"
+			],
+			[
+				"",
+				"Snippet: figure"
+			],
+			[
+				"Snippet:",
+				"Snippet: Beamer frame"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: ",
+				"Snippet: Chapter"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/DGO2013/sigproc-sp.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/DGO2013/sigproc-sp (1).tex",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:VirtualDataset/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:VirtualDataset/json.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/static/index.html",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ChartVisualization/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:VirtualDataset/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:MapVisualization/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ChartVisualization/queries/params.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/showDataset/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/static/js/editor.js",
+		"/Users/alvarograves/github/opendatavis/server/server.py",
+		"/Users/alvarograves/github/opendatavis/server/Converter.py",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/visualizations/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ChartVisualization/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/datasets/json.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/datasets/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:MapVisualization/queries/params.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ColumnChartVisualization/queries/rows.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ColumnChartVisualization/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ColumnChartVisualization/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/showDataset/json.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/showDataset/queries/header.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ColumnChartVisualization/queries/params.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:LineChartVisualization/queries/params.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ScatterPlotVisualization/queries/params.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:LineChartVisualization/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:ScatterPlotVisualization/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/showDataset/queries/jsonfile.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/showDataset/queries/endpoint.local/rows.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/includes/header.inc",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/datasets/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:LineChartVisualization/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/services/visualizations/html.template",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:MapVisualization/queries/main.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:MapVisualization/queries/header.query",
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/local_vocab:MapVisualization/queries/rows.query",
+		"/Users/alvarograves/Downloads/sigproc-sp.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/HSWI2013/paper.tex",
+		"/Users/alvarograves/Documents/Academia/p/proposal.tex",
+		"/Users/alvarograves/Documents/Academia/p/proposal.sublime-project",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/User/LaTeXTools Preferences.sublime-settings",
+		"/Users/alvarograves/Documents/Academia/PhD/Presentations/lodspk-arxiv/lodspeakr.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/DGO2013/paper.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/WWW2013/paper.tex",
+		"/Users/alvarograves/Documents/Academia/p/bibliografy.bib",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/FileDiffs/FileDiffs.sublime-settings",
+		"/Users/alvarograves/Documents/Academia/p/p5.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/DGO2013/bibliography.bib",
+		"/Users/alvarograves/Desktop/leap_d3.html",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/WWW2013/bibliography.bib",
+		"/Users/alvarograves/Documents/Academia/p/abstract_new.tex",
+		"/Users/alvarograves/tmp/fb4i/js/facets.js",
+		"/Users/alvarograves/tmp/fb4i/js/main.js",
+		"/Users/alvarograves/Documents/Academia/p/bibliography.bib",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/User/sftp_servers/alia",
+		"/Users/alvarograves/Downloads/settings.php",
+		"/Users/alvarograves/Downloads/citations (2).bib",
+		"/Users/alvarograves/Documents/La importancia de los datos",
+		"/Users/alvarograves/Documents/lnds open data.html",
+		"/Users/alvarograves/Documents/lnds open data",
+		"/Users/alvarograves/Documents/Academia/p/abstract.tex",
+		"/Users/alvarograves/Dropbox/abstract/abstract.tex",
+		"/Users/alvarograves/github/turtled/style.css",
+		"/Users/alvarograves/github/turtled/turtled.js",
+		"/Users/alvarograves/github/turtled/index.html",
+		"/Users/alvarograves/Documents/Academia/PhD/Presentations/Ecuador2012/abstract.tex",
+		"/Users/alvarograves/Documents/Academia/PhD/Conferences/WebScience2010/collaboration.tex",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/LaTeX/LaTeX.sublime-build",
+		"/Users/alvarograves/tmp/bla.tex",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/alvarograves/Downloads/twitter-bootstrap-857b8fb/js/README.md",
+		"/Users/alvarograves/Downloads/sparql.php",
+		"/Users/alvarograves/Downloads/info.php",
+		"/Users/alvarograves/mampstack-3.0.6-0/apache2/htdocs/opengovplatform/webapp/sites/all/modules/contrib/lodmetadata/lodmetadata.module",
+		"/Users/alvarograves/Downloads/webfontkit-20120206-141400/sansation_light-webfont-webfont.svg",
+		"/Users/alvarograves/github/visualSparql/sparql.bnf",
+		"/Users/alvarograves/github/visualSparql/js/dragdrop.js",
+		"/Users/alvarograves/github/visualSparql/js/dialog.js",
+		"/Users/alvarograves/github/visualSparql/index.php",
+		"/Users/alvarograves/github/visualSparql/js/main.js",
+		"/Users/alvarograves/github/visualSparql/js/sparqlApi.js",
+		"/Users/alvarograves/github/visualSparql/js/SparqlParser.js",
+		"/Users/alvarograves/github/visualSparql/css/style.css",
+		"/Users/alvarograves/github/visualSparql/css/dialog.css",
+		"/Users/alvarograves/github/visualSparql/js/namespace.js",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/alvarograves/Library/Application Support/Sublime Text 2/Packages/User/Base File.sublime-settings"
+	],
+	"find":
+	{
+		"height": 33.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"*",
+			"",
+			"\\s<\\1"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"merge-dataset1",
+			"merge-datas",
+			"load",
+			"title",
+			"setLog",
+			"alert",
+			"fillhe",
+			"data-editor-id",
+			"chart-editor",
+			"\"hidden",
+			"hidden\"",
+			"hidden",
+			"data-data",
+			"data-edito",
+			"data-edit",
+			"Editor",
+			"data-dataset",
+			"chartRun",
+			"renderGr",
+			"scro",
+			"log(",
+			"log",
+			"self.lo",
+			"self.log",
+			"lo",
+			"logbox",
+			"grid",
+			"var newD",
+			"var new",
+			"newCol",
+			"groupedDa",
+			"newVar",
+			"count",
+			"vizObj",
+			"renderMap",
+			"dataset=",
+			"renderGroup",
+			"group",
+			"remove",
+			"group",
+			"done",
+			"timesamp",
+			"done",
+			"time",
+			"done",
+			"id",
+			"opendata",
+			"opendatav",
+			"checkStat",
+			"_setsta",
+			"done",
+			"self.sta",
+			"done",
+			"idle",
+			"random",
+			"numericx",
+			"renderChart",
+			"checked",
+			"renderC",
+			"setData",
+			"setda",
+			"\"chart\"",
+			"newData",
+			"return",
+			"showtable",
+			"dataset",
+			"init(",
+			"confirmsh",
+			"trigger",
+			"click",
+			"confirmShare",
+			"share",
+			"RDFS",
+			"BNo",
+			"key",
+			"renderGrou",
+			"checked",
+			"checkbo",
+			"rendercha",
+			"option-cha",
+			"more option",
+			"chartContain",
+			"chartContin",
+			"columns ",
+			"columns= ",
+			"columns = ",
+			"columns",
+			"colu",
+			"asd",
+			"plot",
+			"showTable",
+			"console",
+			"consol",
+			"confirmGr",
+			"apre",
+			".on",
+			"runeven",
+			"group-button",
+			".val(",
+			"renderMap",
+			"group",
+			"confirmL",
+			"fill",
+			"Hart",
+			"flor",
+			"flo",
+			"console",
+			"obtainSel",
+			"Chart",
+			"myFilter",
+			"myFil",
+			"myFilter",
+			"error",
+			"the fields",
+			"Editor",
+			"fillh",
+			"fill",
+			"txtSea",
+			"conso",
+			"console",
+			"searchString",
+			"args",
+			"sea",
+			"searchString",
+			"myFil",
+			"myFilter",
+			"searchField:",
+			"searchField ="
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"group-editor-id",
+			"self.dataSelection",
+			".''",
+			"examinermanual",
+			"tasks",
+			"finalquestionnaire",
+			"initialquestionnaire",
+			"Number",
+			"Sgvizler",
+			"\\item",
+			"\\chapter",
+			"/",
+			"=",
+			"",
+			"_",
+			"'",
+			"<\\1>",
+			"\\1>        ::=",
+			"\\1>\\s::=",
+			"<\\1",
+			" <\\1",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "lodspeakr/components/services/showDataset/html.template",
+					"settings":
+					{
+						"buffer_size": 11073,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10442,
+								10456
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2302.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "lodspeakr/components/static/js/editor.js",
+					"settings":
+					{
+						"buffer_size": 20610,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20029,
+								20029
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7163.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.sftp":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/alvarograves/Documents/Academia/p/proposal.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 192.0,
+	"status_bar_visible": true
+}

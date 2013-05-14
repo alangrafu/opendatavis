@@ -1,8 +1,9 @@
 PREFIX dcat: <http://www.w3.org/ns/dcat#>
 
-SELECT ?jsonURL WHERE{
+SELECT ?jsonURL ?url WHERE{
 	GRAPH <{{lodspk.metadata}}>{
-	  <{{lodspk.args.all|deurifier}}> dcat:distribution ?jsonDistribution .
+	  <{{lodspk.args.all|deurifier}}> prov:wasDerivedFrom ?url;
+           							  dcat:distribution ?jsonDistribution .
 	  ?jsonDistribution dcat:downloadURL ?jsonURL;
 	                    dcat:mediaType 'application/json' .
 	}

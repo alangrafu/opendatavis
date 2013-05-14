@@ -1,5 +1,8 @@
 {%include "../../includes/header.inc"%}
+<div class="btn-group">
 <button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
+<button class="btn btn-large btn-info merge-button" data-toggle="modal" data-target="#merge-dialog">Merge Datasets</button>
+</div>
 <div class="container-fluid" id="main" style="width:40%"></div>
 <div class="container-fluid" id="viz" style="width:40%">
  <div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>
@@ -150,6 +153,33 @@
  </div>
 </div>
 
+<div class="modal hide fade" id="merge-dialog">
+ <div class="modal-header">
+  <h3>Merge datasets</h3>
+ </div>
+ <div class="modal-body">
+  <p>
+   <select id="merge-dataset1">
+   </select>
+   and
+   <select id="merge-dataset2">
+   </select>
+  </p>
+  <p> where values in column</p>
+  <p>
+   <select id="merge-field1">
+   </select>
+   =
+   <select id="merge-field2">
+   </select>
+  </p>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+   <a href="#" id="runMerge" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Merge</a>
+  </div>
+ </div>
+</div>
+
 <script src='{{lodspk.home}}js/jquery.flot.js'></script>
 <script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script>
@@ -170,7 +200,8 @@ $(function(){
     columns: [],
     headerColumns: null,
     searchField: "",
-    editorId: datasetEditors.length
+    title: "{{first.jsonfile.url.value|explode:"/"|pop}}",
+    editorId: datasetEditors.length,
   }
 
   createEditor(config);
@@ -193,12 +224,13 @@ $(function(){
     var loadDataset = $("#dataset-list option:selected").val();
     var config = {
       sortcol: "{{first.header.val.value|slugify}}",
-      div: "dataset1",
+      div: "dataset"+datasetEditors.length,
       dataset: loadDataset,
       editorId: datasetEditors.length,
-    columns: [],
-    headerColumns: null,
-    searchField: ""
+      title: $("#dataset-list option:selected").html(),
+      columns: [],
+      headerColumns: null,
+      searchField: ""
     };
     createEditor(config)
   });
@@ -290,6 +322,53 @@ $("#runGroup").on('click', function(){
   datasetEditors[id].renderGroup(config);
 });
 
+$("#merge-dataset1").on('change', function(){
+  var id = $("#merge-dataset1 option:selected").val();
+  var options = "";
+  $.each(datasetEditors[id].headerColumns, function(i, item){
+    options += "<option value='"+item.value+"'>"+item.name+"</option>";
+  });
+  $("#merge-field1").html(options);
+});
+
+
+$("#merge-dataset2").on('change', function(){
+  var id = $("#merge-dataset2 option:selected").val();
+  var options = "";
+  $.each(datasetEditors[id].headerColumns, function(i, item){
+    options += "<option value='"+item.value+"'>"+item.name+"</option>";
+  });
+  $("#merge-field2").html(options);
+});
+
+$("#runMerge").on('click', function(){
+  var id1 = $("#merge-dataset1 option:selected").val(),
+      id2 = $("#merge-dataset2 option:selected").val(),
+      var1 = $("#merge-field1 option:selected").val(),
+      var2 = $("#merge-field2 option:selected").val();
+
+  datasetEditors[id1].obtainSelection();
+  datasetEditors[id2].obtainSelection();
+  var newRows = [];
+  $.each(datasetEditors[id1].dataSelection.rows, function(i, item1){
+    $.each(datasetEditors[id2].dataSelection.rows, function(j, item2){
+      if(item1[var1] == item2[var2]){
+        var newItem = {};
+        var title1 = datasetEditors[id1].title.replace(".", "_"),
+            title2 = datasetEditors[id2].title.replace(".", "_");
+        for(var k in item1){
+          newItem[title1+"_"+k] = item1[k];
+        }
+        for(var k in item2){
+          newItem[title2+"_"+k] = item2[k];
+        }
+        newRows.push(newItem);
+      }    
+    });
+  });
+  console.log(newRows);
+
+});
 });
 </script>
 </body>

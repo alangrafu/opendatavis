@@ -15,6 +15,7 @@ function Editor(){
     data: null,
     headerColumns: [],
     searchField: null,
+    title: "No title",
     init: function(config){
       var self = this;
       if(config != undefined){
@@ -32,6 +33,9 @@ function Editor(){
         }
         if(config.headerColumns != undefined){
           self.headerColumns = config.headerColumns;
+        }
+        if(config.title != undefined){
+          self.title = config.title;
         }
       }      
       self.div = config.div;
@@ -506,8 +510,6 @@ var newData = [], groupedData = [];
       $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
     },
     runEvents: function(){
-      alert("eevnet!");
-
       $(".chart-button").unbind('click');
       $(".chart-button").on('click', function(){
         var id = $(this).attr("chart-editor-id");
@@ -526,11 +528,28 @@ var newData = [], groupedData = [];
       $(".group-button").unbind('click');
       $(".group-button").on('click', function(e){
         var id = $(e.target).attr("group-editor-id");
-        alert("Asd"+ id);
-        console.log($(e.target));
         datasetEditors[id].fillHeaders();
         $("#group-editor-id").val(id);
         $("#group-dataset").val($(this).attr("data-dataset"));
+      });
+
+      $(".merge-button").unbind('click');
+      $(".merge-button").on('click', function(e){
+        var options = "";
+        $.each(datasetEditors, function(i, item){
+          var title = "";
+          console.log(item);
+          if(item.title != undefined && item.title != ""){
+            title = item.title;
+          }else{
+            title = "Virtual Dataset";
+          }
+          options += "<option value='"+i+"'>"+title+"</option>";
+        });
+        $("#merge-dataset1").html(options);
+        $("#merge-dataset2").html(options);
+        $("#merge-dataset1").trigger('change');
+        $("#merge-dataset2").trigger('change');
       });
 
       $(".deleteButton").unbind('click');
