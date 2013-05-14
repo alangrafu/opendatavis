@@ -362,7 +362,7 @@ $("#runMerge").on('click', function(){
     newHeaderColumns.push(aux);
   }
   for(var k in hc2){
-    var aux = {name: title2+"_"+hc2[k].name, value: title1+"_"+hc2[k].value};
+    var aux = {name: title2+"_"+hc2[k].name, value: title2+"_"+hc2[k].value};
     newHeaderColumns.push(aux);
   }
 
