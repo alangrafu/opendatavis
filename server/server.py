@@ -142,7 +142,23 @@ def saveViz():
                 store.add((usageBNode2, PROV["entity"], URIRef(datasetDict['dataset'])))                
                 store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))  
 
-                store.add((activityBNode, PROV["generated"], newDatasetURI))                
+                store.add((activityBNode, PROV["generated"], newDatasetURI))           
+            elif "merge" in datasetDict.keys():
+                newDatasetURI = URIRef('%s/virtual/%s%s'%(host, str(int(time.time())), str(random.randrange(1, 99999999))))
+                store.add((URIRef(myurl), PROV["wasDerivedFrom"], newDatasetURI))
+                arr = datasetDict['merge']
+                activityBNode = BNode()
+                store.add((newDatasetURI, PROV["wasGeneratedBy"], activityBNode))
+                store.add((newDatasetURI, RDF.type, VIZ["VirtualDataset"]))
+                store.add((activityBNode, RDF.type, PROV["Activity"]))
+                for d in arr:
+                    usageBNode = BNode()
+                    mergeBNode = BNode()
+                    store.add((activityBNode, PROV["qualifiedUsage"], usageBNode))
+                    store.add((usageBNode, RDF.type, PROV["Usage"]))
+                    store.add((usageBNode, VIZ["datasetMerged"], URIRef(d['dataset'])))                
+                    store.add((usageBNode, VIZ["fieldMerged"], Literal(d['field'])))                
+                    store.add((usageBNode, PROV["hadRole"], VIZ["MergeDataset"]))                     
             else:
                 return jsonify(success=False)
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))

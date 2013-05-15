@@ -401,7 +401,19 @@ $("#runMerge").on('click', function(){
 var newConfig = {
     sortcol: "",
     div: "dataset"+datasetEditors.length,
-    dataset: "{{first.jsonfile.jsonURL.value}}",
+    dataset: {
+               merge: [
+                        {
+                          dataset: datasetEditors[id1].dataset,
+                          field: var1
+                        },
+                        {
+                          dataset: datasetEditors[id2].dataset,
+                          field: var2
+                        }
+
+               ]
+    },
     columns: newColumns,
     headerColumns: newHeaderColumns,
     searchField: "",
