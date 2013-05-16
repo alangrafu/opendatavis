@@ -187,3 +187,15 @@ function getData(url){
     }
   });
 }
+
+
+var isInIFrame = (window.location != window.parent.location);
+if(isInIFrame==true){
+$("#metadata").hide();
+$(".navbar").hide();
+}else{
+  $("h1").on('mouseover', function(){$("#share-button").removeClass("hidden")})
+       .on('mouseout', function(){$("#share-button").addClass("hidden")});
+$("#chartContainer").on('mouseover', function(){$("#share-button").removeClass("hidden")})
+       .on('mouseout', function(){$("#share-button").addClass("hidden")});
+}

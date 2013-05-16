@@ -106,16 +106,6 @@ $("#embed-iframe").html("&lt;div style='width:"+(config.width*1.2)+"px;height:"+
 $("#embed-url").html(window.location+"");
 });
 
-var isInIFrame = (window.location != window.parent.location);
-if(isInIFrame==true){
-$("#metadata").hide();
-$(".navbar").hide();
-}else{
-  $("h1").on('mouseover', function(){$("#share-button").removeClass("hidden")})
-       .on('mouseout', function(){$("#share-button").addClass("hidden")});
-$("#chartContainer").on('mouseover', function(){$("#share-button").removeClass("hidden")})
-       .on('mouseout', function(){$("#share-button").addClass("hidden")});
-}
 </script>
 </body>
 </html>
