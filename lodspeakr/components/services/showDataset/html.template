@@ -269,7 +269,7 @@ function createEditor(config){
 
 //Map chart
 $("#mapRun").on('click', function(){
-  var id = $("#chart-editor-id").val()
+  var id = $("#map-editor-id").val()
   log("running map from editor "+id);
   var config = {
     dataset: $("#map-dataset").val(),

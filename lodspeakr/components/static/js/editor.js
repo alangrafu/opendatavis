@@ -305,7 +305,7 @@ var newData = [], groupedData = [];
     log("* Sort Column: "+config.sortcol, self.editorId);
     if(config.manualdata == true){
       self.dataView.beginUpdate();
-      if(config.filter.length > 0){
+      if(config.filter !=  undefined && config.filter.length > 0){
         arg = config.filter[0];
         self.dataView.setFilter(self.myFilter);
         self.dataView.setFilterArgs(arg);
@@ -329,6 +329,7 @@ var newData = [], groupedData = [];
     var north,south,east,west;
     var center = [0, 0];
     var validPoints = 0;
+    console.log(config);
     var indexLat = config.params.lat, indexLong = config.params.lon;
     log("* Lat/Long: "+indexLat+", "+indexLong, self.editorId);
     north = -100, south=100, east = -100, west = 100;
