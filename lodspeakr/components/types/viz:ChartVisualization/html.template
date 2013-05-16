@@ -22,14 +22,16 @@
       </div>
       <div>
        <strong>Obtained from:</strong>
+       <ul>
        {%for i in models.main%}
-       <div about="{{i.original.value}}">
-       <a rel="http://www.w3.org/ns/dcat#distribution" href="{{i.original.value}}">{{i.original.value|explode:"/"|pop}}</a></div>
+       <li about="{{i.original.value}}">
+       <a rel="http://www.w3.org/ns/dcat#distribution" href="{{i.original.value}}">{{i.original.value|explode:"/"|pop}}</a> <small>(from {{i.original.value|hostname}})</small></li>
        {%endfor%}
+     </ul>
       </div>
       <div>
        <strong>Downloaded at:</strong>
-       <span about="{{first.main.datasetcreationdate.value}}" property="dcterms:created"> {{first.main.datasetcreationdate.value}}</span>
+       <span about="{{first.main.datasetcreationdate.value}}" property="dcterms:created">{{first.main.datasetcreationdate.value}}</span>
       </div>
     </div>
     <div id="chartContainer" class="vizContainer"></div>
