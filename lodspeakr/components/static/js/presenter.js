@@ -82,7 +82,6 @@ function getData(url){
           data.rows = auxData;
         }else if(d.merge !=undefined){
    ////////BEGIN MERGE
-   console.log(d.merge);
           var datasets = new Array();
           var title = new Array();
 
@@ -102,12 +101,24 @@ function getData(url){
               searchField: "",
               title: "Merge dataset ("+title[0]+" and "+title[1]+")",
               editorId: datasetEditors.length,
-              data: newData.rows
+              data: newData.rows,
+              filter: [ {searchString: d.merge[i].filter[0].value, searchField: d.merge[i].filter[0].column }]
+
             };
             var j = datasetEditors.length;
             datasetEditors[j] = new Editor;
             datasetEditors[j].init(newConfig);
             datasetEditors[j].setData(newData.rows);
+            datasetEditors[j].dataView.beginUpdate();
+            console.log(newConfig);
+            if(newConfig.filter != undefined && newConfig.filter.length > 0){
+              arg = newConfig.filter[0];
+              datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
+              datasetEditors[j].dataView.setFilterArgs(arg);
+            }
+            //datasetEditors[j].dataView.sort(self.comparer, 1);
+            datasetEditors[j].dataView.endUpdate();
+
           }
 
           var id1 = 0,

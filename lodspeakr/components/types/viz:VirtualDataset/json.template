@@ -11,7 +11,7 @@
   {%if !forloop.last%},{%endif%}{
     "dataset": "{{i.datasetmerged.value}}",
     "field": "{{i.fieldmerged.value}}",
-    "filter": [{column: "{{i.filterColumn.value}}", value: "{{i.filterValue.value}}" }]
+    "filter": [{"column": "{{i.filterColumn.value}}", "value": "{{i.filterValue.value}}" }]
   }
 {%endfor%}
 ]
