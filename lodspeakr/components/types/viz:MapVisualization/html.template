@@ -9,13 +9,11 @@
        <span property="http://purl.org/dc/terms/created">{{first.main.creationdate.value}}</span>
       </div>
       <div>
-        <strong>Parameters:</strong>
-        <div>
-         <strong>Longitude:</strong> "<span>{{first.params.paramX.value}}</span>"
-        </div>
-        <div>
-         <strong>Latitude:</strong> "<span>{{first.params.paramY.value}}</span>"
-        </div>
+        <strong>Parameters</strong>
+        <ul>
+         <li><strong>Longitude:</strong> "<span>{{first.params.paramX.value}}</span>"</li>
+         <li><strong>Latitude:</strong> "<span>{{first.params.paramY.value}}</span>"</li>
+        </ul>
       </div>
       <hr/>
       <div>

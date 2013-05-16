@@ -9,13 +9,11 @@
        <span property="http://purl.org/dc/terms/created">{{first.main.creationdate.value}}</span>
       </div>
       <div>
-        <strong>Parameters:</strong>
-        <div>
-         <strong>Y axis:</strong> "<span>{{first.params.paramX.value}}</span>"
-        </div>
-        <div>
-         <strong>X axis:</strong> "<span>{{first.params.paramY.value}}</span>"
-        </div>
+        <strong>Parameters</strong>
+        <ul>
+         <li><strong>Y axis:</strong> "<span>{{first.params.paramX.value}}</span>"</li>
+         <li><strong>X axis:</strong> "<span>{{first.params.paramY.value}}</span>"</li>
+        </ul>
       </div>
       <hr/>
       <div>
@@ -74,14 +72,14 @@ var config = {
 
 
 data = getData("{{first.params.dataset.value}}");
+console.log(newData);
+config.data = newData;
 //datasetEditors.push(new Editor(config));
 var j = datasetEditors.length;
 datasetEditors[j] = new Editor;
 datasetEditors[j].init(config);
 datasetEditors[j].setData(newData.rows);
-var e = datasetEditors[j];
-e.setData(newData.rows);
-e.renderChart(config);
+datasetEditors[j].renderChart(config);
 
 });
 </script>

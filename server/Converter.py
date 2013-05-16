@@ -118,7 +118,7 @@ class Converter(threading.Thread):
 
     #Creating JSON object
     try:
-      jsonData = { 'header': [], 'rows': []}
+      jsonData = { 'header': [], 'rows': [], 'title': self.url.split("/").pop().replace(".", "_")}
       #Define headers
       for value in headers:
         myVal = self.getLiteral(value)

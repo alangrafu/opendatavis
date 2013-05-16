@@ -146,7 +146,6 @@ showTable: function(){
       self.updateFilter();
       $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
     });
-  console.log("grid", ".grid.dataset"+self.editorId);
   grid = new Slick.Grid(".grid.dataset"+self.editorId, self.dataView, self.columns, options);
   $('html, body').stop().animate({
     scrollTop: $(".grid.dataset"+self.editorId).offset().top
@@ -273,7 +272,6 @@ var newData = [], groupedData = [];
     datasetEditors[i] = new Editor;
     datasetEditors[i].init(c);
     datasetEditors[i].showTable();
-    console.log(datasetEditors);
   },
   updateFilter: function() {
     var self = this;
@@ -329,14 +327,12 @@ var newData = [], groupedData = [];
     var north,south,east,west;
     var center = [0, 0];
     var validPoints = 0;
-    console.log(config);
     var indexLat = config.params.lat, indexLong = config.params.lon;
     log("* Lat/Long: "+indexLat+", "+indexLong, self.editorId);
     north = -100, south=100, east = -100, west = 100;
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
       lon = parseFloat(item[indexLong]);
-      console.log(indexLat, indexLong, lat, lon, item);
       if(!isNaN(lat) && !isNaN(lon)){
         var m = L.marker([lat,lon]).addTo(map);       
         m.bindPopup(item[2]+"<br/>"+lat+", "+lon);
@@ -420,8 +416,9 @@ var newData = [], groupedData = [];
       var xCounter = 0;
       var ticks = [];
       $chart_type = config.chartType
-      log("* Chart type: "+$chart_type, self.editorId);
-      log("* Non-numeric X axis: "+config.numericx, self.editorId);
+      console.log("* Chart type: "+$chart_type, self.editorId);
+      console.log("* Non-numeric X axis: "+config.numericx, self.editorId);
+      console.log("* ", $var1, $var2, self.dataSelection.rows);
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
         if(config.numericx){
@@ -453,7 +450,6 @@ var newData = [], groupedData = [];
       if(config.numericx){
         options.xaxis.ticks = ticks;
       }
-      
       var d1 = [];
       $.plot("#chart", [dataObj], options);
       $('html, body').stop().animate({
@@ -539,7 +535,6 @@ var newData = [], groupedData = [];
         var options = "";
         $.each(datasetEditors, function(i, item){
           var title = "";
-          console.log(item);
           if(item.title != undefined && item.title != ""){
             title = item.title;
           }else{

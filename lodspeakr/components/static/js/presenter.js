@@ -82,12 +82,12 @@ function getData(url){
           data.rows = auxData;
         }else if(d.merge !=undefined){
    ////////BEGIN MERGE
-   console.log(d);
           var datasets = new Array();
-          var title = ["b.csv".replace(".", "_"), "a.csv".replace(".", "_")];
+          var title = new Array();
 
           for(var i in d.merge){
             getData(d.merge[i].dataset);
+            title[title.length] = newData.title;
             var newHeaderColumns = new Array(), newColumns = new Array();
             for(var k in newData.header){
               var aux = {name: title[i]+"_"+newData.header[k].name, value: title[i]+"_"+newData.header[k].value};
@@ -164,8 +164,6 @@ function getData(url){
             });
           });
           newData = {header: newHeader, rows: newRows};
-          console.log("------------");
-          console.log(newData);
           return;
 /////////////////END MERGE
         }else{
