@@ -56,6 +56,10 @@
   <h3>Share this visualization</h3>
  </div>
  <div class="modal-body">
+  <h3>Embed HTML</h3>
+  <pre id="embed-iframe">http://example.com</pre>
+  <hr/>
+  <h3>Link</h3>
   <pre id="embed-url">http://example.com</pre>
   <div class="modal-footer">
    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
@@ -93,7 +97,8 @@ e.setData(newData.rows);
 e.renderMap(config);
 
 
-$("#embed-url").html("&lt;div style='width:"+(config.width*1.2)+"px;height:"+(config.height*1.2)+"px'&gt;&lt;iframe style='overflow-x: hidden;overflow-y: hidden;' frameborder='0'  width='100%' height='99%' src='"+window.location+"'&gt;&lt;/iframe&gt;&lt;/div&gt;")
+$("#embed-iframe").html("&lt;div style='width:"+(config.width*1.2)+"px;height:"+(config.height*1.2)+"px'&gt;&lt;iframe style='overflow-x: hidden;overflow-y: hidden;' frameborder='0'  width='100%' height='99%' src='"+window.location+"'&gt;&lt;/iframe&gt;&lt;/div&gt;");
+$("#embed-url").html(window.location+"");
 
 });
 
@@ -104,7 +109,7 @@ $(".navbar").hide();
 }else{
   $("h1").on('mouseover', function(){$("#share-button").removeClass("hidden")})
        .on('mouseout', function(){$("#share-button").addClass("hidden")});
-$("#chartContainer").on('mouseover', function(){$("#share-button").removeClass("hidden")})
+$("#mapContainer").on('mouseover', function(){$("#share-button").removeClass("hidden")})
        .on('mouseout', function(){$("#share-button").addClass("hidden")});
 }
 
