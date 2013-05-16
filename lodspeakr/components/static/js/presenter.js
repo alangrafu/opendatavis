@@ -110,8 +110,8 @@ function getData(url){
             datasetEditors[j].init(newConfig);
             datasetEditors[j].setData(newData.rows);
             datasetEditors[j].dataView.beginUpdate();
-            console.log(newConfig);
             if(newConfig.filter != undefined && newConfig.filter.length > 0){
+              console.log('filter before merge');
               arg = newConfig.filter[0];
               datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
               datasetEditors[j].dataView.setFilterArgs(arg);
