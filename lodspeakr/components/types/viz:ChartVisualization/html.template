@@ -6,7 +6,7 @@
       <hr/>
       <div>
        <strong>Creation Date:</strong>
-       <span property="http://purl.org/dc/terms/created">{{first.main.creationdate.value}}</span>
+       <span property="http://purl.org/dc/terms/created" datatype="xsd:dateTime">{{first.main.creationdate.value}}</span>
       </div>
       <div>
         <strong>Parameters</strong>
@@ -24,14 +24,14 @@
        <strong>Obtained from:</strong>
        <ul>
        {%for i in models.main%}
-       <li about="{{i.original.value}}">
-       <a rel="http://www.w3.org/ns/dcat#distribution" href="{{i.original.value}}">{{i.original.value|explode:"/"|pop}}</a> <small>(from {{i.original.value|hostname}})</small></li>
+       <li about="{{first.main.dataset.value}}">
+       <a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{{i.original.value}}">{{i.original.value|explode:"/"|pop}}</a> <small>(from {{i.original.value|hostname}})</small></li>
        {%endfor%}
-     </ul>
+       </ul>
       </div>
       <div>
        <strong>Downloaded at:</strong>
-       <span about="{{first.main.datasetcreationdate.value}}" property="dcterms:created">{{first.main.datasetcreationdate.value}}</span>
+       <span about="{{first.main.dataset.value}}" property="dcterms:created" datatype="xsd:dateTime">{{first.main.datasetcreationdate.value}}</span>
       </div>
     </div>
     <div id="chartContainer" class="vizContainer"></div>

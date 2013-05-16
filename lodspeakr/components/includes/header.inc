@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="xsd: http://www.w3.org/2001/XMLSchema#">
 <head>
   <meta charset="utf-8">
   <title>OpenDataVis</title>
