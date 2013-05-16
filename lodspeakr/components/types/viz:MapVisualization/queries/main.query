@@ -1,21 +1,38 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX viz: <http://opendatav.is/vocab/>
-PREFIX dcat: <http://www.w3.org/ns/dcat#>
 
-
-SELECT ?creationdate ?dataset ?width ?height ?title ?original ?datasetdate WHERE{
+SELECT ?creationdate ?dataset ?original ?datasetcreationdate ?width ?height ?title ?vizType WHERE{
   GRAPH <{{uri}}>{
-    <{{uri}}> dcterms:created ?creationdate;
+    <{{uri}}> a ?vizType;
+              dcterms:created ?creationdate;
               viz:hasWidth ?width;
               viz:hasHeight ?height;
               prov:wasDerivedFrom ?dataset .
+
+    OPTIONAL{
+      ?dataset prov:wasGeneratedBy  [
+        prov:qualifiedUsage [
+          viz:datasetMerged ?download 
+        ]
+      ]
+      graph <{{lodspk.metadata}}>{
+        ?x dcat:distribution [ dcat:downloadURL ?download ];
+                  dcterms:created ?datasetcreationdate ;
+                  prov:wasDerivedFrom ?original .      }
+    }
+
+    OPTIONAL{
+      <{{uri}}> prov:wasDerivedFrom  ?download .
+      graph <{{lodspk.metadata}}>{
+        ?x dcat:distribution [ dcat:downloadURL ?download ];
+                  dcterms:created ?datasetcreationdate ;
+                  prov:wasDerivedFrom ?original .
+      }
+    }
     OPTIONAL{
       <{{uri}}> dcterms:title ?title .
     }
-  }
-  GRAPH <{{lodspk.metadata}}>{
-    ?dataset prov:wasDerivedFrom ?original ;
-             dcterms:created ?datasetdate .
+    FILTER(?vizType != <http://opendatav.is/vocab/ChartVisualization> && ?vizType != <http://opendatav.is/vocab/Visualization>)
   }
 }

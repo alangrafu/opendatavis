@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://opendatav.is/vocab/"
+    xmlns:j.1="http://www.w3.org/ns/dcat#"
+    xmlns:j.2="http://purl.org/dc/terms/"
+    xmlns:j.3="http://www.w3.org/ns/prov#" > 
+  <rdf:Description rdf:nodeID="A0">
+    <j.0:parameterName>x</j.0:parameterName>
+    <j.0:parameterValue>480_promedio_asistencia</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distribution/b35f303db5d8b3ed0517f9bdccc6f6ec">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>text/csv</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/original/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <j.0:filterColumn>486_﻿agno</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A2">
+    <j.0:parameterName>lat</j.0:parameterName>
+    <j.0:parameterValue>b_csv_latitude</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A3">
+    <j.0:filterColumn>disco</j.0:filterColumn>
+    <j.0:filterValue>a</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/virtual/136869719629731643">
+    <j.3:wasGeneratedBy rdf:nodeID="A4"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/VirtualDataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A5">
+    <j.3:qualifiedUsage rdf:nodeID="A6"/>
+    <j.3:qualifiedUsage rdf:nodeID="A7"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/original/b4571ccd2025db560bb0099f23bd10dc">
+    <j.1:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">198</j.1:byteSize>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A8">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/829f9925ab35e35e368cbcecbee40b54"/>
+    <j.0:fieldMerged>nombre_establecimiento</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A9"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A10">
+    <j.0:filterColumn>nombre_comuna</j.0:filterColumn>
+    <j.0:filterValue>VALDIVIA</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/viz/13686956205058">
+    <j.2:identifier>13686956205058</j.2:identifier>
+    <j.2:title>zzz</j.2:title>
+    <j.0:hasWidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</j.0:hasWidth>
+    <j.3:wasDerivedFrom rdf:resource="http://localhost/~alvarograves/opendatavis/virtual/136869562076967814"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/Visualization"/>
+    <j.0:numericXAxis rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</j.0:numericXAxis>
+    <j.0:hasHeight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</j.0:hasHeight>
+    <j.0:hasFilter rdf:nodeID="A11"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/ChartVisualization"/>
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:13:40</j.2:created>
+    <j.0:hasParameter rdf:nodeID="A12"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/LineChartVisualization"/>
+    <j.0:hasParameter rdf:nodeID="A13"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A11">
+    <j.0:filterColumn>b_csv_autor</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/virtual/136869702229131281">
+    <j.3:wasGeneratedBy rdf:nodeID="A14"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/VirtualDataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A15">
+    <j.0:parameterName>y</j.0:parameterName>
+    <j.0:parameterValue>486_promedio_asistencia</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/original/829f9925ab35e35e368cbcecbee40b54">
+    <j.1:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3519193</j.1:byteSize>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A16">
+    <j.0:parameterName>lon</j.0:parameterName>
+    <j.0:parameterValue>b_csv_longitude</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distributionJson/b4571ccd2025db560bb0099f23bd10dc">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>application/json</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/data/b4571ccd2025db560bb0099f23bd10dc"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A17">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/27bdfaecfef362efd87917765ca5000b"/>
+    <j.0:fieldMerged>nombre_establecimiento</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A18"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distribution/27bdfaecfef362efd87917765ca5000b">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>text/csv</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/original/27bdfaecfef362efd87917765ca5000b"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distributionJson/27bdfaecfef362efd87917765ca5000b">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>application/json</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/data/27bdfaecfef362efd87917765ca5000b"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distribution/829f9925ab35e35e368cbcecbee40b54">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>text/csv</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/original/829f9925ab35e35e368cbcecbee40b54"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distribution/b4571ccd2025db560bb0099f23bd10dc">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>text/csv</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/original/b4571ccd2025db560bb0099f23bd10dc"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A19">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+    <j.0:fieldMerged>banda</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A20"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A7">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/b4571ccd2025db560bb0099f23bd10dc"/>
+    <j.0:fieldMerged>autor</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A21"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/dataset/b4571ccd2025db560bb0099f23bd10dc">
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:12:40</j.2:created>
+    <j.3:wasDerivedFrom rdf:resource="http://graves.cl/b.csv"/>
+    <j.2:identifier>b4571ccd2025db560bb0099f23bd10dc</j.2:identifier>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distribution/b4571ccd2025db560bb0099f23bd10dc"/>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distributionJson/b4571ccd2025db560bb0099f23bd10dc"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/viz/13687262545957">
+    <j.0:hasParameter rdf:nodeID="A22"/>
+    <j.2:identifier>13687262545957</j.2:identifier>
+    <j.0:hasFilter rdf:nodeID="A23"/>
+    <j.3:wasDerivedFrom rdf:resource="http://localhost/~alvarograves/opendatavis/data/b4571ccd2025db560bb0099f23bd10dc"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/ChartVisualization"/>
+    <j.0:hasParameter rdf:nodeID="A24"/>
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T10:44:14</j.2:created>
+    <j.0:numericXAxis rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</j.0:numericXAxis>
+    <j.0:hasWidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</j.0:hasWidth>
+    <j.0:hasHeight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</j.0:hasHeight>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/ColumnChartVisualization"/>
+    <j.2:title>discos</j.2:title>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/Visualization"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A6">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+    <j.0:fieldMerged>banda</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A25"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distributionJson/b35f303db5d8b3ed0517f9bdccc6f6ec">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>application/json</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/data/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A20">
+    <j.0:filterColumn>banda</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A14">
+    <j.3:qualifiedUsage rdf:nodeID="A8"/>
+    <j.3:qualifiedUsage rdf:nodeID="A17"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/virtual/136869562076967814">
+    <j.3:wasGeneratedBy rdf:nodeID="A5"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/VirtualDataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A26">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/829f9925ab35e35e368cbcecbee40b54"/>
+    <j.0:fieldMerged>nombre_establecimiento</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A27"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A23">
+    <j.0:filterColumn>autor</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A28">
+    <j.3:qualifiedUsage rdf:nodeID="A19"/>
+    <j.3:qualifiedUsage rdf:nodeID="A29"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/viz/13686970222912">
+    <j.3:wasDerivedFrom rdf:resource="http://localhost/~alvarograves/opendatavis/virtual/136869702229131281"/>
+    <j.2:title>valdivia</j.2:title>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/Visualization"/>
+    <j.0:numericXAxis rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">None</j.0:numericXAxis>
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:37:02</j.2:created>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/MapVisualization"/>
+    <j.0:hasParameter rdf:nodeID="A30"/>
+    <j.0:hasHeight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</j.0:hasHeight>
+    <j.2:identifier>13686970222912</j.2:identifier>
+    <j.0:hasWidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</j.0:hasWidth>
+    <j.0:hasFilter rdf:nodeID="A1"/>
+    <j.0:hasParameter rdf:nodeID="A31"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/dataset/27bdfaecfef362efd87917765ca5000b">
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:35:07</j.2:created>
+    <j.3:wasDerivedFrom rdf:resource="http://datos.gob.cl/recursos/download/480"/>
+    <j.2:identifier>27bdfaecfef362efd87917765ca5000b</j.2:identifier>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distribution/27bdfaecfef362efd87917765ca5000b"/>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distributionJson/27bdfaecfef362efd87917765ca5000b"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A13">
+    <j.0:parameterName>y</j.0:parameterName>
+    <j.0:parameterValue>b_csv_numero</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/distributionJson/829f9925ab35e35e368cbcecbee40b54">
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
+    <j.1:mediaType>application/json</j.1:mediaType>
+    <j.1:downloadURL rdf:resource="http://localhost/~alvarograves/opendatavis/data/829f9925ab35e35e368cbcecbee40b54"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A18">
+    <j.0:filterColumn>nombre_comuna</j.0:filterColumn>
+    <j.0:filterValue>VALDIVIA</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A21">
+    <j.0:filterColumn>disco</j.0:filterColumn>
+    <j.0:filterValue>a</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A27">
+    <j.0:filterColumn>nombre_comuna</j.0:filterColumn>
+    <j.0:filterValue>VALDIVIA</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A31">
+    <j.0:parameterName>lon</j.0:parameterName>
+    <j.0:parameterValue>480_longitud</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A25">
+    <j.0:filterColumn>banda</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A4">
+    <j.3:qualifiedUsage rdf:nodeID="A32"/>
+    <j.3:qualifiedUsage rdf:nodeID="A26"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/virtual/136869686742523871">
+    <j.3:wasGeneratedBy rdf:nodeID="A28"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/VirtualDataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A24">
+    <j.0:parameterName>x</j.0:parameterName>
+    <j.0:parameterValue>disco</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A12">
+    <j.0:parameterName>x</j.0:parameterName>
+    <j.0:parameterValue>a_csv_inicio</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A33">
+    <j.0:filterColumn>486_﻿agno</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/dataset/b35f303db5d8b3ed0517f9bdccc6f6ec">
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:12:51</j.2:created>
+    <j.3:wasDerivedFrom rdf:resource="http://graves.cl/a.csv"/>
+    <j.2:identifier>b35f303db5d8b3ed0517f9bdccc6f6ec</j.2:identifier>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distribution/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distributionJson/b35f303db5d8b3ed0517f9bdccc6f6ec"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A29">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/b4571ccd2025db560bb0099f23bd10dc"/>
+    <j.0:fieldMerged>autor</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A3"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/dataset/829f9925ab35e35e368cbcecbee40b54">
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:35:26</j.2:created>
+    <j.3:wasDerivedFrom rdf:resource="http://datos.gob.cl/recursos/download/486"/>
+    <j.2:identifier>829f9925ab35e35e368cbcecbee40b54</j.2:identifier>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distributionJson/829f9925ab35e35e368cbcecbee40b54"/>
+    <j.1:distribution rdf:resource="http://localhost/~alvarograves/opendatavis/distribution/829f9925ab35e35e368cbcecbee40b54"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/viz/13686971969797">
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:39:56</j.2:created>
+    <j.0:hasParameter rdf:nodeID="A0"/>
+    <j.0:numericXAxis rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</j.0:numericXAxis>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/Visualization"/>
+    <j.0:hasParameter rdf:nodeID="A15"/>
+    <j.2:identifier>13686971969797</j.2:identifier>
+    <j.2:title>scatter valdivia</j.2:title>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/ChartVisualization"/>
+    <j.0:hasFilter rdf:nodeID="A33"/>
+    <j.3:wasDerivedFrom rdf:resource="http://localhost/~alvarograves/opendatavis/virtual/136869719629731643"/>
+    <j.0:hasHeight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</j.0:hasHeight>
+    <j.0:hasWidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</j.0:hasWidth>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/ScatterPlotVisualization"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/original/27bdfaecfef362efd87917765ca5000b">
+    <j.1:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3525295</j.1:byteSize>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/viz/13686968677737">
+    <j.0:hasParameter rdf:nodeID="A16"/>
+    <j.3:wasDerivedFrom rdf:resource="http://localhost/~alvarograves/opendatavis/virtual/136869686742523871"/>
+    <j.0:numericXAxis rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">None</j.0:numericXAxis>
+    <j.0:hasParameter rdf:nodeID="A2"/>
+    <j.0:hasWidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</j.0:hasWidth>
+    <j.2:identifier>13686968677737</j.2:identifier>
+    <j.0:hasFilter rdf:nodeID="A34"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/MapVisualization"/>
+    <rdf:type rdf:resource="http://opendatav.is/vocab/Visualization"/>
+    <j.2:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2013-05-16T02:34:27</j.2:created>
+    <j.0:hasHeight rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</j.0:hasHeight>
+    <j.2:title>mapa merged filtered</j.2:title>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A9">
+    <j.0:filterColumn>nombre_comuna</j.0:filterColumn>
+    <j.0:filterValue>VALDIVIA</j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A34">
+    <j.0:filterColumn>b_csv_autor</j.0:filterColumn>
+    <j.0:filterValue></j.0:filterValue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A30">
+    <j.0:parameterName>lat</j.0:parameterName>
+    <j.0:parameterValue>486_latitud</j.0:parameterValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://localhost/~alvarograves/opendatavis/original/b35f303db5d8b3ed0517f9bdccc6f6ec">
+    <j.1:byteSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">76</j.1:byteSize>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A32">
+    <j.0:datasetMerged rdf:resource="http://localhost/~alvarograves/opendatavis/data/27bdfaecfef362efd87917765ca5000b"/>
+    <j.0:fieldMerged>nombre_establecimiento</j.0:fieldMerged>
+    <j.0:hasFilter rdf:nodeID="A10"/>
+    <j.3:hadRole rdf:resource="http://opendatav.is/vocab/MergeDataset"/>
+    <rdf:type rdf:resource="http://www.w3.org/ns/prov#Usage"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A22">
+    <j.0:parameterName>y</j.0:parameterName>
+    <j.0:parameterValue>agno</j.0:parameterValue>
+  </rdf:Description>
+</rdf:RDF>
