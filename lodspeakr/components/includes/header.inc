@@ -167,4 +167,20 @@
       </div>
     </div>
    </div>
+   </div> 
+<div class="modal hide fade" id="share-dialog">
+ <div class="modal-header">
+  <h3>Share this visualization</h3>
+ </div>
+ <div class="modal-body">
+  <h3>Embed HTML</h3>
+  <pre id="embed-iframe">http://example.com</pre>
+  <hr/>
+  <h3>Link</h3>
+  <pre id="embed-url">http://example.com</pre>
+  <div class="modal-footer">
+   <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+  </div>
+ </div>
+</div>
 
