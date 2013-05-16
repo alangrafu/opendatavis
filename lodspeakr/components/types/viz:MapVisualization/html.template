@@ -48,11 +48,10 @@
 
 </div>        
 <script src="{{lodspk.home}}js/editor.js"></script>
+<script src="{{lodspk.home}}js/presenter.js"></script>
 <script>
-
+var datasetEditors = new Array();
 $(function(){
-var searchField = "{{first.params.filterColumn.value}}";
-
 var config = {
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",
       width: {{first.main.width.value|default:"600"}},
@@ -67,97 +66,13 @@ var config = {
       manualdata: true
     };
 
-
-var data = [];
-var newData = null;
-function getData(url){
-  var data = null;
-  $.ajax({
-    url: url,
-    async: false,
-    dataType: "json",
-    success: function(d){
-      if(d.rows !=undefined){
-        data = d;
-      }else{
-        if(d.groupby != undefined && d.dataset != undefined){
-          var groupby = d.groupby, variable = d.variable;
-          getData(d.dataset);
-          var countData = [], sumData = [];
-          $.each(newData.rows, function(i, item){
-            if(item[groupby] != undefined){
-              if(countData[item[groupby]] == undefined){
-                countData[item[groupby]] = {};
-              }
-
-              if(sumData[item[groupby]] == undefined){
-                sumData[item[groupby]] = {};
-              }
-              $.each(d.variable, function(i, v){
-                if(countData[item[groupby]][d.operation+"_"+v] == undefined){
-                  countData[item[groupby]][d.operation+"_"+v] = 1;
-                }else{
-                  countData[item[groupby]][d.operation+"_"+v]++;          
-                }
-                if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
-                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
-                }else{
-                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
-                }
-                console.log(sumData[item[groupby]][d.operation+"_"+v]);
-              });
-            }
-          });
-          var groupedData = [];
-
-          if(d.operation == "count"){
-            groupedData = countData;
-          }else if(d.operation == "sum"){
-            groupedData = sumData;
-          }else if(d.operation == "average"){
-            for(i in sumData){
-              for(j in sumData[i]){
-                if(groupedData[i] == undefined){
-                  groupedData[i] = {};
-                }
-                groupedData[i][j] = sumData[i][j]/countData[i][j];
-              }
-            }
-          }
-          var counter = 0;
-          var auxData = [];
-          data = {};
-          data.header = [
-                          {"name": "id", "value": "id"},
-                          {"name": groupby, "value": groupby},
-                        ];
-          $.each(d.variable, function(i, v){
-            data.header.push({"name": v, "value": v});
-          });
-          for(i in groupedData){
-            var newItem = {};
-            var item = groupedData[i];
-            newItem["id"] = "id_"+counter;
-            newItem[groupby] = i;
-            console.log(item);
-            $.each(item, function(i, v){
-              newItem[i]=v;
-            });
-            auxData.push(newItem);
-            counter++;
-          }
-          console.log(auxData);
-          data.rows = auxData;
-        }
-      }//end else
-      newData = data;
-    }
-  });
-}
-
 data = getData("{{first.params.dataset.value}}");
-var e = new Editor(config);
-console.log(newData.rows);
+//datasetEditors.push(new Editor(config));
+var j = datasetEditors.length;
+datasetEditors[j] = new Editor;
+datasetEditors[j].init(config);
+datasetEditors[j].setData(newData.rows);
+var e = datasetEditors[j];
 e.setData(newData.rows);
 e.renderMap(config);
 
