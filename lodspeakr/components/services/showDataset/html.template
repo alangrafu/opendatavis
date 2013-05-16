@@ -405,11 +405,13 @@ var newConfig = {
                merge: [
                         {
                           dataset: datasetEditors[id1].dataset,
-                          field: var1
+                          field: var1,
+                          filters: [{column: datasetEditors[id1].searchField, value: datasetEditors[id1].searchString}]
                         },
                         {
                           dataset: datasetEditors[id2].dataset,
-                          field: var2
+                          field: var2,
+                          filters: [{column: datasetEditors[id2].searchField, value: datasetEditors[id2].searchString}]
                         }
 
                ]
@@ -421,6 +423,8 @@ var newConfig = {
     editorId: datasetEditors.length,
     data: newRows
   };
+    console.log("===== merge =====");
+    console.log(newConfig.dataset);
 
       newConfig['sortcol'] = newConfig.headerColumns[0];
       i = datasetEditors.length;

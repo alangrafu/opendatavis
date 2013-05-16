@@ -156,9 +156,20 @@ def saveViz():
                     mergeBNode = BNode()
                     store.add((activityBNode, PROV["qualifiedUsage"], usageBNode))
                     store.add((usageBNode, RDF.type, PROV["Usage"]))
-                    store.add((usageBNode, VIZ["datasetMerged"], URIRef(d['dataset'])))                
+                    store.add((usageBNode, VIZ["datasetMerged"], URIRef(d['dataset'])))
                     store.add((usageBNode, VIZ["fieldMerged"], Literal(d['field'])))                
-                    store.add((usageBNode, PROV["hadRole"], VIZ["MergeDataset"]))                     
+                    store.add((usageBNode, PROV["hadRole"], VIZ["MergeDataset"]))
+                    filters = d["filters"]
+                    if not(filters is None):
+                        for myFilter in filters:
+                            print myFilter
+                            if "column"  in myFilter and "value" in myFilter:
+                                blankFilter = BNode()
+                                print myFilter
+                                store.add((usageBNode, VIZ["hasFilter"], blankFilter))
+                                store.add((blankFilter, VIZ["filterColumn"], Literal(myFilter["column"])))
+                                store.add((blankFilter, VIZ["filterValue"], Literal(myFilter["value"])))
+
             else:
                 return jsonify(success=False)
         store.add((URIRef(myurl), DCTERMS["identifier"], Literal(vizIdentifier)))

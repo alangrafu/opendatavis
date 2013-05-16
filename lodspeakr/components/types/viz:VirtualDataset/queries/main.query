@@ -1,7 +1,9 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?datasetmerged WHERE {
+SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?datasetmerged ?filterValue ?filterColumn WHERE {
   GRAPH ?g{
     <{{uri}}> prov:wasGeneratedBy ?a . 
     ?a  a prov:Activity;
@@ -34,7 +36,8 @@ SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?dataset
    ?a prov:qualifiedUsage [
       prov:hadRole :MergeDataset;
       :fieldMerged ?fieldmerged;
-      :datasetMerged ?datasetmerged
+      :datasetMerged ?datasetmerged;
+      :hasFilter [ :filterValue ?filterValue ; :filterColumn ?filterColumn ] 
     ]
     }
 

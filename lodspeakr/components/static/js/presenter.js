@@ -82,6 +82,7 @@ function getData(url){
           data.rows = auxData;
         }else if(d.merge !=undefined){
    ////////BEGIN MERGE
+   console.log(d.merge);
           var datasets = new Array();
           var title = new Array();
 
