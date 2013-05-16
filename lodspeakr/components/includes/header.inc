@@ -114,7 +114,7 @@
         }
       });
     });
-    var loglevel = 1;
+    var loglevel = 0;
     function log(msg, id){
       if(loglevel > 0){
         if($("#logdiv").length == 0){

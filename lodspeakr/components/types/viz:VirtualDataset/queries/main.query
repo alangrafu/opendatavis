@@ -1,11 +1,14 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?dataset ?groupVariable ?variableGrouped ?operation WHERE {
+SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?datasetmerged WHERE {
   GRAPH ?g{
-    <{{uri}}> prov:wasGeneratedBy [ 
-      a prov:Activity;
-      prov:qualifiedUsage [ 
+    <{{uri}}> prov:wasGeneratedBy ?a . 
+    ?a  a prov:Activity;
+
+#groupby
+      OPTIONAL{
+     ?a prov:qualifiedUsage [ 
         prov:hadRole :datasetGrouped;
         prov:entity ?dataset
       ], [ 
@@ -24,6 +27,16 @@ SELECT ?dataset ?groupVariable ?variableGrouped ?operation WHERE {
           rdf:value ?operation 
         ]
       ]
+    }
+
+#merge
+    OPTIONAL{
+   ?a prov:qualifiedUsage [
+      prov:hadRole :MergeDataset;
+      :fieldMerged ?fieldmerged;
+      :datasetMerged ?datasetmerged
     ]
+    }
+
   }
 }
