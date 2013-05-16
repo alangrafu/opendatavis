@@ -77,7 +77,11 @@ datasetEditors[j].setData(newData.rows);
 var e = datasetEditors[j];
 e.setData(newData.rows);
 e.renderMap(config);
-
+var isInIFrame = (window.location != window.parent.location);
+if(isInIFrame==true){
+$("#metadata").hide();
+$(".navbar").hide();
+}
 });
 </script>
 </body>

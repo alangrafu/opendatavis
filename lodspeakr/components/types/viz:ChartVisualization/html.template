@@ -86,6 +86,12 @@ datasetEditors[j].setData(newData.rows);
 datasetEditors[j].renderChart(config);
 
 });
+
+var isInIFrame = (window.location != window.parent.location);
+if(isInIFrame==true){
+$("#metadata").hide();
+$(".navbar").hide();
+}
 </script>
 
 </body>
