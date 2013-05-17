@@ -25,6 +25,9 @@ function Editor(){
         if(config.editorId != undefined){
           self.editorId = config.editorId;
         }
+        if(config.derivedFrom != undefined){
+          self.derivedFrom = config.derivedFrom;
+        }
         if(config.data != undefined){
           self.data = config.data;
         }
@@ -365,6 +368,9 @@ var newData = [], groupedData = [];
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
           vizObj['map'].filters = [ {column: self.searchField, value: self.searchString} ];
           vizObj['map'].sortcol = sortcol;
+          if(self.derivedFrom != undefined){
+            vizObj['map'].derivedFrom = self.derivedFrom;
+          }
       }
     }else{
        $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
@@ -468,6 +474,9 @@ var newData = [], groupedData = [];
         vizObj['chart'].filters = [ {column: self.searchField, value: self.searchString} ];
         vizObj['chart'].sortcol = sortcol;
         vizObj['chart'].numericx = config.numericx;
+        if(self.derivedFrom != undefined){
+          vizObj['chart'].derivedFrom = self.derivedFrom;
+        }
       }
       $("#chart").bind("plothover", function (event, pos, item) {
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";

@@ -16,6 +16,12 @@
          <li><strong>X axis:</strong> "<span>{{first.params.paramY.value}}</span>"</li>
         </ul>
       </div>
+      {%if first.main.parent.value%}
+      <div>
+        <strong>Parent visualization</strong>
+        <ul><li><a href='{{first.main.parent.value}}'>{{first.main.parent.value|explode:"/"|pop}}</a></li></ul>
+      </div>
+      {%endif%}
       <hr/>
       <div>
        <strong>Dataset used:</strong>

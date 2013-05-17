@@ -6,7 +6,7 @@
             "var1": "{{first.params.paramX.value}}",
             "var2": "{{first.params.paramY.value}}"
       },
-      "numericx": false,
+      "numericx": true,
       "sortcol": "",
       "manualdata": true,
       "width": 600,

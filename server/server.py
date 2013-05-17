@@ -68,6 +68,9 @@ def saveViz():
         PROV = Namespace("http://www.w3.org/ns/prov#")
         chartType = request.json.get("type");
         params = request.json.get("params")
+        derivedFrom = request.json.get("derivedFrom")
+        if not(derivedFrom is None):
+            store.add((URIRef(myurl), VIZ["hasVisualizationParent"], URIRef(derivedFrom)))
         if not(params is None):
           print params
           for key in params:

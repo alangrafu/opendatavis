@@ -237,6 +237,7 @@ function loadVisualization(vizConfig){
       for(var i in d.header){
         config.columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
       }
+      config.derivedFrom = "{{lodspk.args.all|deurifier}}";
       config.data = d.rows;
       if(typeof(config.headerColumns) == 'array'){
         config['sortcol'] = config.headerColumns[0];
