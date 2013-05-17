@@ -346,7 +346,7 @@ var newData = [], groupedData = [];
       }else{
        log("Values in row "+i+" are not numeric", self.editorId);
      }
-   });
+    });
     if(validPoints > 0){
       //map.panTo([center[0]/validPoints, center[1]/validPoints]);
       map.fitBounds([[north, west], [south, east]]);
@@ -363,12 +363,12 @@ var newData = [], groupedData = [];
           vizObj['map'].params={lat:$("#lat").val(), lon: $("#lon").val()};
           vizObj['map'].filters = [ {column: self.searchField, value: self.searchString} ];
           vizObj['map'].sortcol = sortcol;
-        }
-      }else{
-        $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
-        $("#error-dialog").modal('show');
-        $("#mapDelete").trigger('click');
-      }        
+      }
+    }else{
+       $("#error-message").html("<h4>Data Error</h4><p>The fields selected did not provide valid latitude and longitude coordinates.</p>");
+       $("#error-dialog").modal('show');
+       $("#mapDelete").trigger('click');
+    }        
       
       self.runEvents();
     },
@@ -504,7 +504,7 @@ var newData = [], groupedData = [];
     
     //auxiliary functions
     addMenu: function(id){
-      $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-edit="'+id+'-button"class="editButton optionsBtn btn btn-info">Edit</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
+      $('<div class="buttonContainer btn-group menu-button"><button id="'+id+'Delete" class="optionsBtn btn btn-danger deleteButton">X</button><button data-chart="'+id+'" class="shareButton optionsBtn btn btn-success">Share</button></div>').prependTo("#"+id+"Container"); 
     },
     runEvents: function(){
       $(".chart-button").unbind('click');

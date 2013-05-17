@@ -184,7 +184,7 @@
 <script src='{{lodspk.home}}js/jquery.flot.axislabels.js'></script> 
 <script>
 var datasetEditors = [];
-
+var home = "{{lodspk.home}}";
 var datasets = [];
 datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
 </script>
@@ -196,27 +196,6 @@ datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jso
 $(function(){
 
 
-//Get visualization
-$.ajax({
-    url: "{{lodspk.args.all|deurifier}}",
-    dataType: "json",
-    async: false,
-    contentType:"application/json; charset=utf-8",
-    success: function(data){
-       var config = {
-        sortcol: "{{first.header.val.value|slugify}}",
-        div: "dataset0",
-        dataset: data.visualization.dataset,
-        columns: [],
-        headerColumns: [],
-        searchField: "",
-        title: "asd",
-        editorId: datasetEditors.length,
-      }
-      console.log(config);
-      createEditor(config);
-    }
-  });
 
 
   $.ajax({
@@ -231,15 +210,27 @@ $.ajax({
       $("#dataset-list").append(options);
     }
   });
+  
 
-function createEditor(config){
+function loadVisualization(vizConfig){
+  viz = vizConfig.visualization;
   $.ajax({
-    url: config.dataset,
+    url: viz.dataset,
     dataType: "json",
     contentType:"application/json; charset=utf-8",
     success: function(d){
       console.log(d);
-      config.headerColumns = d.header;
+       var config = {
+        sortcol: "",
+        div: "dataset0",
+        dataset: viz.dataset,
+        columns: [],
+        data: d.rows,
+        headerColumns: [],
+        searchField: "",
+        title: "asd",
+        editorId: datasetEditors.length,
+      }
       if(typeof(config.headerColumns) == 'array'){
         searchField = config.headerColumns[0];
       }
@@ -257,10 +248,30 @@ function createEditor(config){
       datasetEditors[i].init(config);
       datasetEditors[i].setData(d.rows);
       datasetEditors[i].showTable();
+      if(viz.chartType == "MapVisualization"){
+        datasetEditors[i].renderMap(viz);
+      }else{
+        datasetEditors[i].renderChart(viz);
+      }
     }    
   })
 }
 
+//Get visualization
+$.ajax({
+    url: "{{lodspk.args.all|deurifier}}",
+    dataType: "json",
+    async: false,
+    contentType:"application/json; charset=utf-8",
+    success: function(data){
+      console.log("{{lodspk.args.all|deurifier}}", data);
+      loadVisualization(data);
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      }
+  });
 
 });
 </script>

@@ -3,10 +3,9 @@
       "chartType": "{{first.main.vizType.value|explode:"/"|pop}}",
       "dataset": "{{first.main.dataset.value}}",
       "params": {
-            "var1": "{{first.params.paramX.value}}",
-            "var2": "{{first.params.paramY.value}}"
+            "lon": "{{first.params.paramX.value}}",
+            "lat": "{{first.params.paramY.value}}"
       },
-      "numericx": false,
       "sortcol": "",
       "manualdata": true,
       "width": 600,
