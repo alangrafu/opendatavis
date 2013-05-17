@@ -195,6 +195,8 @@ datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jso
 
 $(function(){
 
+
+//Get visualization
 $.ajax({
     url: "{{lodspk.args.all|deurifier}}",
     dataType: "json",
@@ -231,12 +233,12 @@ $.ajax({
   });
 
 function createEditor(config){
-  console.log(config);
   $.ajax({
     url: config.dataset,
     dataType: "json",
     contentType:"application/json; charset=utf-8",
     success: function(d){
+      console.log(d);
       config.headerColumns = d.header;
       if(typeof(config.headerColumns) == 'array'){
         searchField = config.headerColumns[0];

@@ -193,4 +193,4 @@ var newConfig = {
       datasetEditors[i].showTable();
 });
 
-}
+});

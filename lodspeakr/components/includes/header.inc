@@ -168,7 +168,7 @@
     </div>
    </div>
    </div> 
-<div class="modal hide fade" id="share-dialog">
+<div class="modal hide fade" id="embed-dialog">
  <div class="modal-header">
   <h3>Share this visualization</h3>
  </div>
