@@ -6,6 +6,12 @@
             "lon": "{{first.params.paramX.value}}",
             "lat": "{{first.params.paramY.value}}"
       },
+      "filter": [ 
+                {
+                  "searchString": "{{first.params.filterValue.value}}",
+                  "searchField": "{{first.params.filterColumn.value}}"
+                }
+              ],
       "sortcol": "",
       "manualdata": true,
       "width": 600,

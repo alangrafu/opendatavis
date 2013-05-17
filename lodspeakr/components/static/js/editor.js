@@ -329,7 +329,7 @@ var newData = [], groupedData = [];
     var validPoints = 0;
     var indexLat = config.params.lat, indexLong = config.params.lon;
     log("* Lat/Long: "+indexLat+", "+indexLong, self.editorId);
-    north = -100, south=100, east = -100, west = 100;
+    north = -Infinity, south=Infinity, east = -Infinity, west = Infinity;
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
       lon = parseFloat(item[indexLong]);
