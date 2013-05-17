@@ -101,8 +101,8 @@ setData: function(data){
 fillHeaders: function (){
   var self = this;
   var option = "";
-  $.each(self.headerColumns, function(i, item){
-    option += "<option value='"+item.value+"'>"+item.name+"</option>";
+  $.each(self.columns, function(i, item){
+    option += "<option value='"+item.field+"'>"+item.name+"</option>";
   });
   $("#lat").html(option);
   $("#lon").html(option);
@@ -308,7 +308,7 @@ var newData = [], groupedData = [];
         self.dataView.setFilter(self.myFilter);
         self.dataView.setFilterArgs(arg);
         $(".txtSearch."+self.div).val(config.filter[0].searchString);
-        
+
       }
       self.dataView.sort(self.comparer, 1);
       self.dataView.endUpdate();

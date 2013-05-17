@@ -248,6 +248,7 @@ function loadVisualization(vizConfig){
       datasetEditors[i].init(config);
       datasetEditors[i].setData(d.rows);
       datasetEditors[i].showTable();
+      datasetEditors[i].fillHeaders();
       var options = "";
       $.each(datasetEditors[i].columns, function(j, item){
         var selected = "";
