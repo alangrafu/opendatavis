@@ -248,6 +248,17 @@ function loadVisualization(vizConfig){
       datasetEditors[i].init(config);
       datasetEditors[i].setData(d.rows);
       datasetEditors[i].showTable();
+      var options = "";
+      $.each(datasetEditors[i].columns, function(j, item){
+        var selected = "";
+        if(item.field == "Region"){
+          datasetEditors[i].searchField = item.field;
+          selected = "selected";
+        }
+        options += "<option value='"+item.field+"' "+selected+">"+item.name+"</option>";
+      });
+      datasetEditors[i].updateFilter();
+      $(".fieldSearch."+datasetEditors[i].div).html(options);
       if(viz.chartType == "MapVisualization"){
         datasetEditors[i].renderMap(viz);
       }else{

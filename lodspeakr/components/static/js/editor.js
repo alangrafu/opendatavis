@@ -307,6 +307,8 @@ var newData = [], groupedData = [];
         arg = config.filter[0];
         self.dataView.setFilter(self.myFilter);
         self.dataView.setFilterArgs(arg);
+        $(".txtSearch."+self.div).val(config.filter[0].searchString);
+        
       }
       self.dataView.sort(self.comparer, 1);
       self.dataView.endUpdate();
