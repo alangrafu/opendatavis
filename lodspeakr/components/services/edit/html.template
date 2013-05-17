@@ -188,23 +188,34 @@ var datasetEditors = [];
 var datasets = [];
 datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
 </script>
+
 <script src="{{lodspk.home}}js/extras.js"></script>
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
 
 $(function(){
- config = {
-    sortcol: "{{first.header.val.value|slugify}}",
-    div: "dataset0",
-    dataset: "{{first.jsonfile.jsonURL.value}}",
-    columns: [],
-    headerColumns: null,
-    searchField: "",
-    title: "{{first.jsonfile.url.value|explode:"/"|pop}}",
-    editorId: datasetEditors.length,
-  }
 
-  createEditor(config);
+$.ajax({
+    url: "{{lodspk.args.all|deurifier}}",
+    dataType: "json",
+    async: false,
+    contentType:"application/json; charset=utf-8",
+    success: function(data){
+       var config = {
+        sortcol: "{{first.header.val.value|slugify}}",
+        div: "dataset0",
+        dataset: data.visualization.dataset,
+        columns: [],
+        headerColumns: [],
+        searchField: "",
+        title: "asd",
+        editorId: datasetEditors.length,
+      }
+      console.log(config);
+      createEditor(config);
+    }
+  });
+
 
   $.ajax({
     url: home+"datasets",
@@ -219,27 +230,35 @@ $(function(){
     }
   });
 
-
 function createEditor(config){
+  console.log(config);
   $.ajax({
     url: config.dataset,
     dataType: "json",
     contentType:"application/json; charset=utf-8",
     success: function(d){
       config.headerColumns = d.header;
-      searchField = config.headerColumns[0];
+      if(typeof(config.headerColumns) == 'array'){
+        searchField = config.headerColumns[0];
+      }
       for(var i in d.header){
         config.columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
       }
       config.data = d.rows;
-      config['sortcol'] = config.headerColumns[0];
+      if(typeof(config.headerColumns) == 'array'){
+        config['sortcol'] = config.headerColumns[0];
+      }else{
+        config['sortcol'] = "";
+      }
       i = datasetEditors.length;
       datasetEditors[i] = new Editor;
       datasetEditors[i].init(config);
+      datasetEditors[i].setData(d.rows);
       datasetEditors[i].showTable();
     }    
   })
 }
+
 
 });
 </script>

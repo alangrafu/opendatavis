@@ -1,6 +1,6 @@
 {%include "../../includes/header.inc"%}
     <div class="container-fluid">
-    <h1>{{first.main.title.value}} <button class="btn btn-info hidden" id="share-button" data-toggle="modal" data-target="#share-dialog">Share</button></h1>    
+    <h1>{{first.main.title.value}} <button class="btn btn-info hidden menu-button" id="share-button" data-toggle="modal" data-target="#share-dialog">Share</button> <a href='{{lodspk.home}}edit/{{uri|deurifier}}'><button class="btn btn-primary hidden menu-button" >Edit</button></a></h1>    
 
     <div id="metadata" style="float:right;" class="well" about="{{uri}}">
       <h4>Metadata</h4>

@@ -1,0 +1,10 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+SELECT ?jsonURL ?url WHERE{
+	GRAPH <{{lodspk.metadata}}>{
+	  <{{lodspk.args.all|deurifier}}> prov:wasDerivedFrom ?url;
+           							  dcat:distribution ?jsonDistribution .
+	  ?jsonDistribution dcat:downloadURL ?jsonURL;
+	                    dcat:mediaType 'application/json' .
+	}
+}

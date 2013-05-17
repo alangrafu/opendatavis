@@ -1,0 +1,9 @@
+{
+  "visualization": {
+      "dataset": "{{first.main.dataset.value}}",
+      "params": [
+            {"name": "x", "value": "{{first.params.paramX.value}}"}, 
+            {"name": "y", "value": "{{first.params.paramY.value}}"}
+      ]
+  }
+}

@@ -1,0 +1,11 @@
+PREFIX ex: <{{lodspk.ns.local}}>
+SELECT ?row ?col ?val ?headerValue WHERE{
+  GRAPH <{{lodspk.args.all|deurifier}}>{
+    ?x ex:hasRecord ?y.
+    ?y ex:rowNumber ?row;
+       ex:hasCell ?cell.
+    ?cell ex:value ?val;
+          ex:colNumber ?col . 
+    ?x ex:header [ ex:value ?headerValue; ex:colNumber ?col ].
+  }
+}#ORDER BY ?row
