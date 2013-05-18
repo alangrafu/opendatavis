@@ -10,78 +10,70 @@ function getData(url){
     success: function(d){
       if(d.rows !=undefined){
         data = d;
-      }else{
-        if(d.groupby != undefined && d.dataset != undefined){
-          var groupby = d.groupby, variable = d.variable;
-          getData(d.dataset);
-          var countData = [], sumData = [];
-          $.each(newData.rows, function(i, item){
-            if(item[groupby] != undefined){
-              if(countData[item[groupby]] == undefined){
-                countData[item[groupby]] = {};
-              }
-
-              if(sumData[item[groupby]] == undefined){
-                sumData[item[groupby]] = {};
-              }
-
-              $.each(d.variable, function(i, v){
-                if(countData[item[groupby]][d.operation+"_"+v] == undefined){
-                  countData[item[groupby]][d.operation+"_"+v] = 1;
-                }else{
-                  countData[item[groupby]][d.operation+"_"+v]++;          
-                }
-
-                if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
-                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
-                }else{
-                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
-                }
-              });
+      }else if(d.groupby != undefined && d.dataset != undefined){
+        var groupby = d.groupby, variable = d.variable;
+        getData(d.dataset);
+        var countData = [], sumData = [];
+        $.each(newData.rows, function(i, item){
+          if(item[groupby] != undefined){
+            if(countData[item[groupby]] == undefined){
+              countData[item[groupby]] = {};
             }
-          });
-
-          var groupedData = [];
-
-          if(d.operation == "count"){
-            groupedData = countData;
-          }else if(d.operation == "sum"){
-            groupedData = sumData;
-          }else if(d.operation == "average"){
-            for(i in sumData){
-              for(j in sumData[i]){
-                if(groupedData[i] == undefined){
-                  groupedData[i] = {};
-                }
-                groupedData[i][j] = sumData[i][j]/countData[i][j];
-              }
+            if(sumData[item[groupby]] == undefined){
+              sumData[item[groupby]] = {};
             }
-          }
-
-          var counter = 0;
-          var auxData = [];
-          data = {};
-          data.header = [
-                          {"name": "id", "value": "id"},
-                          {"name": groupby, "value": groupby},
-                        ];
-          $.each(d.variable, function(i, v){
-            data.header.push({"name": v, "value": v});
-          });
-          for(i in groupedData){
-            var newItem = {};
-            var item = groupedData[i];
-            newItem["id"] = "id_"+counter;
-            newItem[groupby] = i;
-            $.each(item, function(i, v){
-              newItem[i]=v;
+            $.each(d.variable, function(i, v){
+              if(countData[item[groupby]][d.operation+"_"+v] == undefined){
+                countData[item[groupby]][d.operation+"_"+v] = 1;
+              }else{
+                countData[item[groupby]][d.operation+"_"+v]++;          
+              }
+              if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
+                sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
+              }else{
+                sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
+              }
             });
-            auxData.push(newItem);
-            counter++;
           }
-          data.rows = auxData;
-        }else if(d.merge !=undefined){
-   ////////BEGIN MERGE
+        });
+        var groupedData = [];
+        if(d.operation == "count"){
+          groupedData = countData;
+        }else if(d.operation == "sum"){
+          groupedData = sumData;
+        }else if(d.operation == "average"){
+          for(i in sumData){
+            for(j in sumData[i]){
+              if(groupedData[i] == undefined){
+                groupedData[i] = {};
+              }
+              groupedData[i][j] = sumData[i][j]/countData[i][j];
+            }
+          }
+        }
+        var counter = 0;
+        var auxData = [];
+        data = {};
+        data.header = [
+                        {"name": "id", "value": "id"},
+                        {"name": groupby, "value": groupby},
+                      ];
+        $.each(d.variable, function(i, v){
+          data.header.push({"name": v, "value": v});
+        });
+        for(i in groupedData){
+          var newItem = {};
+          var item = groupedData[i];
+          newItem["id"] = "id_"+counter;
+          newItem[groupby] = i;
+          $.each(item, function(i, v){
+            newItem[i]=v;
+          });
+          auxData.push(newItem);
+          counter++;
+        }
+        data.rows = auxData;
+      }else if(d.merge !=undefined){////////BEGIN MERGE
           var datasets = new Array();
           var title = new Array();
 
@@ -176,12 +168,10 @@ function getData(url){
             });
           });
           newData = {header: newHeader, rows: newRows};
-          return;
-/////////////////END MERGE
-        }else{
-          alert("something is wrong");
-          return;
-        }
+          return; /////////////////END MERGE
+      }else{
+        alert("something is wrong");
+        return;
       }//end else
       newData = data;
     }
