@@ -100,6 +100,7 @@ setData: function(data){
   self.dataView = new Slick.Data.DataView({ inlineFilters: true });
   self.dataView.setItems(data);
   self.dataSelection["rows"] = data;
+  self.data = data;
 },
 fillHeaders: function (){
   var self = this;

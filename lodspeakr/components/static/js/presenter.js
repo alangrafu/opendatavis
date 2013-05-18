@@ -55,11 +55,10 @@ function getData(url){
         var auxData = [];
         data = {};
         data.header = [
-                        {"name": "id", "value": "id"},
                         {"name": groupby, "value": groupby},
                       ];
         $.each(d.variable, function(i, v){
-          data.header.push({"name": v, "value": v});
+          data.header.push({"name": d.operation+"_"+v, "value": d.operation+"_"+v});
         });
         for(i in groupedData){
           var newItem = {};
@@ -103,7 +102,6 @@ function getData(url){
             datasetEditors[j].setData(newData.rows);
             datasetEditors[j].dataView.beginUpdate();
             if(newConfig.filter != undefined && newConfig.filter.length > 0){
-              console.log('filter before merge');
               arg = newConfig.filter[0];
               datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
               datasetEditors[j].dataView.setFilterArgs(arg);
@@ -168,12 +166,48 @@ function getData(url){
             });
           });
           newData = {header: newHeader, rows: newRows};
-          return; /////////////////END MERGE
+/////////////////END MERGE
       }else{
         alert("something is wrong");
         return;
       }//end else
       newData = data;
+      i = datasetEditors.length;
+
+       var config = {
+
+        sortcol: "",
+        div: "dataset"+i,
+        dataset: url,
+        columns: [],
+        data: data.rows,
+        headerColumns: [],
+        searchField: "",
+        title: "asd",
+        editorId: i,
+      }
+      if(typeof(config.headerColumns) == 'array'){
+        searchField = config.headerColumns[0];
+      }
+      for(var j in data.header){
+        config.columns.push({id: data.header[j].value, name: data.header[j].name, field: data.header[j].value, cssClass: "cell-title", sortable: true });
+      }
+      config.data = d.rows;
+      if(typeof(config.headerColumns) == 'array'){
+        config['sortcol'] = config.headerColumns[0];
+      }else{
+        config['sortcol'] = "";
+      }
+      datasetEditors[i] = new Editor;
+      datasetEditors[i].init(config);
+      datasetEditors[i].setData(data.rows);
+//BEGIN SHOW TABLE
+alert(showDatasetsTables);
+      if(showDatasetsTables){
+      datasetEditors[i].showTable();
+      datasetEditors[i].fillHeaders();
+//END SHOW TABLE
+}
     }
   });
 }

@@ -61,6 +61,7 @@
 <script src="{{lodspk.home}}js/presenter.js"></script>
 <script>
 var datasetEditors = new Array();
+var showDatasetsTables = false;
 $(function(){
 var config = {
       dataset: "{{first.main.dataset.mirroredUri|urifier}}",

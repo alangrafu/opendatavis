@@ -186,6 +186,7 @@
 var datasetEditors = [];
 var home = "{{lodspk.home}}";
 var datasets = [];
+var showDatasetsTables = true;
 datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jsonURL.value}}"});
 </script>
 <script src="{{lodspk.home}}js/presenter.js"></script>
@@ -215,7 +216,16 @@ $(function(){
 
 function loadVisualization(vizConfig){
   viz = vizConfig.visualization;
-  data = getData(viz.dataset);
+  getData(viz.dataset);
+  var j = datasetEditors.length-1;
+  console.log(datasetEditors[j]);
+      alert(viz.chartType);
+      if(viz.chartType == "MapVisualization"){
+        datasetEditors[j].renderMap(viz);
+      }else{
+        datasetEditors[j].renderChart(viz);
+      }
+
   /*$.ajax({
     url: viz.dataset,
     dataType: "json",
@@ -263,6 +273,7 @@ function loadVisualization(vizConfig){
       });
       datasetEditors[i].updateFilter();
       $(".fieldSearch."+datasetEditors[i].div).html(options);
+      alert(viz.chartType);
       if(viz.chartType == "MapVisualization"){
         datasetEditors[i].renderMap(viz);
       }else{
@@ -270,11 +281,12 @@ function loadVisualization(vizConfig){
       }
     }    
   });*/
-var j = datasetEditors.length;
+/*var j = datasetEditors.length;
 datasetEditors[j] = new Editor;
 datasetEditors[j].init(viz);
 datasetEditors[j].setData(newData.rows);
 datasetEditors[j].renderChart(viz);
+*/
 }
 
 //Get visualization
