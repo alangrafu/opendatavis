@@ -202,12 +202,11 @@ function getData(url){
       datasetEditors[i].init(config);
       datasetEditors[i].setData(data.rows);
 //BEGIN SHOW TABLE
-alert(showDatasetsTables);
       if(showDatasetsTables){
-      datasetEditors[i].showTable();
-      datasetEditors[i].fillHeaders();
+        datasetEditors[i].showTable();
+        datasetEditors[i].fillHeaders();
 //END SHOW TABLE
-}
+      }
     }
   });
 }

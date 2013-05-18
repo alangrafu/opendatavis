@@ -196,10 +196,6 @@ datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jso
 <script>
 
 $(function(){
-
-
-
-
   $.ajax({
     url: home+"datasets",
     dataType: "json",
@@ -214,83 +210,19 @@ $(function(){
   });
   
 
-function loadVisualization(vizConfig){
-  viz = vizConfig.visualization;
-  getData(viz.dataset);
-  var j = datasetEditors.length-1;
-  console.log(datasetEditors[j]);
-      alert(viz.chartType);
-      if(viz.chartType == "MapVisualization"){
-        datasetEditors[j].renderMap(viz);
-      }else{
-        datasetEditors[j].renderChart(viz);
-      }
+  function loadVisualization(vizConfig){
+    viz = vizConfig.visualization;
+    getData(viz.dataset);
+    var j = datasetEditors.length-1;
+    if(viz.chartType == "MapVisualization"){
+      datasetEditors[j].renderMap(viz);
+    }else{
+      datasetEditors[j].renderChart(viz);
+    }
+  }
 
-  /*$.ajax({
-    url: viz.dataset,
-    dataType: "json",
-    contentType:"application/json; charset=utf-8",
-    success: function(d){
-      console.log(d);
-       var config = {
-        sortcol: "",
-        div: "dataset0",
-        dataset: viz.dataset,
-        columns: [],
-        data: d.rows,
-        headerColumns: [],
-        searchField: "",
-        title: "asd",
-        editorId: datasetEditors.length,
-      }
-      if(typeof(config.headerColumns) == 'array'){
-        searchField = config.headerColumns[0];
-      }
-      for(var i in d.header){
-        config.columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
-      }
-      config.derivedFrom = "{{lodspk.args.all|deurifier}}";
-      config.data = d.rows;
-      if(typeof(config.headerColumns) == 'array'){
-        config['sortcol'] = config.headerColumns[0];
-      }else{
-        config['sortcol'] = "";
-      }
-      i = datasetEditors.length;
-      datasetEditors[i] = new Editor;
-      datasetEditors[i].init(config);
-      datasetEditors[i].setData(d.rows);
-      datasetEditors[i].showTable();
-      datasetEditors[i].fillHeaders();
-      var options = "";
-      $.each(datasetEditors[i].columns, function(j, item){
-        var selected = "";
-        if(item.field == "Region"){
-          datasetEditors[i].searchField = item.field;
-          selected = "selected";
-        }
-        options += "<option value='"+item.field+"' "+selected+">"+item.name+"</option>";
-      });
-      datasetEditors[i].updateFilter();
-      $(".fieldSearch."+datasetEditors[i].div).html(options);
-      alert(viz.chartType);
-      if(viz.chartType == "MapVisualization"){
-        datasetEditors[i].renderMap(viz);
-      }else{
-        datasetEditors[i].renderChart(viz);
-      }
-    }    
-  });*/
-/*var j = datasetEditors.length;
-datasetEditors[j] = new Editor;
-datasetEditors[j].init(viz);
-datasetEditors[j].setData(newData.rows);
-datasetEditors[j].renderChart(viz);
-*/
-}
-
-//Get visualization
-$.ajax({
+  //Get visualization
+  $.ajax({
     url: "{{lodspk.args.all|deurifier}}",
     dataType: "json",
     async: false,
@@ -304,7 +236,6 @@ $.ajax({
         alert(thrownError);
       }
   });
-
 });
 </script>
 </body>
