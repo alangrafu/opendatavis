@@ -74,10 +74,10 @@ function getData(url){
         data.rows = auxData;
       }else if(d.merge !=undefined){////////BEGIN MERGE
         var datasets = new Array();
-        var title = new Array();
+        var title = new Array(), newHeader = new Array();
         var id = new Array(),
-        var1 = d.merge[0].field,
-        var2 = d.merge[1].field;
+            var1 = d.merge[0].field,
+            var2 = d.merge[1].field;
 
         for(var i in d.merge){
           getData(d.merge[i].dataset);
@@ -89,29 +89,16 @@ function getData(url){
             datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
             datasetEditors[j].dataView.setFilterArgs(arg);
           }
-            //datasetEditors[j].dataView.sort(self.comparer, 1);
-            datasetEditors[j].dataView.endUpdate();
-            id.push({id: j, hc: datasetEditors[j].headerColumns, c: datasetEditors[j].columns});
-
+          for(var k in datasetEditors[j].columns){
+            var aux = datasetEditors[j].columns[k];
+            newHeader.push({id: newData.title+"_"+aux.id, name: newData.title+"_"+aux.name, field: newData.title+"_"+aux.value, cssClass: "cell-title", sortable: true });
           }
 
-
-          var newHeaderColumns = [], newColumns = [], newHeader = new Array();
-        //New headerColumns
-        for(var l in id){
-          var hc1 = id[l].hc, c1 = id[l].c;
-          for(var k in hc1){
-            var aux = {name: title[0]+"_"+hc1[k].name, value: title[0]+"_"+hc1[k].value};
-            newHeaderColumns.push(aux);
-          }
-          //New columns
-          for(var k in c1){
-            var aux = {id: title[0]+"_"+c1[k].id, name: title[0]+"_"+c1[k].name, field: title[0]+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
-            newColumns.push(aux);
-            newHeader.push(c1[k].name);
-          }
-          datasetEditors[id[l].id].obtainSelection();
+          
+          id.push({id: j, hc: datasetEditors[j].headerColumns, c: datasetEditors[j].columns});
         }
+
+
         var id1 = id[0].id, id2 = id[1].id;
         var matchCounter = 0;
         var newRows = [];
@@ -133,13 +120,14 @@ function getData(url){
             }    
           });
         });
-        data = {header: newHeader, rows: newRows};
+        data = {header: newHeader, rows: newRows, title: "Merge between "+title[0]+" and "+title[1]};
+        console.log(data);
         console.log("prior merge", data);
           //return;
-/////////////////END MERGE
-}else{
-  alert("something is wrong");
-  return;
+      /////////////////END MERGE
+      }else{
+        alert("something is wrong");
+        return;
       }//end else
       newData = data;
       i = datasetEditors.length;
@@ -152,7 +140,7 @@ function getData(url){
         data: data.rows,
         headerColumns: [],
         searchField: "",
-        title: "asd",
+        title: data.title,
         editorId: i,
       }
       if(typeof(config.headerColumns) == 'array'){
@@ -167,7 +155,6 @@ function getData(url){
       }else{
         config['sortcol'] = "";
       }
-      alert("Normal! "+i);
       datasetEditors[i] = new Editor;
       datasetEditors[i].init(config);
       datasetEditors[i].setData(data.rows);
