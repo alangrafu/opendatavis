@@ -8,6 +8,14 @@ function getData(url){
     async: false,
     dataType: "json",
     success: function(d){
+      var config = {
+        sortcol: "",
+        dataset: url,
+        columns: [],
+        headerColumns: [],
+        searchField: "",
+      };
+
       if(d.rows !=undefined){
         data = d;
       }else if(d.groupby != undefined && d.dataset != undefined){
@@ -126,44 +134,37 @@ function getData(url){
     }else{
       alert("something is wrong");
       return;
-      }//end else
-      newData = data;
-      i = datasetEditors.length;
+    }//end else
+    newData = data;
+    var i = datasetEditors.length;
 
-      var config = {
-        sortcol: "",
-        div: "dataset"+i,
-        dataset: url,
-        columns: [],
-        data: data.rows,
-        headerColumns: [],
-        searchField: "",
-        title: data.title,
-        editorId: i,
-      }
-      if(typeof(config.headerColumns) == 'array'){
-        searchField = config.headerColumns[0];
-      }
-      for(var j in data.header){
-        config.columns.push({id: data.header[j].value, name: data.header[j].name, field: data.header[j].value, cssClass: "cell-title", sortable: true });
-      }
-      config.data = d.rows;
-      if(typeof(config.headerColumns) == 'array'){
-        config['sortcol'] = config.headerColumns[0];
-      }else{
-        config['sortcol'] = "";
-      }
-      datasetEditors[i] = new Editor;
-      datasetEditors[i].init(config);
-      datasetEditors[i].setData(data.rows);
-//BEGIN SHOW TABLE
-if(showDatasetsTables){
-  console.log(data);
-  datasetEditors[i].showTable();
-  datasetEditors[i].fillHeaders();
-//END SHOW TABLE
-}
-}
+    if(typeof(config.headerColumns) == 'array'){
+      searchField = config.headerColumns[0];
+    }
+    for(var j in data.header){
+      config.columns.push({id: data.header[j].value, name: data.header[j].name, field: data.header[j].value, cssClass: "cell-title", sortable: true });
+    }
+    config.data = d.rows;
+    if(typeof(config.headerColumns) == 'array'){
+      config['sortcol'] = config.headerColumns[0];
+    }else{
+      config['sortcol'] = "";
+    }
+    config.data    = data.rows;
+    config.div     = "dataset"+i;
+    config.title   = data.title;
+    config.editorId= i;
+
+    datasetEditors[i] = new Editor;
+    datasetEditors[i].init(config);
+    datasetEditors[i].setData(data.rows);
+    //BEGIN SHOW TABLE
+    if(showDatasetsTables){
+      datasetEditors[i].showTable();
+      datasetEditors[i].fillHeaders();
+    }
+    //END SHOW TABLE
+  }
 });
 }
 
