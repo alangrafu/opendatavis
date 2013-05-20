@@ -82,30 +82,10 @@ function getData(url){
         for(var i in d.merge){
           getData(d.merge[i].dataset);
           title[title.length] = newData.title;
-          var newHeaderColumns = new Array(), newColumns = new Array();
-          for(var k in newData.header){
-            var aux = {name: title[i]+"_"+newData.header[k].name, value: title[i]+"_"+newData.header[k].value};
-            newHeaderColumns.push(aux);
-            aux = {id: title[i]+"_"+newData.header[k].name, name: title[i]+"_"+newData.header[k].name, field: title[i]+"_"+newData.header[k].name, cssClass: "cell-title", sortable: true };
-            newColumns.push(aux);
-          }
-          var newConfig = {
-            columns: newColumns,
-            headerColumns: newHeaderColumns,
-            searchField: "",
-            title: "Merge dataset ("+title[0]+" and "+title[1]+")",
-            editorId: datasetEditors.length,
-            data: newData.rows,
-            filter: [ {searchString: d.merge[i].filter[0].value, searchField: d.merge[i].filter[0].column }]
-
-          };
-          var j = datasetEditors.length;
-          datasetEditors[j] = new Editor;
-          datasetEditors[j].init(newConfig);
-          datasetEditors[j].setData(newData.rows);
-          datasetEditors[j].dataView.beginUpdate();
-          if(newConfig.filter != undefined && newConfig.filter.length > 0){
-            arg = newConfig.filter[0];
+          var newHeaderColumns = new Array(), newColumns = new Array();          
+          var j = datasetEditors.length-1;
+          if(datasetEditors[j].filter != undefined && datasetEditors[j].filter.length > 0){
+            arg = datasetEditors[j].filter[0];
             datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
             datasetEditors[j].dataView.setFilterArgs(arg);
           }
@@ -117,44 +97,45 @@ function getData(url){
 
 
           var newHeaderColumns = [], newColumns = [], newHeader = new Array();
-          //New headerColumns
-          for(var l in id){
-            var hc1 = id[l].hc, c1 = id[l].c;
-            for(var k in hc1){
-              var aux = {name: title[0]+"_"+hc1[k].name, value: title[0]+"_"+hc1[k].value};
-              newHeaderColumns.push(aux);
-            }
-            //New columns
-            for(var k in c1){
-              var aux = {id: title[0]+"_"+c1[k].id, name: title[0]+"_"+c1[k].name, field: title[0]+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
-              newColumns.push(aux);
-              newHeader.push(c1[k].name);
-            }
-            datasetEditors[id[l].id].obtainSelection();
+        //New headerColumns
+        for(var l in id){
+          var hc1 = id[l].hc, c1 = id[l].c;
+          for(var k in hc1){
+            var aux = {name: title[0]+"_"+hc1[k].name, value: title[0]+"_"+hc1[k].value};
+            newHeaderColumns.push(aux);
           }
-          var id1 = id[0].id, id2 = id[1].id;
-          var matchCounter = 0;
-          var newRows = [];
-          $.each(datasetEditors[id1].dataSelection.rows, function(i, item1){
-            $.each(datasetEditors[id2].dataSelection.rows, function(j, item2){
-              if(item1[var1] == item2[var2]){
-                var newItem = {id: matchCounter++};
-                for(var k in item1){
-                  if(k != "id"){
-                    newItem[title[0]+"_"+k] = item1[k];
-                  }
+          //New columns
+          for(var k in c1){
+            var aux = {id: title[0]+"_"+c1[k].id, name: title[0]+"_"+c1[k].name, field: title[0]+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
+            newColumns.push(aux);
+            newHeader.push(c1[k].name);
+          }
+          datasetEditors[id[l].id].obtainSelection();
+        }
+        var id1 = id[0].id, id2 = id[1].id;
+        var matchCounter = 0;
+        var newRows = [];
+        $.each(datasetEditors[id1].dataSelection.rows, function(i, item1){
+          $.each(datasetEditors[id2].dataSelection.rows, function(j, item2){
+            if(item1[var1] == item2[var2]){
+              var newItem = {id: matchCounter++};
+              for(var k in item1){
+                if(k != "id"){
+                  newItem[title[0]+"_"+k] = item1[k];
                 }
-                for(var k in item2){
-                  if(k != "id"){
-                    newItem[title[1]+"_"+k] = item2[k];
-                  }
+              }
+              for(var k in item2){
+                if(k != "id"){
+                  newItem[title[1]+"_"+k] = item2[k];
                 }
-                newRows.push(newItem);
-              }    
-            });
+              }
+              newRows.push(newItem);
+            }    
           });
-          data = {header: newHeader, rows: newRows};
-          console.log("prior merge", data);
+        });
+        data = {header: newHeader, rows: newRows};
+        console.log("prior merge", data);
+          //return;
 /////////////////END MERGE
 }else{
   alert("something is wrong");
@@ -186,6 +167,7 @@ function getData(url){
       }else{
         config['sortcol'] = "";
       }
+      alert("Normal! "+i);
       datasetEditors[i] = new Editor;
       datasetEditors[i].init(config);
       datasetEditors[i].setData(data.rows);
