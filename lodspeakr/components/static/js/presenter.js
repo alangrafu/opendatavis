@@ -55,8 +55,8 @@ function getData(url){
         var auxData = [];
         data = {};
         data.header = [
-                        {"name": groupby, "value": groupby},
-                      ];
+        {"name": groupby, "value": groupby},
+        ];
         $.each(d.variable, function(i, v){
           data.header.push({"name": d.operation+"_"+v, "value": d.operation+"_"+v});
         });
@@ -73,78 +73,66 @@ function getData(url){
         }
         data.rows = auxData;
       }else if(d.merge !=undefined){////////BEGIN MERGE
-          var datasets = new Array();
-          var title = new Array();
+        var datasets = new Array();
+        var title = new Array();
+        var id = new Array(),
+        var1 = d.merge[0].field,
+        var2 = d.merge[1].field;
 
-          for(var i in d.merge){
-            getData(d.merge[i].dataset);
-            title[title.length] = newData.title;
-            var newHeaderColumns = new Array(), newColumns = new Array();
-            for(var k in newData.header){
-              var aux = {name: title[i]+"_"+newData.header[k].name, value: title[i]+"_"+newData.header[k].value};
-              newHeaderColumns.push(aux);
-              aux = {id: title[i]+"_"+newData.header[k].name, name: title[i]+"_"+newData.header[k].name, field: title[i]+"_"+newData.header[k].name, cssClass: "cell-title", sortable: true };
-              newColumns.push(aux);
-            }
-            var newConfig = {
-              columns: newColumns,
-              headerColumns: newHeaderColumns,
-              searchField: "",
-              title: "Merge dataset ("+title[0]+" and "+title[1]+")",
-              editorId: datasetEditors.length,
-              data: newData.rows,
-              filter: [ {searchString: d.merge[i].filter[0].value, searchField: d.merge[i].filter[0].column }]
+        for(var i in d.merge){
+          getData(d.merge[i].dataset);
+          title[title.length] = newData.title;
+          var newHeaderColumns = new Array(), newColumns = new Array();
+          for(var k in newData.header){
+            var aux = {name: title[i]+"_"+newData.header[k].name, value: title[i]+"_"+newData.header[k].value};
+            newHeaderColumns.push(aux);
+            aux = {id: title[i]+"_"+newData.header[k].name, name: title[i]+"_"+newData.header[k].name, field: title[i]+"_"+newData.header[k].name, cssClass: "cell-title", sortable: true };
+            newColumns.push(aux);
+          }
+          var newConfig = {
+            columns: newColumns,
+            headerColumns: newHeaderColumns,
+            searchField: "",
+            title: "Merge dataset ("+title[0]+" and "+title[1]+")",
+            editorId: datasetEditors.length,
+            data: newData.rows,
+            filter: [ {searchString: d.merge[i].filter[0].value, searchField: d.merge[i].filter[0].column }]
 
-            };
-            var j = datasetEditors.length;
-            datasetEditors[j] = new Editor;
-            datasetEditors[j].init(newConfig);
-            datasetEditors[j].setData(newData.rows);
-            datasetEditors[j].dataView.beginUpdate();
-            if(newConfig.filter != undefined && newConfig.filter.length > 0){
-              arg = newConfig.filter[0];
-              datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
-              datasetEditors[j].dataView.setFilterArgs(arg);
-            }
+          };
+          var j = datasetEditors.length;
+          datasetEditors[j] = new Editor;
+          datasetEditors[j].init(newConfig);
+          datasetEditors[j].setData(newData.rows);
+          datasetEditors[j].dataView.beginUpdate();
+          if(newConfig.filter != undefined && newConfig.filter.length > 0){
+            arg = newConfig.filter[0];
+            datasetEditors[j].dataView.setFilter(datasetEditors[j].myFilter);
+            datasetEditors[j].dataView.setFilterArgs(arg);
+          }
             //datasetEditors[j].dataView.sort(self.comparer, 1);
             datasetEditors[j].dataView.endUpdate();
+            id.push({id: j, hc: datasetEditors[j].headerColumns, c: datasetEditors[j].columns});
 
           }
 
-          var id1 = 0,
-              id2 = 1,
-              var1 = d.merge[0].field,
-              var2 = d.merge[1].field;
 
-          var newHeaderColumns = [], newColumns = [];
-          var hc1 = datasetEditors[id1].headerColumns,
-              hc2 = datasetEditors[id2].headerColumns,
-              c1 = datasetEditors[id1].columns,
-              c2 = datasetEditors[id2].columns;
+          var newHeaderColumns = [], newColumns = [], newHeader = new Array();
           //New headerColumns
-          for(var k in hc1){
-            var aux = {name: title[0]+"_"+hc1[k].name, value: title[0]+"_"+hc1[k].value};
-            newHeaderColumns.push(aux);
+          for(var l in id){
+            var hc1 = id[l].hc, c1 = id[l].c;
+            for(var k in hc1){
+              var aux = {name: title[0]+"_"+hc1[k].name, value: title[0]+"_"+hc1[k].value};
+              newHeaderColumns.push(aux);
+            }
+            //New columns
+            for(var k in c1){
+              var aux = {id: title[0]+"_"+c1[k].id, name: title[0]+"_"+c1[k].name, field: title[0]+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
+              newColumns.push(aux);
+              newHeader.push(c1[k].name);
+            }
+            datasetEditors[id[l].id].obtainSelection();
           }
-          for(var k in hc2){
-            var aux = {name: title[1]+"_"+hc2[k].name, value: title[1]+"_"+hc2[k].value};
-            newHeaderColumns.push(aux);
-          }
-
-          //New columns
-          var newHeader = new Array();
-          for(var k in c1){
-            var aux = {id: title[0]+"_"+c1[k].id, name: title[0]+"_"+c1[k].name, field: title[0]+"_"+c1[k].field, cssClass: "cell-title", sortable: true };
-            newColumns.push(aux);
-            newHeader.push(c1[k].name);
-          }
-          for(var k in c2){
-            var aux = {id: title[1]+"_"+c2[k].id, name: title[1]+"_"+c2[k].name, field: title[1]+"_"+c2[k].field, cssClass: "cell-title", sortable: true };
-            newColumns.push(aux);
-            newHeader.push(c2[k].name);
-          }
-          datasetEditors[id1].obtainSelection();
-          datasetEditors[id2].obtainSelection();
+          var id1 = id[0].id, id2 = id[1].id;
           var matchCounter = 0;
           var newRows = [];
           $.each(datasetEditors[id1].dataSelection.rows, function(i, item1){
@@ -165,17 +153,17 @@ function getData(url){
               }    
             });
           });
-          newData = {header: newHeader, rows: newRows};
+          data = {header: newHeader, rows: newRows};
+          console.log("prior merge", data);
 /////////////////END MERGE
-      }else{
-        alert("something is wrong");
-        return;
+}else{
+  alert("something is wrong");
+  return;
       }//end else
       newData = data;
       i = datasetEditors.length;
 
-       var config = {
-
+      var config = {
         sortcol: "",
         div: "dataset"+i,
         dataset: url,
@@ -202,23 +190,23 @@ function getData(url){
       datasetEditors[i].init(config);
       datasetEditors[i].setData(data.rows);
 //BEGIN SHOW TABLE
-      if(showDatasetsTables){
-        datasetEditors[i].showTable();
-        datasetEditors[i].fillHeaders();
+if(showDatasetsTables){
+  datasetEditors[i].showTable();
+  datasetEditors[i].fillHeaders();
 //END SHOW TABLE
-      }
-    }
-  });
+}
+}
+});
 }
 
 
 var isInIFrame = (window.location != window.parent.location);
 if(isInIFrame==true){
-$("#metadata").hide();
-$(".navbar").hide();
+  $("#metadata").hide();
+  $(".navbar").hide();
 }else{
   $("h1").on('mouseover', function(){$(".menu-button").removeClass("hidden")})
-       .on('mouseout', function(){$(".menu-button").addClass("hidden")});
-$("#chartContainer").on('mouseover', function(){$(".menu-button").removeClass("hidden")})
-       .on('mouseout', function(){$(".menu-button").addClass("hidden")});
+  .on('mouseout', function(){$(".menu-button").addClass("hidden")});
+  $("#chartContainer").on('mouseover', function(){$(".menu-button").removeClass("hidden")})
+  .on('mouseout', function(){$(".menu-button").addClass("hidden")});
 }
