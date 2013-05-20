@@ -6,11 +6,12 @@
             "var1": "{{first.params.paramX.value}}",
             "var2": "{{first.params.paramY.value}}"
       },
-      "numericx": true,
+      "numericx": {%if first.params.numericx.value == "true"%}true{%else%}false{%endif%},
       "sortcol": "",
       "manualdata": true,
       "width": 600,
       "height": 400,
-      "readonly": false
+      "readonly": false,
+      "sortcol": "{{first.params.sort.value}}"
   }
 }

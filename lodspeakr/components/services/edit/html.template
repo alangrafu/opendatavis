@@ -1,8 +1,4 @@
-{%include "../../includes/header.inc"%}
-<div class="btn-group">
-<button class="btn btn-large btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
-<button class="btn btn-large btn-info merge-button" data-toggle="modal" data-target="#merge-dialog">Merge Datasets</button>
-</div>
+{%include "../../includes/header_edit.inc"%}
 <div class="container-fluid" id="main" style="width:40%"></div>
 <div class="container-fluid" id="viz" style="width:40%">
  <div class="span12"><div id="mapContainer" class="vizContainer"></div><div id="chartContainer" class="vizContainer"></div></div>
@@ -213,7 +209,10 @@ $(function(){
   function loadVisualization(vizConfig){
     viz = vizConfig.visualization;
     getData(viz.dataset);
-    var j = datasetEditors.length-1;
+      var j = datasetEditors.length-1;
+    if(viz.sortcol != undefined){
+      datasetEditors[j].sortcol = viz.sortcol;
+    }
     if(viz.chartType == "MapVisualization"){
       datasetEditors[j].renderMap(viz);
     }else{
@@ -228,7 +227,6 @@ $(function(){
     async: false,
     contentType:"application/json; charset=utf-8",
     success: function(data){
-      console.log("{{lodspk.args.all|deurifier}}", data);
       loadVisualization(data);
     },
     error: function (xhr, ajaxOptions, thrownError) {

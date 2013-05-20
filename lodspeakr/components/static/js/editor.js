@@ -381,7 +381,6 @@ var newData = [], groupedData = [];
       if(config.sortcol != undefined){
         sortcol = config.sortcol;
       } 
-      log("* Sort Column: "+config.sortcol, self.editorId);
       if(config.manualdata == true){
         self.dataView.beginUpdate();
         if(config.filter != undefined && config.filter.length > 0){
