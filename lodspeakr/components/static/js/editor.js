@@ -49,7 +49,7 @@ function Editor(){
       $cell.prepend('<select class="fieldSearch dataset'+self.editorId+'"></select>');
       $cell.prepend('<div style="width:100%;min-height:300px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
       $cell.prepend('<div class="btn-group"><button class="btn btn-large btn-info group-button editor'+self.editorId+'" group-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-large btn-info chart-button editor'+self.editorId+'" chart-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-large btn-info map-button editor'+self.editorId+'" map-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
-      $cell.prepend('<h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
+      $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";
       $.each(self.headerColumns, function(i, item){
         options += "<option value='"+item.value+"'>"+item.name+"</option>";
@@ -176,17 +176,14 @@ showTable: function(){
   self.dataView.setFilter(self.myFilter);
   self.dataView.setFilterArgs(0);
   self.dataView.endUpdate();
-  $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected")
+  $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected");
+  $(".datasetTitle."+self.div).html(self.title);
 
 },
 renderGroup: function(config){
   var self = this;
   var groupby = config.groupby, variables = config.variable;
   self.obtainSelection();
-  log("Grouping dataset", self.editorId);
-  log("* Operation: "+config.operation, self.editorId);
-  log("* Variables: "+variables, self.editorId);
-  log("* Group By: "+groupby, self.editorId);
   var i = datasetEditors.length;
   var countData = [], sumData = [];
   $.each(self.dataSelection.rows, function(i, item){
@@ -300,11 +297,9 @@ var newData = [], groupedData = [];
   },
   renderMap: function(config){
     var self = this;
-    log("Render map", self.editorId);
     if(config.sortcol != undefined){
       sortcol = config.sortcol;
     }
-    log("* Sort Column: "+config.sortcol, self.editorId);
     if(config.manualdata == true){
       self.dataView.beginUpdate();
       if(config.filter !=  undefined && config.filter.length > 0){
@@ -334,7 +329,6 @@ var newData = [], groupedData = [];
     var center = [0, 0];
     var validPoints = 0;
     var indexLat = config.params.lat, indexLong = config.params.lon;
-    log("* Lat/Long: "+indexLat+", "+indexLong, self.editorId);
     north = -Infinity, south=Infinity, east = -Infinity, west = Infinity;
     $.each(self.dataSelection.rows, function(i, item){
       lat = parseFloat(item[indexLat]);
