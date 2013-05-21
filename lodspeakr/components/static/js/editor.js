@@ -268,7 +268,8 @@ var newData = [], groupedData = [];
       div: "dataset"+i,
       columns: columns,
       headerColumns: headerColumns,
-      data: newData
+      data: newData,
+      title: "Grouped: "+self.title+" grouped by "+config.groupby+" ("+config.operation+") using "+config.variable
     }
     datasetEditors[i] = new Editor;
     datasetEditors[i].init(c);

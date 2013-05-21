@@ -31,15 +31,18 @@ function getData(url){
               sumData[item[groupby]] = {};
             }
             $.each(d.variable, function(i, v){
-              if(countData[item[groupby]][d.operation+"_"+v] == undefined){
-                countData[item[groupby]][d.operation+"_"+v] = 1;
-              }else{
-                countData[item[groupby]][d.operation+"_"+v]++;          
-              }
-              if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
-                sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
-              }else{
-                sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
+              var thisValue = parseFloat(item[variable]);
+              if(config.operation == 'count' || !isNaN(thisValue)){
+                if(countData[item[groupby]][d.operation+"_"+v] == undefined){
+                  countData[item[groupby]][d.operation+"_"+v] = 1;
+                }else{
+                  countData[item[groupby]][d.operation+"_"+v]++;          
+                }
+                if(sumData[item[groupby]][d.operation+"_"+v] == undefined){
+                  sumData[item[groupby]][d.operation+"_"+v] = parseFloat(item[v]);
+                }else{
+                  sumData[item[groupby]][d.operation+"_"+v] += parseFloat(item[v]);
+                }
               }
             });
           }
@@ -62,11 +65,11 @@ function getData(url){
         var counter = 0;
         var auxData = [];
         data = {};
-        data.header = [
+        var header = [
         {"name": groupby, "value": groupby},
         ];
         $.each(d.variable, function(i, v){
-          data.header.push({"name": d.operation+"_"+v, "value": d.operation+"_"+v});
+          header.push({"name": d.operation+"_"+v, "value": d.operation+"_"+v});
         });
         for(i in groupedData){
           var newItem = {};
@@ -79,7 +82,7 @@ function getData(url){
           auxData.push(newItem);
           counter++;
         }
-        data.rows = auxData;
+        data = {rows: auxData, title: "Group!", header: header};
       }else if(d.merge !=undefined){////////BEGIN MERGE
         var datasets = new Array();
         var title = new Array(), newHeader = new Array();
@@ -136,6 +139,7 @@ function getData(url){
       return;
     }//end else
     newData = data;
+    console.log(newData);
     var i = datasetEditors.length;
 
     if(typeof(config.headerColumns) == 'array'){
@@ -152,7 +156,7 @@ function getData(url){
     }
     config.data    = data.rows;
     config.div     = "dataset"+i;
-    config.title   = data.title;
+    //config.title   = data.title;
     config.editorId= i;
 
     datasetEditors[i] = new Editor;

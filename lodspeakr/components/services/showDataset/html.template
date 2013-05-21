@@ -227,6 +227,7 @@ function createEditor(config){
         config.columns.push({id: d.header[i].value, name: d.header[i].name, field: d.header[i].value, cssClass: "cell-title", sortable: true });
       }
       config.data = d.rows;
+      config.title = d.title;
       config['sortcol'] = config.headerColumns[0];
       i = datasetEditors.length;
       datasetEditors[i] = new Editor;
