@@ -487,9 +487,12 @@ var newData = [], groupedData = [];
             $("#tooltip").remove();
             var x = item.datapoint[0].toFixed(2),
             y = item.datapoint[1].toFixed(2);
-
-            self.showTooltip(item.pageX, item.pageY,
-              "(" + x + ", " + y+")");
+            var tooltipContent = "(" + x + ", " + y+")";
+            if(config.numericx){
+              var xLabel = ticks[parseInt(x)];
+              tooltipContent = "(" + xLabel[1] + ", " + y+")";
+            }
+            self.showTooltip(item.pageX, item.pageY, tooltipContent);
           }
         } else {
           $("#tooltip").remove();
