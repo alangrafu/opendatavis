@@ -96,5 +96,19 @@ $("#embed-url").html(window.location+"");
 });
 
 </script>
+
+<script>
+var links = [
+  {source: "{{first.main.dataset.value}}", target: "{{uri}}", type: "derived"},
+{%for i in models.main%}
+  {source: "{{first.main.dataset.value}}", target: "{{i.original.value}}", type: "derived"},
+{%endfor%}
+{%if first.main.parent.value%}
+  {source: "{{first.main.parent.value}}", target: "{{uri}}", type: "derived"}
+{%endif%}
+];
+</script>
+
+{%include "../../includes/metadata_footer.inc"%}
 </body>
 </html>
