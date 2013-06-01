@@ -2,7 +2,9 @@ body {
   background: #FFF;
 }
 
-
+.grid{
+  border: 1px solid grey;
+}
 
 
 table tr td {
