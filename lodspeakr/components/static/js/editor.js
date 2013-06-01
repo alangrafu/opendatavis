@@ -91,13 +91,21 @@ function Editor(){
           $("#share-dialog").modal('show');
         }
       });
-self.runEvents();
-log("New editor created", self.editorId);
+      self.dataView = new Slick.Data.DataView({ inlineFilters: true });
+      if(self.data != undefined){
+        self.dataView.setItems(self.data);
+      }
+      if(self.sortcol != undefined && self.sortcol != ""){
+        self.dataView.beginUpdate();
+        self.dataView.sort(self.comparer, 1);
+        self.dataView.endUpdate();
+      }
+      self.runEvents();
+      log("New editor created", self.editorId);
 
 },
 setData: function(data){
   var self = this;
-  self.dataView = new Slick.Data.DataView({ inlineFilters: true });
   self.dataView.setItems(data);
   self.dataSelection["rows"] = data;
   self.data = data;
@@ -388,8 +396,8 @@ var newData = [], groupedData = [];
           arg = config.filter[0];
           self.dataView.setFilter(self.myFilter);
           self.dataView.setFilterArgs(arg);
-        }
-        self.dataView.sort(self.comparer, 1);
+        }    
+        self.dataView.sort(self.comparer, -1);
         self.dataView.endUpdate();
       }
       self.obtainSelection();
@@ -401,7 +409,6 @@ var newData = [], groupedData = [];
       }
       var dataObj = {}, d1 = [];
       var $var2 = config.params.var2, $var1 = config.params.var1;
-      log("* Parameters: "+JSON.stringify(config.params), self.editorId);
       var options = {
         yaxis : {
           show : true,
@@ -419,9 +426,6 @@ var newData = [], groupedData = [];
       var xCounter = 0;
       var ticks = [];
       $chart_type = config.chartType
-      console.log("* Chart type: "+$chart_type, self.editorId);
-      console.log("* Non-numeric X axis: "+config.numericx, self.editorId);
-      console.log("* ", $var1, $var2, self.dataSelection.rows);
       $.each(self.dataSelection.rows, function(i, item){
         var x = item[$var1], y = (item[$var2]);
         if(config.numericx){
