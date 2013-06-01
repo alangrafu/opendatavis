@@ -3,7 +3,7 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX : <http://opendatav.is/vocab/>
 
-SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?datasetmerged ?filterValue ?filterColumn WHERE {
+SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?datasetmerged ?filterValue ?filterColumn ?source WHERE {
   GRAPH ?g{
     <{{uri}}> prov:wasGeneratedBy ?a . 
     ?a  a prov:Activity;
@@ -28,7 +28,10 @@ SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?dataset
         prov:entity [
           rdf:value ?operation 
         ]
-      ]
+      ] .
+      GRAPH ?gg{
+        ?source dcat:distribution [ dcat:downloadURL ?dataset ]
+      }
     }
 
 #merge

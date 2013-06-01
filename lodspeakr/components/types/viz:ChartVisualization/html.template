@@ -25,8 +25,9 @@
       <hr/>
       <div>
        <strong>Dataset used:</strong>
-       <span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{{first.main.dataset.value}}">{{first.main.dataset.value|explode:"/"|pop}}</a></span>
+       <span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{%if first.main.datasetURL.value%}{{first.main.datasetURL.value|explode:"/"|pop}}{%else%}{{first.main.dataset.value}}{%endif%}">{%if first.main.datasetURL.value%}{{first.main.datasetURL.value|explode:"/"|pop}}{%else%}Virtual dataset{%endif%}</a></span>
       </div>
+      {%if first.main.original.value%}
       <div>
        <strong>Obtained from:</strong>
        <ul>
@@ -40,6 +41,7 @@
        <strong>Downloaded at:</strong>
        <span about="{{first.main.dataset.value}}" property="dcterms:created" datatype="xsd:dateTime">{{first.main.datasetcreationdate.value}}</span>
       </div>
+      {%endif%}
     </div>
     <div id="chartContainer" class="vizContainer"></div>
     <div class="modal hide fade" id="error-dialog">
@@ -63,6 +65,7 @@
 <script>
 var datasetEditors = new Array();
 var showDatasetsTables = false;
+var links = [];
 $(function(){
 var config = {
       chartType: "{{first.main.vizType.curie|explode:":"|pop}}",
@@ -81,6 +84,7 @@ var config = {
       readonly: true,
       manualdata: true
 };
+links.push({source: "This chart", target: "{{first.main.datasetURL.value}}", sourceType: "chart", targetType: "dataset"});
 getData("{{first.params.dataset.value}}");
 
 config.data = newData;
@@ -97,18 +101,11 @@ $("#embed-url").html(window.location+"");
 
 </script>
 
-<script>
-var links = [
-  {source: "{{first.main.dataset.value}}", target: "{{uri}}", type: "derived"},
-{%for i in models.main%}
-  {source: "{{first.main.dataset.value}}", target: "{{i.original.value}}", type: "derived"},
-{%endfor%}
-{%if first.main.parent.value%}
-  {source: "{{first.main.parent.value}}", target: "{{uri}}", type: "derived"}
-{%endif%}
-];
-</script>
-
 {%include "../../includes/metadata_footer.inc"%}
+<script>
+$(function(){
+  drawMetadata();
+});
+</script>
 </body>
 </html>

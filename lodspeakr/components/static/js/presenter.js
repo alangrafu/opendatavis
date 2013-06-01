@@ -19,7 +19,12 @@ function getData(url){
       if(d.rows !=undefined){
         data = d;
       }else if(d.groupby != undefined && d.dataset != undefined){
+        var lastLink = links.pop();
+        lastLink.target = url;
+        lastLink.targetType = "group";
+        links.push(lastLink);
         var groupby = d.groupby, variable = d.variable;
+        links.push({source: url, target: d.source, sourceType: "group", targetType: "dataset"});
         getData(d.dataset);
         var countData = [], sumData = [];
         $.each(newData.rows, function(i, item){
@@ -32,7 +37,7 @@ function getData(url){
             }
             $.each(d.variable, function(i, v){
               var thisValue = parseFloat(item[variable]);
-              if(config.operation == 'count' || !isNaN(thisValue)){
+              if(d.operation == 'count' || !isNaN(thisValue)){
                 if(countData[item[groupby]][d.operation+"_"+v] == undefined){
                   countData[item[groupby]][d.operation+"_"+v] = 1;
                 }else{
@@ -71,6 +76,7 @@ function getData(url){
         $.each(d.variable, function(i, v){
           header.push({"name": d.operation+"_"+v, "value": d.operation+"_"+v});
         });
+        console.log("grouped", countData);
         for(i in groupedData){
           var newItem = {};
           var item = groupedData[i];
@@ -84,6 +90,10 @@ function getData(url){
         }
         data = {rows: auxData, title: "Group!", header: header};
       }else if(d.merge !=undefined){////////BEGIN MERGE
+        var lastLink = links.pop();
+        lastLink.target = "Merging";
+        lastLink.targetType = "merge";
+        links.push(lastLink);
         var datasets = new Array();
         var title = new Array(), newHeader = new Array();
         var id = new Array(),
@@ -91,6 +101,7 @@ function getData(url){
         var2 = d.merge[1].field;
         var newHeaderColumns = new Array();
         for(var i in d.merge){
+          links.push({source: "Merging", target: d.merge[i].dataset, sourceType: "merge", targetType: "dataset"});
           getData(d.merge[i].dataset);
           title[title.length] = newData.title;
           var newColumns = new Array();          
