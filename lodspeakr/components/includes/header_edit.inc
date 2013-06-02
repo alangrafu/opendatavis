@@ -161,7 +161,7 @@
             <li><a href="{{lodspk.home}}visualizations">Visualizations</a></li>
           </ul>
 <div class="btn-group">
-<button class="btn btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">New dataset</button>
+<button class="btn btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">Load dataset</button>
 <button class="btn btn-info merge-button" data-toggle="modal" data-target="#merge-dialog">Merge Datasets</button>
 </div>
         </div><!--/.nav-collapse -->

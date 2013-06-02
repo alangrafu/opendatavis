@@ -47,7 +47,7 @@ function Editor(){
       $cell = $(".dataset"+self.editorId+" .datasetCell");
       $cell.prepend('<input type="text" class="dataset'+self.editorId+' txtSearch" />');
       $cell.prepend('<span> </span><select class="fieldSearch dataset'+self.editorId+'"></select>');
-      $cell.prepend('<div style="width:100%;min-height:100px;max-height:500px;" class="span5 grid dataset'+self.editorId+'"></div>');
+      $cell.prepend('<div style="width:100%;min-height:200px;" class="span5 grid dataset'+self.editorId+'"></div>');
       $cell.prepend('<div class="btn-group"><button class="btn btn-info group-button editor'+self.editorId+'" group-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-info chart-button editor'+self.editorId+'" chart-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-info map-button editor'+self.editorId+'" map-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
       $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";

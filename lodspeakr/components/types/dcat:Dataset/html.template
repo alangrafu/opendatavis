@@ -14,7 +14,7 @@
         <h1>Other versions from the same URL</h1>
         {%for i in models.sp%}
         <ul>
-            <li><a href='{{i.other.value}}'>{{i.other.value}}</a></li>
+            <li><a href='{{i.other.value}}'>{{i.id.value}}</a> downloaded at {{i.created.value|date:"Y-m-d H:m:s"}}</li>
         </ul>
         {%endfor%}
         {%endif%}

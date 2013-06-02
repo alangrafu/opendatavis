@@ -24,8 +24,7 @@
       <hr/>
       <div>
        <strong>Dataset used:</strong>
-       <span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{{first.main.dataset.value}}">{{first.main.dataset.value|explode:"/"|pop}}</a></span>
-      </div>
+<span><a rel="http://www.w3.org/ns/prov#wasDerivedFrom" href="{%if first.main.datasetURL.value%}{{first.main.datasetURL.value}}{%else%}{{first.main.dataset.value}}{%endif%}">{%if first.main.datasetURL.value%}{{first.main.datasetURL.value|explode:"/"|pop}}{%else%}Virtual dataset{%endif%}</a></span>      </div>
       <div>
        <strong>Obtained from:</strong>
        <ul>
