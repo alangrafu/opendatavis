@@ -85,3 +85,15 @@ svg{
   width:1100px;
   text-align: center;
 }
+
+.merged{
+  background-image: url("../img/mix.png");
+  background-repeat: no-repeat;
+  background-position:center; 
+  vertical-align: middle;
+  min-height: 110px;
+  margin: auto;
+  margin-top: 50px;
+  width:1100px;
+  text-align: center;
+}

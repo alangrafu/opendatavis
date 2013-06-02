@@ -110,6 +110,9 @@ function getData(url){
             links.push({source: "Merging", target: d.merge[i].dataset, sourceType: "merge", targetType: "dataset"});
           }
           getData(d.merge[i].dataset);
+          if(i < d.merge.length -1){
+            $("#main").append("<div class='row merged'>MERGED WITH</div>");
+          }
           title[title.length] = newData.title;
           var newColumns = new Array();          
           var j = datasetEditors.length-1;
