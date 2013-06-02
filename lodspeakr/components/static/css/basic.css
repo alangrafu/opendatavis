@@ -1,5 +1,6 @@
 body {
   background: #FFF;
+  padding-bottom: 50px;
 }
 
 .grid{
@@ -71,4 +72,16 @@ text {
 
 svg{
   border: 1px solid grey;
+}
+
+.arrow{
+  background-image: url("../img/vertical_arrow.png");
+  background-repeat: no-repeat;
+  background-position:center; 
+  vertical-align: middle;
+  min-height: 100px;
+  margin: auto;
+  margin-top: 50px;
+  width:1100px;
+  text-align: center;
 }

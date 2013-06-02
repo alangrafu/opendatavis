@@ -1,10 +1,28 @@
-<!DOCTYPE html>
- <html>
-  <head>
-   <meta http-equiv="refresh" content="1;URL={{uri}}.json">
-  </head>
-  <body>
-  Redirecting to {{uri}}.json
-  </body>
+{%include "../../includes/header.inc"%}
+  <div class="container-fluid">
+    <div class="row-fluid">
+  	  	<h1>Virtual dataset</h1>
+  	  	<p>This dataset was generated based on other existing datasets</p>
+  	    <ul>
+{%if first.main.groupVariable.value%}
+          <li><strong>Dataset:</strong> <a href='{{first.main.source.value}}'>{{first.main.source.value}}</a></li>
+          <li><strong>Grouped by column:</strong> {{first.main.groupVariable.value}}</li>
+  		  <li><strong>Operation applied:</strong> {{first.main.operation.value}}</li>
+  		  <li><strong>Variable used for grouping:</strong> <ul>{%for i in models.main%}<li>{{i.variableGrouped.value}}</li>{%endfor%}</ul></li>
+{%endif%}
+{%if first.main.datasetmerged.value%}
+{%for i in models.main%}
+  {%if !forloop.last%},{%endif%}{
+    <li><strong>Dataset merged:</strong> {{i.datasetmerged.value}}</li>
+    <li><strong>Field merged:</strong> {{i.fieldmerged.value}}</li>
+    <li><strong>Filter used in datasets:</strong> {{i.filterColumn.value}} with value "{{i.filterValue.value}}</li>
+  }
+{%endfor%}
+
+{%endif%}  
+</ul>
+</div>
+</div>
+</body>
 </html>
 

@@ -190,7 +190,7 @@ datasets.push({uri: "{{lodspk.args.all|deurifier}}", json: "{{first.jsonfile.jso
 <script src="{{lodspk.home}}js/extras.js"></script>
 <script src="{{lodspk.home}}js/editor.js"></script>
 <script>
-
+var links = [];
 $(function(){
   $.ajax({
     url: home+"datasets",
@@ -214,8 +214,10 @@ $(function(){
       datasetEditors[j].sortcol = viz.sortcol;
     }
     if(viz.chartType == "MapVisualization"){
+      $("#main").append("<div class='row arrow'>GENERATES MAP</div>");
       datasetEditors[j].renderMap(viz);
     }else{
+      $("#main").append("<div class='row arrow'>GENERATES CHART</div>");
       datasetEditors[j].renderChart(viz);
     }
   }
