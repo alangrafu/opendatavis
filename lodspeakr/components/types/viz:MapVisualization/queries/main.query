@@ -2,7 +2,7 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX viz: <http://opendatav.is/vocab/>
 
-SELECT ?creationdate ?dataset ?original ?datasetcreationdate ?width ?height ?title ?vizType ?parent WHERE{
+SELECT ?creationdate ?dataset ?original ?datasetcreationdate ?width ?height ?title ?vizType ?parent ?datasetURL WHERE{
   GRAPH <{{uri}}>{
     <{{uri}}> a ?vizType;
               dcterms:created ?creationdate;
@@ -21,7 +21,7 @@ SELECT ?creationdate ?dataset ?original ?datasetcreationdate ?width ?height ?tit
         ]
       ]
       graph <{{lodspk.metadata}}>{
-        ?x dcat:distribution [ dcat:downloadURL ?download ];
+        ?datasetURL dcat:distribution [ dcat:downloadURL ?download ];
                   dcterms:created ?datasetcreationdate ;
                   prov:wasDerivedFrom ?original .      }
     }
@@ -29,7 +29,7 @@ SELECT ?creationdate ?dataset ?original ?datasetcreationdate ?width ?height ?tit
     OPTIONAL{
       <{{uri}}> prov:wasDerivedFrom  ?download .
       graph <{{lodspk.metadata}}>{
-        ?x dcat:distribution [ dcat:downloadURL ?download ];
+        ?datasetURL dcat:distribution [ dcat:downloadURL ?download ];
                   dcterms:created ?datasetcreationdate ;
                   prov:wasDerivedFrom ?original .
       }

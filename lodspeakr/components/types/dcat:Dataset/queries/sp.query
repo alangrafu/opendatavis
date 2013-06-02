@@ -1,0 +1,10 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?other WHERE {
+  GRAPH <{{lodspk.metadata}}>{
+    <{{uri}}> prov:wasDerivedFrom ?originalURL .
+    ?other prov:wasDerivedFrom ?originalURL .
+    FILTER(?other != <{{uri}}>)
+  }
+}

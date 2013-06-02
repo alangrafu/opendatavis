@@ -1,0 +1,24 @@
+{%include "../../includes/header.inc"%}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <h1>Dataset</h1>
+      <a href='{{first.po.download.value}}'><button class='btn btn-info'>Download dataset</button></a>
+      <ul>
+        <li><strong>Downloaded from:</strong> <a href='{{first.po.originalURL}}'>{{first.po.originalURL.value}}</a></li>
+        <li><strong>Date downloaded:</strong> {{first.po.date.value}}</li>
+        <li><strong>Dataset ID:</strong> {{first.po.id.value}}</li>
+      </ul>
+    </div>    
+    <div class="row-fluid">
+        {%if first.sp.other.value%}
+        <h1>Other versions from the same URL</h1>
+        {%for i in models.sp%}
+        <ul>
+            <li><a href='{{i.other.value}}'>{{i.other.value}}</a></li>
+        </ul>
+        {%endfor%}
+        {%endif%}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?download ?dist ?id ?originalURL ?date WHERE {
+  GRAPH <{{lodspk.metadata}}>{
+    <{{uri}}> dcat:distribution ?dist;
+              dcterms:identifier ?id;
+              dcterms:created ?date;
+              prov:wasDerivedFrom ?originalURL .
+    ?dist dcat:downloadURL ?download ;
+          dcat:mediaType "text/csv".
+
+  }
+}
