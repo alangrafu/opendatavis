@@ -82,7 +82,7 @@ svg{
   min-height: 100px;
   margin: auto;
   margin-top: 50px;
-  width:1100px;
+  width:1170px;
   text-align: center;
 }
 
@@ -95,5 +95,13 @@ svg{
   margin: auto;
   margin-top: 50px;
   width:1100px;
+  text-align: center;
+}
+
+.datasetTitle{
+  text-align: center;
+}
+
+.numberOfSelected{
   text-align: center;
 }
