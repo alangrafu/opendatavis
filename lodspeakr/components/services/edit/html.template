@@ -214,16 +214,17 @@ $(function(){
       datasetEditors[j].sortcol = viz.sortcol;
     }
     if(viz.chartType == "MapVisualization"){
-      $("#main").append("<div class='row arrow'>GENERATES MAP</div>");
+      $("#main").append("<div class='row arrow span12'>GENERATES MAP</div>");
       datasetEditors[j].renderMap(viz);
     }else{
-      $("#main").append("<div class='row arrow'>GENERATES CHART</div>");
+      $("#main").append("<div class='row arrow span12'>GENERATES CHART</div>");
       datasetEditors[j].renderChart(viz);
-      $("#main").prepend("<div class='row span12' style='text-align:center'><button id='turnTables' class='btn btn-large btn-warning'>Show tables</button></div>");
+      $("#main").prepend("<div class='row span12' style='text-align:center'><button id='turnTables' class='btn btn-large btn-warning' style='float: none;'>Show tables</button></div>");
       $("#turnTables").on('click', function(){
-        var label = tablesDisplayed?"Hide":"Show";
+        var label = tablesDisplayed?"Show":"Hide";
         $(this).html(label+" tables");
-        displayTables(tablesDisplayed);});
+        tablesDisplayed = !tablesDisplayed;
+        displayTables();});
     }
   }
 

@@ -40,6 +40,9 @@ function Editor(){
         if(config.title != undefined){
           self.title = config.title;
         }
+        if(config.subtitle != undefined){
+          self.subtitle = config.subtitle;
+        }
       }      
       self.div = config.div;
       self.dataset = config.dataset;
@@ -48,7 +51,7 @@ function Editor(){
       $cell.prepend('<span class="filterSection"><input type="text" class="dataset'+self.editorId+' txtSearch" /><span> </span><select class="fieldSearch dataset'+self.editorId+'"></select></span>');
       $cell.prepend('<div style="width:100%;min-height:200px;" class="span5 grid dataset'+self.editorId+'"></div>');
       $cell.prepend('<div class="btn-group"><button class="btn btn-info group-button editor'+self.editorId+'" group-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-info chart-button editor'+self.editorId+'" chart-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog">Chart</button><button class="btn btn-info map-button editor'+self.editorId+'" map-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog">Map</button></div>');
-      $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
+      $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h4 class="datasetSubtitle dataset'+self.editorId+'"></h4><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";
       $.each(self.columns, function(i, item){
         options += "<option value='"+item.id+"'>"+item.name+"</option>";
@@ -101,7 +104,6 @@ function Editor(){
       }
       self.runEvents();
       log("New editor created", self.editorId);
-
 },
 setData: function(data){
   var self = this;
@@ -185,6 +187,9 @@ showTable: function(){
   self.dataView.endUpdate();
   $(".numberOfSelected."+self.div).html(self.dataView.getLength()+" rows selected");
   $(".datasetTitle."+self.div).html(self.title);
+  if(self.subtitle != undefined){
+    $(".datasetSubtitle."+self.div).html(self.subtitle);
+  }
 
 },
 renderGroup: function(config){
