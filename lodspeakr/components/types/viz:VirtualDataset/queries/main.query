@@ -29,6 +29,12 @@ SELECT ?dataset ?groupVariable ?variableGrouped ?operation ?fieldmerged ?dataset
           rdf:value ?operation 
         ]
       ] .
+      OPTIONAL{
+ <{{uri}}> :hasFilter [ 
+        :filterValue ?filterValue;
+        :filterColumn ?filterColumn 
+    ] .
+      }
       GRAPH ?gg{
         ?source dcat:distribution [ dcat:downloadURL ?dataset ]
       }

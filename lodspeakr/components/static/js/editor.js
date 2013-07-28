@@ -274,7 +274,7 @@ var newData = [], groupedData = [];
         operation: config.operation,
         variable: variables,
         dataset: self.dataset,
-        filterby: [ {column: self.searchField, value: self.searchString} ]
+        filters: [ {column: self.searchField, value: self.searchString} ]
       },
       editorId: i,
       div: "dataset"+i,

@@ -2,8 +2,9 @@
 {%if first.main.groupVariable.value%}
   "groupby": "{{first.main.groupVariable.value}}",
   "source": "{{first.main.source.value}}",
-"dataset": "{{first.main.dataset.value}}",
+  "dataset": "{{first.main.dataset.value}}",
   "operation": "{{first.main.operation.value}}",
+  "filter": [{"column": "nombre_region{{first.main.filterColumn.value}}", "value": "GG{{first.main.filterValue.value}}" }],
   "variable": [{%for i in models.main%}{%if !forloop.last%},{%endif%}"{{i.variableGrouped.value}}"{%endfor%}]
 {%endif%}
 {%if first.main.datasetmerged.value%}

@@ -145,6 +145,16 @@ def saveViz():
                 store.add((usageBNode2, PROV["entity"], URIRef(datasetDict['dataset'])))                
                 store.add((usageBNode2, PROV["hadRole"], VIZ["datasetGrouped"]))  
 
+                if "filters" in datasetDict.keys():
+                    filters = datasetDict["filters"]
+                    for myFilter in filters:
+                        print myFilter
+                        if "column"  in myFilter and "value" in myFilter:
+                            blankFilter = BNode()
+                            store.add((URIRef(datasetDict['dataset']), VIZ["hasFilter"], blankFilter))
+                            store.add((blankFilter, VIZ["filterColumn"], Literal(myFilter["column"])))
+                            store.add((blankFilter, VIZ["filterValue"], Literal(myFilter["value"])))
+
                 store.add((activityBNode, PROV["generated"], newDatasetURI))           
             elif "merge" in datasetDict.keys():
                 newDatasetURI = URIRef('%s/virtual/%s%s'%(host, str(int(time.time())), str(random.randrange(1, 99999999))))
