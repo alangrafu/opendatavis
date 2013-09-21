@@ -50,9 +50,9 @@ function Editor(){
       $cell = $(".dataset"+self.editorId+" .datasetCell");
       $cell.prepend('<div style="min-width:100%;min-height:200px;" class="span5 grid dataset'+self.editorId+'"></div>');
       $cell.prepend('<div class="btn-group button-group"><button class="btn btn-info group-button editor'+self.editorId+'" id="group'+self.editorId+'" group-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#group-dialog">Group Data</button><button class="btn btn-info chart-button editor'+self.editorId+'" chart-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#chart-dialog" id="chart'+self.editorId+'">Chart</button><button class="btn btn-info map-button editor'+self.editorId+'" map-editor-id="'+config.editorId+'" data-dataset="'+config.dataset+'" data-toggle="modal" data-target="#map-dialog" id="map'+self.editorId+'">Map</button></div>');
-      new Opentip("#group"+self.editorId, "Creates a new dataset by grouping the values of this dataset.", { style: "dark" });
-      new Opentip("#map"+self.editorId, "Creates a new map using columns from this dataset.", { style: "dark" });
-      new Opentip("#chart"+self.editorId, "Creates a new chart (line, bar, scatterplot) using columns from this dataset.", { style: "dark" });
+      if($("#group"+self.editorId).length >0 ){new Opentip("#group"+self.editorId, "Creates a new dataset by grouping the values of this dataset.", { style: "dark" });}
+      if($("#map"+self.editorId).length >0 ){new Opentip("#map"+self.editorId, "Creates a new map using columns from this dataset.", { style: "dark" });}
+      if($("#chart"+self.editorId).length >0 ){new Opentip("#chart"+self.editorId, "Creates a new chart (line, bar, scatterplot) using columns from this dataset.", { style: "dark" });}
       //$cell.prepend('<div class="filterSection"> Records containing <input type="text" class="dataset'+self.editorId+' txtSearch" /> in column <select class="fieldSearch dataset'+self.editorId+'"></select></div>');
       $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h4 class="datasetSubtitle dataset'+self.editorId+'"></h4><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";
