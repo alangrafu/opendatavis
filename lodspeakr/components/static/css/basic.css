@@ -18,7 +18,7 @@ td{
   word-wrap: break-word;
 }
 table{
-  width: 50%;
+  width: 85%;
 }
 #map { 
   min-height: 200px;
@@ -35,6 +35,10 @@ table{
 
 .vizContainer{
   width: 100%;
+}
+
+.button-group{
+  margin-left:29px;
 }
 
 .optionsBtn{
@@ -73,7 +77,10 @@ text {
 svg{
   border: 1px solid grey;
 }
-
+.filterSection{
+  border: 1px solid;
+  float:right;
+}
 .arrow{
   background-image: url("../img/vertical_arrow.png");
   background-repeat: no-repeat;

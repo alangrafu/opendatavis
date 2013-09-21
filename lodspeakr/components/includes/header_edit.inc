@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{lodspk.home}}css/slick.columnpicker.css"/>
   <link rel="stylesheet" href="{{lodspk.home}}css/jquery-ui-1.8.16.custom.css"/>
   <link rel="stylesheet" href="{{lodspk.home}}css/slick.columnpicker.css"/>
+  <link rel="stylesheet" href="{{lodspk.home}}css/opentip.css"/>
   <link rel="alternate" type="application/rdf+xml" title="RDF/XML Version" href="{{lodspk.local.value}}.rdf" />
   <link rel="alternate" type="text/turtle" title="Turtle Version" href="{{lodspk.local.value}}.ttl" />
   <link rel="alternate" type="text/plain" title="N-Triples Version" href="{{lodspk.local.value}}.nt" />
@@ -87,6 +88,7 @@
     </style>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="{{lodspk.home}}js/opentip-jquery.min.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/jquery.event.drag-2.0.min.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/slick.formatters.js"></script>
     <script type="text/javascript" src="{{lodspk.home}}js/bootstrap.min.js"></script>
@@ -161,8 +163,8 @@
             <li><a href="{{lodspk.home}}visualizations">Visualizations</a></li>
           </ul>
 <div class="btn-group">
-<button class="btn btn-info" id="dataset-button" data-toggle="modal" data-target="#dataset-dialog">Load dataset</button>
-<button class="btn btn-info merge-button" data-toggle="modal" data-target="#merge-dialog">Merge Datasets</button>
+<button class="btn btn-info" id="dataset-button" data-ot="Load a dataset already imported" data-ot-style="dark"  data-toggle="modal" data-target="#dataset-dialog">Load dataset</button>
+<button class="btn btn-info merge-button" data-ot="Merge current dataset and another already imported." data-ot-style="dark" data-toggle="modal" data-target="#merge-dialog">Merge Datasets</button>
 </div>
         </div><!--/.nav-collapse -->
       </div>
