@@ -195,7 +195,7 @@
 			"file": "lodspeakr/components/static/js/presenter.js",
 			"settings":
 			{
-				"buffer_size": 8373,
+				"buffer_size": 8393,
 				"line_ending": "Unix"
 			}
 		},
@@ -203,7 +203,7 @@
 			"file": "lodspeakr/components/static/js/editor.js",
 			"settings":
 			{
-				"buffer_size": 20899,
+				"buffer_size": 21714,
 				"line_ending": "Unix"
 			}
 		},
@@ -227,7 +227,7 @@
 			"file": "lodspeakr/components/static/css/basic.css",
 			"settings":
 			{
-				"buffer_size": 1463,
+				"buffer_size": 1554,
 				"line_ending": "Unix"
 			}
 		},
@@ -260,6 +260,30 @@
 			"settings":
 			{
 				"buffer_size": 784,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lodspeakr/components/includes/header_edit.inc",
+			"settings":
+			{
+				"buffer_size": 7360,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lodspeakr/components/includes/header.inc",
+			"settings":
+			{
+				"buffer_size": 6947,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lodspeakr/components/types/viz:ChartVisualization/html.template",
+			"settings":
+			{
+				"buffer_size": 4502,
 				"line_ending": "Unix"
 			}
 		}
@@ -408,6 +432,7 @@
 	},
 	"file_history":
 	[
+		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:ChartVisualization/html.template",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/dcat:Dataset/queries/po.query",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/dcat:Dataset/queries/sp.query",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:VirtualDataset/queries/main.query",
@@ -425,7 +450,6 @@
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:MapVisualization/json.template",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:ChartVisualization/queries/main.query",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:MapVisualization/queries/main.query",
-		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:ChartVisualization/html.template",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/static/js/extras.js",
 		"/Users/alvarograves/github/opendatavis/lodspeakr/components/types/viz:ChartVisualization/queries/params.query",
 		"/Users/alvarograves/github/opendatavis/data/27bdfaecfef362efd87917765ca5000b",
@@ -540,6 +564,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"tip",
+			"opentip",
+			".show",
+			"<script",
+			"show",
+			"share",
+			"Share",
+			"existing one",
+			"events",
+			"jquery",
+			"table",
+			"width",
+			"max-",
 			"filterby",
 			"filterb",
 			"myFilter",
@@ -654,20 +691,7 @@
 			"console.lo",
 			"config",
 			"manualdata",
-			"numericx",
-			"chart-editor",
-			"renderMap",
-			"console",
-			"self.data",
-			"log",
-			"log (",
-			"log(",
-			"wasDerived",
-			"newDatasetURI",
-			"<button",
-			"showTable",
-			"<button",
-			"button"
+			"numericx"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -707,7 +731,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -722,8 +746,8 @@
 						"selection":
 						[
 							[
-								14027,
-								14027
+								6298,
+								6304
 							]
 						],
 						"settings":
@@ -736,7 +760,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2973.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -767,7 +791,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3553.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -777,15 +801,15 @@
 					"file": "lodspeakr/components/static/js/presenter.js",
 					"settings":
 					{
-						"buffer_size": 8373,
+						"buffer_size": 8393,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7696,
-								7696
+								8324,
+								8324
 							]
 						],
 						"settings":
@@ -797,8 +821,8 @@
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 3100.0,
+						"translation.x": 7.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -808,15 +832,15 @@
 					"file": "lodspeakr/components/static/js/editor.js",
 					"settings":
 					{
-						"buffer_size": 20899,
+						"buffer_size": 21714,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10249,
-								10249
+								2507,
+								2507
 							]
 						],
 						"settings":
@@ -826,10 +850,11 @@
 							"synced": false,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": true,
+							"word_separators": "./\\\\()\\\"\\'-:,.;<>~!@#%^&*|+=[]{}`~?"
 						},
-						"translation.x": 0.0,
-						"translation.y": 3711.0,
+						"translation.x": 48.0,
+						"translation.y": 542.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -901,15 +926,15 @@
 					"file": "lodspeakr/components/static/css/basic.css",
 					"settings":
 					{
-						"buffer_size": 1463,
+						"buffer_size": 1554,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								882,
-								882
+								373,
+								374
 							]
 						],
 						"settings":
@@ -922,7 +947,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1136.0,
+						"translation.y": 232.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -953,7 +978,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2123.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -984,7 +1009,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 235.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1047,6 +1072,90 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "lodspeakr/components/includes/header_edit.inc",
+					"settings":
+					{
+						"buffer_size": 7360,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3192,
+								3283
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1341.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "lodspeakr/components/includes/header.inc",
+					"settings":
+					{
+						"buffer_size": 6947,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4257,
+								4257
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1776.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "lodspeakr/components/types/viz:ChartVisualization/html.template",
+					"settings":
+					{
+						"buffer_size": 4502,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2728,
+								2780
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1143.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

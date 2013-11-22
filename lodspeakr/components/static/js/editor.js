@@ -53,7 +53,7 @@ function Editor(){
       if($("#group"+self.editorId).length >0 ){new Opentip("#group"+self.editorId, "Creates a new dataset by grouping the values of this dataset.", { style: "dark" });}
       if($("#map"+self.editorId).length >0 ){new Opentip("#map"+self.editorId, "Creates a new map using columns from this dataset.", { style: "dark" });}
       if($("#chart"+self.editorId).length >0 ){new Opentip("#chart"+self.editorId, "Creates a new chart (line, bar, scatterplot) using columns from this dataset.", { style: "dark" });}
-      //$cell.prepend('<div class="filterSection"> Records containing <input type="text" class="dataset'+self.editorId+' txtSearch" /> in column <select class="fieldSearch dataset'+self.editorId+'"></select></div>');
+      $cell.prepend('<div class="filterSection"> Records containing <input type="text" class="dataset'+self.editorId+' txtSearch" /> in column <select class="fieldSearch dataset'+self.editorId+'"></select></div>');
       $cell.prepend('<h3 class="datasetTitle dataset'+self.editorId+'"></h3><h4 class="datasetSubtitle dataset'+self.editorId+'"></h4><h5 class="numberOfSelected dataset'+self.editorId+'"></h5>');
       options = "";
       $.each(self.columns, function(i, item){
